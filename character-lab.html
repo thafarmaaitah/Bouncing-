@@ -12,8 +12,8 @@ orb(root,top,0,1.63,0,.53,.65,.29);leftArm.position.set(-.51,2.05,0);rightArm.po
 for(const [g,d] of [[leftArm,-1],[rightArm,1]]){orb(g,top,d*.12,-.27,0,.17,.38,.18);orb(g,skin,d*.21,-.62,0,.12,.26,.13);orb(g,skin,d*.24,-.83,.02,.13,.13,.12)}
 const head=new T.Group();head.position.y=2.63;root.add(head);orb(head,hair,0,.05,-.12,.55,.7,.42);orb(head,skin,0,0,.2,.45,.55,.38);orb(head,hair,-.39,-.33,-.11,.18,.6,.21);orb(head,hair,.39,-.33,-.11,.18,.6,.21);orb(head,hair,-.09,.47,.25,.45,.18,.26);
 const eyeL=orb(head,eye,-.18,.04,.52,.12,.14,.06),eyeR=orb(head,eye,.18,.04,.52,.12,.14,.06);orb(head,iris,-.18,.04,.58,.063,.078,.026);orb(head,iris,.18,.04,.58,.063,.078,.026);const smile=orb(head,mouth,0,-.26,.53,.19,.055,.025);const browL=orb(head,hair,-.18,.25,.52,.14,.025,.028),browR=orb(head,hair,.18,.25,.52,.14,.025,.028);
-const locks=[orb(head,hair,-.45,-.45,-.2,.14,.43,.18),orb(head,hair,.45,-.45,-.2,.14,.43,.18)];
-let action='idle',started=performance.now(),yaw=0,drag=false,lastX=0;
+const locks=[orb(head,hair,-.45,-.45,-.2,.14,.43,.18),orb(head,hair,.45,-.45,-.2,.14,.43,.18)];const faceLight=new T.PointLight(0xffe6d7,1.2,7);faceLight.position.set(0,3.1,3);scene.add(faceLight);
+let action='idle',started=performance.now(),yaw=0,drag=false,lastX=0,prevAction='idle';
 host.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;host.setPointerCapture(e.pointerId)});host.addEventListener('pointermove',e=>{if(drag){yaw+=(e.clientX-lastX)*.009;lastX=e.clientX}});host.addEventListener('pointerup',()=>drag=false);
 document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{action=b.dataset.action;started=performance.now();document.querySelector('#status').textContent='Action: '+action});
 function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}window.addEventListener('resize',resize);resize();document.querySelector('#status').textContent='Ready — choose an action.';
