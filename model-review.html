@@ -1,18 +1,47 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3D Girl — Production Model Review</title><style>body{background:#131d3c;color:white;font:16px system-ui;margin:0}main{max-width:900px;margin:auto;padding:20px}#view{height:min(65vh,650px);min-height:340px;border-radius:20px;background:radial-gradient(#405b83,#152041);overflow:hidden}button{padding:13px 17px;border-radius:12px;border:1px solid #9eb7e1;background:#304e84;color:white;font:inherit;min-height:48px}button:focus-visible{outline:3px solid #ffdd71}p{color:#d4e0f1}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}</style><main><h1>Girl 3D — Production Model Review</h1><p>This viewer checks whether a genuine rigged GLB asset is available. The placeholder motion lab is not an accepted likeness.</p><div id="view"></div><div class="buttons"><button id="full">Full body</button><button id="face">Face</button><button id="rotate">Rotate</button><button id="idle">Idle</button><button id="walk">Walk</button><button id="jump">Jump</button><button id="celebrate">Celebrate</button></div><p id="status" role="status">Checking model…</p><p id="details"></p><p>Acceptance remains pending until a production-quality, appropriately licensed and guardian-approved character asset is provided and tested on iPad Safari. Do not publish the child's original photograph in this public repository.</p></main><script type="module">
-const status=document.querySelector('#status'),details=document.querySelector('#details');
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Private 3D Girl Review</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/"}}</script>
+<style>body{margin:0;background:#131d3c;color:#fff;font:16px system-ui}main{max-width:1100px;margin:auto;padding:16px}h1{font-size:clamp(23px,4vw,34px);margin:8px 0}p{color:#d9e3f1;line-height:1.5}.note{font-size:14px}.picker{display:block;background:#24385e;border:1px solid #91aedb;border-radius:16px;padding:15px;margin:14px 0}.picker input{font:inherit;max-width:100%;margin-top:9px}#view{height:min(62vh,650px);min-height:330px;border-radius:20px;background:radial-gradient(#5b789a,#15223e);overflow:hidden;touch-action:none}#view canvas{display:block;width:100%;height:100%}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}button{background:#304e84;color:white;border:1px solid #9eb7e1;border-radius:12px;padding:12px 16px;min-height:48px;font:inherit;touch-action:manipulation}button:disabled{opacity:.5}button:focus-visible,input:focus-visible{outline:3px solid #ffdb71}#status{font-weight:700}#details{white-space:pre-wrap;font-size:14px;background:#203254;padding:12px;border-radius:12px}a{color:#c5dfff}</style></head><body><main>
+<h1>Girl 3D — Private Motion Review</h1><p>Open the rigged GLB from your device. The model is read locally by your browser and is <strong>not uploaded to GitHub</strong>. This viewer is for testing, not final character approval.</p>
+<label class="picker">Choose the 3D file (.glb)<input id="file" type="file" accept=".glb,model/gltf-binary"></label>
+<div id="view" aria-label="3D model viewer; drag to rotate"></div>
+<div class="buttons"><button id="full">Full body</button><button id="face">Face view</button><button id="spin">Rotate: off</button><button data-clip="idle">Idle</button><button data-clip="run">Run</button><button data-clip="walk">Walk</button><button data-clip="wave">Wave</button><button data-clip="jump">Jump</button><button id="stop">Stop</button></div>
+<p id="status" role="status">Select your GLB file to begin.</p><div id="details">No model loaded.</div>
+<p class="note">Requires internet for the free 3D viewer library. The selected file stays in browser memory; avoid sharing it publicly. The current model has no facial expression rig or colours. On iPad, use Safari → Choose File → Files.</p>
+</main>
+<script type="module">
+import * as THREE from "three";
+import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+const el=id=>document.getElementById(id),host=el("view"),status=el("status"),details=el("details");
+let renderer,scene,camera,model=null,mixer=null,clips=[],clock=new THREE.Clock(),spin=false,active=null,center=new THREE.Vector3(),radius=2,yaw=0,pitch=.07,zoom=2.5,drag=false,lastX=0,lastY=0;
 try{
-const T=await import('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js');
-const {GLTFLoader}=await import('https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js');
-const host=document.querySelector('#view'),scene=new T.Scene(),camera=new T.PerspectiveCamera(40,1,.1,100);
-camera.position.set(0,1.7,4.5);camera.lookAt(0,1.4,0);
-const renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));host.append(renderer.domElement);scene.add(new T.HemisphereLight(0xffffff,0x60718c,2.4));let lamp=new T.DirectionalLight(0xffffff,2.1);lamp.position.set(2,5,4);scene.add(lamp);
-let model=null,mixer=null,clips=[],clock=new T.Clock(),spin=false;
-function resize(){renderer.setSize(host.clientWidth,host.clientHeight,false);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix()}window.addEventListener('resize',resize);resize();
-document.querySelector('#full').onclick=()=>{camera.position.set(0,1.7,4.5);camera.lookAt(0,1.4,0)};
-document.querySelector('#face').onclick=()=>{camera.position.set(0,2.5,1.9);camera.lookAt(0,2.5,0)};
-document.querySelector('#rotate').onclick=()=>{spin=!spin};
-for(const action of ['idle','walk','jump','celebrate'])document.querySelector('#'+action).onclick=()=>{if(!mixer){status.textContent='No rigged model loaded';return}const clip=clips.find(x=>x.name.toLowerCase().includes(action));if(!clip){status.textContent='Animation clip missing: '+action;return}mixer.stopAllAction();mixer.clipAction(clip).reset().fadeIn(.2).play();status.textContent='Playing '+clip.name};
-const loader=new GLTFLoader();loader.load('./assets/girl.glb',g=>{model=g.scene;scene.add(model);clips=g.animations;mixer=new T.AnimationMixer(model);const bones=[],morphs=[],meshes=[];model.traverse(o=>{if(o.isBone)bones.push(o.name);if(o.isMesh){meshes.push(o);if(o.morphTargetDictionary)morphs.push(...Object.keys(o.morphTargetDictionary))}});const required=['idle','walk','run','jump','celebrate'];const missing=required.filter(n=>!clips.some(c=>c.name.toLowerCase().includes(n)));const hasFace=morphs.some(n=>/blink|smile|mouth|brow|eye/i.test(n));details.textContent='Skeleton joints: '+bones.length+' · Meshes: '+meshes.length+' · Facial morphs: '+morphs.length+' · Animation clips: '+clips.map(c=>c.name).join(', ')+' · Missing core clips: '+(missing.join(', ')||'none')+' · Face rig indicators: '+(hasFace?'found':'not detected');status.textContent=bones.length&&missing.length===0&&hasFace?'Technical rig checks passed; visual likeness and iPad approval still required':'Technical rig checks incomplete; do not approve character';if(clips.length)mixer.clipAction(clips[0]).play()},undefined,()=>{status.textContent='Production 3D model not yet available. Expected assets/girl.glb. No substitute is being presented as the approved girl.';details.textContent='Status: likeness, rig, facial animation and iPad testing are OPEN.'});
-function loop(){requestAnimationFrame(loop);let dt=Math.min(clock.getDelta(),.05);if(mixer)mixer.update(dt);if(model&&spin)model.rotation.y+=dt*.6;renderer.render(scene,camera)}loop();
-}catch(e){status.textContent='3D preview unavailable: '+(e.message||'unknown error')}
-</script></html>
+ renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:"low-power"});
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);
+ scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xffffff,0x546785,2.6));
+ let key=new THREE.DirectionalLight(0xffffff,2.1);key.position.set(3,7,5);scene.add(key);
+ camera=new THREE.PerspectiveCamera(42,1,.01,1000);
+ function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+ window.addEventListener("resize",resize);resize();
+ function view(){let d=radius*zoom;camera.position.set(center.x+d*Math.sin(yaw)*Math.cos(pitch),center.y+d*Math.sin(pitch),center.z+d*Math.cos(yaw)*Math.cos(pitch));camera.lookAt(center)}
+ host.addEventListener("pointerdown",e=>{drag=true;lastX=e.clientX;lastY=e.clientY;host.setPointerCapture(e.pointerId)});
+ host.addEventListener("pointermove",e=>{if(!drag)return;yaw+=(e.clientX-lastX)*.008;pitch=Math.max(-1.25,Math.min(1.25,pitch+(e.clientY-lastY)*.006));lastX=e.clientX;lastY=e.clientY});
+ for(const event of ["pointerup","pointercancel"])host.addEventListener(event,()=>drag=false);
+ host.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(1.1,Math.min(6,zoom+Math.sign(e.deltaY)*.16))},{passive:false});
+ el("file").addEventListener("change",async e=>{const file=e.target.files?.[0];if(!file)return;status.textContent="Loading "+file.name+" locally…";try{
+ const buffer=await file.arrayBuffer();const gltf=await new Promise((resolve,reject)=>new GLTFLoader().parse(buffer,"",resolve,reject));
+ if(model){scene.remove(model);model.traverse(o=>{if(o.isMesh){o.geometry?.dispose();if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material?.dispose()}})}
+ model=gltf.scene;scene.add(model);clips=gltf.animations;mixer=new THREE.AnimationMixer(model);active=null;
+ const box=new THREE.Box3().setFromObject(model);const size=box.getSize(new THREE.Vector3());center=box.getCenter(new THREE.Vector3());radius=Math.max(size.x,size.y,size.z,0.01)/2;zoom=2.8;yaw=0;pitch=.06;
+ const bones=[],morphs=[];model.traverse(o=>{if(o.isBone)bones.push(o.name);if(o.morphTargetDictionary)morphs.push(...Object.keys(o.morphTargetDictionary))});
+ details.textContent="File: "+file.name+"\nSize: "+(file.size/1048576).toFixed(2)+" MB\nBones: "+bones.length+"\nClips: "+clips.map(c=>c.name).join(", ")+"\nFacial morph targets: "+morphs.length+"\nMesh dimensions: "+[size.x,size.y,size.z].map(x=>x.toFixed(2)).join(" × ");
+ status.textContent="Model loaded locally. Choose an animation.";play("idle");
+ }catch(err){status.textContent="Could not load file: "+(err.message||err)}});
+ function play(name){if(!mixer)return;const clip=clips.find(c=>c.name.toLowerCase()===name)||clips.find(c=>c.name.toLowerCase().startsWith(name));if(!clip){status.textContent="Clip not found: "+name;return}if(active)active.fadeOut(.18);active=mixer.clipAction(clip).reset().fadeIn(.18).play();status.textContent="Playing "+clip.name}
+ document.querySelectorAll("[data-clip]").forEach(b=>b.onclick=()=>play(b.dataset.clip));
+ el("stop").onclick=()=>{if(mixer)mixer.stopAllAction();active=null;status.textContent="Animation stopped"};
+ el("full").onclick=()=>{if(!model)return;const b=new THREE.Box3().setFromObject(model),s=b.getSize(new THREE.Vector3());center=b.getCenter(new THREE.Vector3());radius=Math.max(s.x,s.y,s.z)/2;zoom=2.8;yaw=0;pitch=.06};
+ el("face").onclick=()=>{if(!model)return;const b=new THREE.Box3().setFromObject(model),s=b.getSize(new THREE.Vector3());center.set((b.min.x+b.max.x)/2,b.min.y+s.y*.84,(b.min.z+b.max.z)/2);radius=Math.max(s.x,s.y,s.z)/2;zoom=1.2;yaw=0;pitch=0};
+ el("spin").onclick=()=>{spin=!spin;el("spin").textContent="Rotate: "+(spin?"on":"off")};
+ renderer.domElement.addEventListener("webglcontextlost",e=>{e.preventDefault();status.textContent="3D graphics paused. Reload the page."});
+ function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(document.hidden)return;if(mixer)mixer.update(dt);if(spin)yaw+=dt*.4;view();renderer.render(scene,camera)}animate();
+}catch(err){status.textContent="3D renderer unavailable: "+(err.message||err)}
+</script></body></html>
