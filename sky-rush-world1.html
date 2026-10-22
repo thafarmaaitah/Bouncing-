@@ -56,7 +56,7 @@ let manualChoice=false,loadGeneration=0,assetDiagnostics=null;const levels=[
 {name:'Speed Bridge',kind:'speed',hint:'Time jumps between wind gusts and finish within 25 seconds',path:[2,1,0,1,2]},
 {name:'Sky Finale',kind:'finale',hint:'Remember the route and time jumps between portal pulses',path:[1,0,2,0,1]}
 ];
-let hazardStart=0,hazardOffset=0;let levelIndex=0;const levelResults=Array(6).fill(null);const progressKey='skyRushWorldProgressV1';try{const p=JSON.parse(localStorage.getItem(progressKey)||'{}');for(let k=0;k<6;k++)if(p[1+k])levelResults[k]=p[1+k]}catch(e){}const themeColors=['#9dd7fb','#ffdbb9','#9bc6ff','#e8bbff','#ffd7a1','#a8f2db'];
+let hazardStart=0,hazardOffset=0;const requestedLevel=Number(new URLSearchParams(location.search).get('level'));const startingLevel=Number.isInteger(requestedLevel)&&requestedLevel>=1&&requestedLevel<=6?requestedLevel-1:0;let levelIndex=0;const levelResults=Array(6).fill(null);const progressKey='skyRushWorldProgressV1';try{const p=JSON.parse(localStorage.getItem(progressKey)||'{}');for(let k=0;k<6;k++)if(p[1+k])levelResults[k]=p[1+k]}catch(e){}const themeColors=['#9dd7fb','#ffdbb9','#9bc6ff','#e8bbff','#ffd7a1','#a8f2db'];
 function drawLevelButtons(){const holder=$('levelButtons');holder.textContent='';levels.forEach((level,i)=>{const b=document.createElement('button');b.textContent=(i+1)+' · '+level.name+(levelResults[i]?' 🏅':'');b.className=(i===levelIndex?'active ':'')+(levelResults[i]?'completed':'');b.onclick=()=>selectLevel(i);holder.append(b)})}
 function selectLevel(i){if(!ready){$('levelDescription').textContent='Press START PLAYING first, then choose a level.';return}levelIndex=i;hazardStart=performance.now();hazardOffset=0;const level=levels[i];scene.background.set(themeColors[i]);scene.fog.color.set(themeColors[i]);targets.splice(0,targets.length,...level.path);challenge=level.kind;courseCount=i+1;drawLevelButtons();$('modeLabel').textContent='LEVEL '+(i+1)+' · '+level.name.toUpperCase();$('levelDescription').textContent=level.hint;reset()}
 let pausedAt=0;let courseCount=0,sessionWins=0,sessionBest={},combo=0,bonusPoints=0,challenge='trail',revealUntil=0,memoryPreviewActive=false,usedGuidance=false,mistakes=0,courseStart=0,celebrationUntil=0,celebrateHideAt=0,soundOn=false,speedRun=false,runStart=0,runSeconds=0,bestTime=Infinity,audioContext=null;let mobileRig=null;let player=new T.Group();scene.add(player);let originalMaterials=new Map(),colorMaterials=new Map(),colorsOn=false,faceFlipped=false;let character=null,mixer=null,clips=[],active=null,ready=false,lane=1,step=0,lives=3,score=0,jumping=false,start=0,startLane=1,endLane=1,last=performance.now();
@@ -98,7 +98,7 @@ function createStandIn(){
  $('palette').disabled=true;$('facing').disabled=false;$('restart').disabled=false;
  $('faceLabel').textContent='TEMPORARY · NOT APPROVED GIRL';
  $('status').textContent='Quick Play: expressive temporary preview only. This is NOT the approved girl; the real model stays private.';
- selectLevel(0);
+ selectLevel(startingLevel);
 }
 function animateStandIn(now){
  if(!mobileRig||!ready)return;
@@ -160,7 +160,7 @@ async function loadRealGirl(buffer,sourceLabel,token){
  const b2=new T.Box3().setFromObject(character),ctr=b2.getCenter(new T.Vector3());
  character.position.x-=ctr.x;character.position.z-=ctr.z;character.position.y-=b2.min.y;
  ready=true;$('faceLabel').textContent='WORLD 1 · SKY ADVENTURE';$('palette').disabled=false;$('facing').disabled=false;$('palette').textContent='🎨 Colors: off';$('restart').disabled=false;
- $('status').textContent='V4.5 '+sourceLabel+' · '+clips.map(c=>c.name).join(', ');selectLevel(0);return true;
+ $('status').textContent='V4.5 '+sourceLabel+' · '+clips.map(c=>c.name).join(', ');selectLevel(startingLevel);return true;
 }
 $('file').onchange=async e=>{
  const file=e.target.files?.[0];if(!file)return;manualChoice=true;loadGeneration++;$('status').textContent='Loading locally…';
