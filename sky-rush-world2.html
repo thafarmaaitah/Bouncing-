@@ -60,7 +60,7 @@ let manualChoice=false,loadGeneration=0,assetDiagnostics=null;const levels=[
 {name:'Firefly Sprint',kind:'speed',hint:'Dodge timed obstacles and finish under 25 seconds',path:[1,2,1,0,2]},
 {name:'Forest Guardian',kind:'finale',hint:'Memorize the route and time your jumps past the guardian',path:[0,2,1,2,0]}
 ];
-let hazardStart=0,hazardOffset=0;let levelIndex=0;const levelResults=Array(6).fill(null);const progressKey='skyRushWorldProgressV1';try{const p=JSON.parse(localStorage.getItem(progressKey)||'{}');for(let k=0;k<6;k++)if(p[7+k])levelResults[k]=p[7+k]}catch(e){}const themeColors=['#8ddbb5','#5cb79b','#9dcf8d','#4b9f82','#c2e5a6','#80b9a6'];
+let hazardStart=0,hazardOffset=0;const requestedLevel=Number(new URLSearchParams(location.search).get('level'));const startingLevel=Number.isInteger(requestedLevel)&&requestedLevel>=1&&requestedLevel<=6?requestedLevel-1:0;let levelIndex=0;const levelResults=Array(6).fill(null);const progressKey='skyRushWorldProgressV1';try{const p=JSON.parse(localStorage.getItem(progressKey)||'{}');for(let k=0;k<6;k++)if(p[7+k])levelResults[k]=p[7+k]}catch(e){}const themeColors=['#8ddbb5','#5cb79b','#9dcf8d','#4b9f82','#c2e5a6','#80b9a6'];
 function drawLevelButtons(){const holder=$('levelButtons');holder.textContent='';levels.forEach((level,i)=>{const b=document.createElement('button');b.textContent=(i+7)+' · '+level.name+(levelResults[i]?' 🏅':'');b.className=(i===levelIndex?'active ':'')+(levelResults[i]?'completed':'');b.onclick=()=>selectLevel(i);holder.append(b)})}
 function forestSafe(now){
  if(levelIndex<3||guided)return true;
@@ -116,7 +116,7 @@ function createStandIn(){
  $('palette').disabled=true;$('facing').disabled=false;$('restart').disabled=false;
  $('faceLabel').textContent='TEMPORARY · NOT APPROVED GIRL';
  $('status').textContent='Quick Play: expressive temporary preview only. This is NOT the approved girl; the real model stays private.';
- selectLevel(0);
+ selectLevel(startingLevel);
 }
 function animateStandIn(now){
  if(!mobileRig||!ready)return;
@@ -180,7 +180,7 @@ async function loadRealGirl(buffer,sourceLabel,token){
  const b2=new T.Box3().setFromObject(character),ctr=b2.getCenter(new T.Vector3());
  character.position.x-=ctr.x;character.position.z-=ctr.z;character.position.y-=b2.min.y;
  ready=true;$('faceLabel').textContent='WORLD 2 · MAGIC FOREST';$('palette').disabled=false;$('facing').disabled=false;$('palette').textContent='🎨 Colors: off';$('restart').disabled=false;
- $('status').textContent='V4.5 '+sourceLabel+' · '+clips.map(c=>c.name).join(', ');selectLevel(0);return true;
+ $('status').textContent='V4.5 '+sourceLabel+' · '+clips.map(c=>c.name).join(', ');selectLevel(startingLevel);return true;
 }
 $('file').onchange=async e=>{
  const file=e.target.files?.[0];if(!file)return;manualChoice=true;loadGeneration++;$('status').textContent='Loading locally…';
