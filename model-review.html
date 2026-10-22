@@ -4,7 +4,7 @@
 <h1>Girl 3D — Private Motion Review</h1><p>Open the rigged GLB from your device. The model is read locally by your browser and is <strong>not uploaded to GitHub</strong>. This viewer is for testing, not final character approval.</p>
 <label class="picker">Choose the 3D file (.glb)<input id="file" type="file" accept=".glb,model/gltf-binary"></label>
 <div id="view" aria-label="3D model viewer; drag to rotate"></div>
-<div class="buttons"><button id="full">Full body</button><button id="face">Face view</button><button id="spin">Rotate: off</button><button data-clip="idle">Idle</button><button data-clip="run">Run</button><button data-clip="walk">Walk</button><button data-clip="wave">Wave</button><button data-clip="jump">Jump</button><button id="stop">Stop</button></div>
+<div class="buttons"><button id="full">Full body</button><button id="face">Face view</button><button id="spin">Rotate: off</button><button data-clip="idle">Idle</button><button data-clip="run">Run</button><button data-clip="walk">Walk</button><button data-clip="wave">Wave</button><button data-clip="jump">Jump</button><button id="stop">Stop</button><button id="lighting">Lighting: bright</button><button id="normals">Surface: original</button></div>
 <p id="status" role="status">Select your GLB file to begin.</p><div id="details">No model loaded.</div>
 <p class="note">Requires internet for the free 3D viewer library. The selected file stays in browser memory; avoid sharing it publicly. The current model has no facial expression rig or colours. On iPad, use Safari → Choose File → Files.</p>
 </main>
@@ -16,8 +16,8 @@ let renderer,scene,camera,model=null,mixer=null,clips=[],clock=new THREE.Clock()
 try{
  renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:"low-power"});
  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);
- scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xffffff,0x546785,2.6));
- let key=new THREE.DirectionalLight(0xffffff,2.1);key.position.set(3,7,5);scene.add(key);
+ scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xffffff,0xe0e0e0,3.0));scene.add(new THREE.AmbientLight(0xffffff,1.4));
+ let key=new THREE.DirectionalLight(0xffffff,3.0);key.position.set(3,7,5);scene.add(key);let fill=new THREE.DirectionalLight(0xffffff,2.5);fill.position.set(-4,3,-3);scene.add(fill);let front=new THREE.DirectionalLight(0xffffff,2.2);front.position.set(0,2,8);scene.add(front);let bright=true,normalMode=false,originalMaterials=new Map();
  camera=new THREE.PerspectiveCamera(42,1,.01,1000);
  function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  window.addEventListener("resize",resize);resize();
@@ -29,7 +29,7 @@ try{
  el("file").addEventListener("change",async e=>{const file=e.target.files?.[0];if(!file)return;status.textContent="Loading "+file.name+" locally…";try{
  const buffer=await file.arrayBuffer();const gltf=await new Promise((resolve,reject)=>new GLTFLoader().parse(buffer,"",resolve,reject));
  if(model){scene.remove(model);model.traverse(o=>{if(o.isMesh){o.geometry?.dispose();if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material?.dispose()}})}
- model=gltf.scene;scene.add(model);clips=gltf.animations;mixer=new THREE.AnimationMixer(model);active=null;
+ model=gltf.scene;scene.add(model);originalMaterials.clear();model.traverse(o=>{if(o.isMesh){originalMaterials.set(o,o.material);const arr=Array.isArray(o.material)?o.material:[o.material];for(const m of arr){m.side=THREE.DoubleSide;m.needsUpdate=true}}});clips=gltf.animations;mixer=new THREE.AnimationMixer(model);active=null;
  const box=new THREE.Box3().setFromObject(model);const size=box.getSize(new THREE.Vector3());center=box.getCenter(new THREE.Vector3());radius=Math.max(size.x,size.y,size.z,0.01)/2;zoom=2.8;yaw=0;pitch=.06;
  const bones=[],morphs=[];model.traverse(o=>{if(o.isBone)bones.push(o.name);if(o.morphTargetDictionary)morphs.push(...Object.keys(o.morphTargetDictionary))});
  details.textContent="File: "+file.name+"\nSize: "+(file.size/1048576).toFixed(2)+" MB\nBones: "+bones.length+"\nClips: "+clips.map(c=>c.name).join(", ")+"\nFacial morph targets: "+morphs.length+"\nMesh dimensions: "+[size.x,size.y,size.z].map(x=>x.toFixed(2)).join(" × ");
@@ -40,6 +40,8 @@ try{
  el("stop").onclick=()=>{if(mixer)mixer.stopAllAction();active=null;status.textContent="Animation stopped"};
  el("full").onclick=()=>{if(!model)return;const b=new THREE.Box3().setFromObject(model),s=b.getSize(new THREE.Vector3());center=b.getCenter(new THREE.Vector3());radius=Math.max(s.x,s.y,s.z)/2;zoom=2.8;yaw=0;pitch=.06};
  el("face").onclick=()=>{if(!model)return;const b=new THREE.Box3().setFromObject(model),s=b.getSize(new THREE.Vector3());center.set((b.min.x+b.max.x)/2,b.min.y+s.y*.84,(b.min.z+b.max.z)/2);radius=Math.max(s.x,s.y,s.z)/2;zoom=1.2;yaw=0;pitch=0};
+ el("lighting").onclick=()=>{bright=!bright;key.intensity=bright?3:1.5;fill.intensity=bright?2.5:1;front.intensity=bright?2.2:1;el("lighting").textContent="Lighting: "+(bright?"bright":"soft")};
+ el("normals").onclick=()=>{if(!model)return;normalMode=!normalMode;model.traverse(o=>{if(!o.isMesh)return;if(normalMode){o.material=new THREE.MeshNormalMaterial({side:THREE.DoubleSide,skinning:true})}else{o.material.dispose();o.material=originalMaterials.get(o)}});el("normals").textContent="Surface: "+(normalMode?"normals":"original")};
  el("spin").onclick=()=>{spin=!spin;el("spin").textContent="Rotate: "+(spin?"on":"off")};
  renderer.domElement.addEventListener("webglcontextlost",e=>{e.preventDefault();status.textContent="3D graphics paused. Reload the page."});
  function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05);if(document.hidden)return;if(mixer)mixer.update(dt);if(spin)yaw+=dt*.4;view();renderer.render(scene,camera)}animate();
