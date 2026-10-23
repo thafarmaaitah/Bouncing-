@@ -79,45 +79,6 @@ function forestStatus(now){
 function selectLevel(i){if(!ready){$('levelDescription').textContent='Press START PLAYING first, then choose a level.';return}levelIndex=i;hazardStart=performance.now();hazardOffset=0;const level=levels[i];scene.background.set(themeColors[i]);scene.fog.color.set(themeColors[i]);targets.splice(0,targets.length,...level.path);challenge=level.kind;courseCount=i+1;drawLevelButtons();$('modeLabel').textContent='LEVEL '+(i+7)+' · '+level.name.toUpperCase();$('levelDescription').textContent=level.hint;reset()}
 let pausedAt=0;let courseCount=0,sessionWins=0,sessionBest={},combo=0,bonusPoints=0,challenge='trail',revealUntil=0,memoryPreviewActive=false,usedGuidance=false,mistakes=0,courseStart=0,celebrationUntil=0,celebrateHideAt=0,soundOn=false,speedRun=false,runStart=0,runSeconds=0,bestTime=Infinity,audioContext=null;let mobileRig=null;let player=new T.Group();scene.add(player);let originalMaterials=new Map(),colorMaterials=new Map(),colorsOn=false,faceFlipped=false;let character=null,mixer=null,clips=[],active=null,ready=false,lane=1,step=0,lives=3,score=0,jumping=false,start=0,startLane=1,endLane=1,last=performance.now();
 function resize(){renderer.setSize(host.clientWidth,host.clientHeight,false);camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix()}window.addEventListener('resize',resize);resize();
-function createStandIn(){
- if(character)player.remove(character);
- character=new T.Group();character.name='Temporary mobile test figure';player.add(character);
- const skin=new T.MeshStandardMaterial({color:'#f2b7a4'}),hair=new T.MeshStandardMaterial({color:'#69422d'}),pink=new T.MeshStandardMaterial({color:'#ed88c4'}),denim=new T.MeshStandardMaterial({color:'#5078b7'});
- const piece=(parent,geometry,material,x,y,z)=>{const m=new T.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);m.layers.enable(1);return m};
- const head=new T.Group();head.position.y=1.48;character.add(head);
- piece(head,new T.SphereGeometry(.23,14,10),skin,0,.04,.02);
- piece(head,new T.SphereGeometry(.255,14,10),hair,0,.19,-.07);
- piece(character,new T.BoxGeometry(.57,.59,.27),pink,0,1.05,0);
- const arms=[],legs=[];
- for(const side of [-1,1]){
-  const arm=new T.Group();arm.position.set(side*.38,1.29,0);character.add(arm);
-  piece(arm,new T.CapsuleGeometry(.085,.42,4,8),pink,side*.075,-.29,0);arms.push({joint:arm,side});
-  const leg=new T.Group();leg.position.set(side*.17,.75,0);character.add(leg);
-  piece(leg,new T.CapsuleGeometry(.11,.47,4,8),denim,0,-.36,0);
-  piece(leg,new T.BoxGeometry(.25,.14,.34),pink,0,-.72,.09);legs.push({joint:leg,side});
- }
- // Expressive, deliberately simplified mobile-only preview; never claims to match the approved girl.
- const dark=new T.MeshStandardMaterial({color:'#352637'}),white=new T.MeshStandardMaterial({color:'#fffaf6'}),cheek=new T.MeshStandardMaterial({color:'#e998a2'}),bowMat=new T.MeshStandardMaterial({color:'#ff4d9b'});
- const eyes=[];
- for(const side of [-1,1]){
-  const eye=new T.Group();eye.position.set(side*.095,.085,.223);head.add(eye);
-  piece(eye,new T.SphereGeometry(.046,10,8),white,0,0,0);
-  piece(eye,new T.SphereGeometry(.025,10,8),dark,side*.008,0,.039);
-  eyes.push(eye);
-  piece(head,new T.SphereGeometry(.048,10,8),cheek,side*.15,-.025,.19);
-  piece(head,new T.CapsuleGeometry(.09,.12,4,8),hair,side*.22,-.13,-.05);
- }
- const smileCurve=new T.CatmullRomCurve3([new T.Vector3(-.09,-.075,.211),new T.Vector3(0,-.105,.24),new T.Vector3(.09,-.075,.211)]);
- piece(head,new T.TubeGeometry(smileCurve,14,.012,6,false),dark,0,0,0);
- piece(head,new T.SphereGeometry(.048,8,6),bowMat,-.12,.38,.035);
- piece(head,new T.SphereGeometry(.048,8,6),bowMat,-.02,.38,.035);
- piece(head,new T.SphereGeometry(.024,8,6),white,-.07,.38,.068);
- mixer=null;clips=[];active=null;mobileRig={head,arms,legs,eyes};ready=true;faceFlipped=false;colorsOn=false;
- $('palette').disabled=true;$('facing').disabled=false;$('restart').disabled=false;
- $('faceLabel').textContent='TEMPORARY · NOT APPROVED GIRL';
- $('status').textContent='Quick Play: expressive temporary preview only. This is NOT the approved girl; the real model stays private.';
- selectLevel(startingLevel);
-}
 function animateStandIn(now){
  if(!mobileRig||!ready)return;
  const t=now*.004;
@@ -172,7 +133,7 @@ async function loadRealGirl(buffer,sourceLabel,token){
  const required=['idle','run','walk','wave','jump'];const names=gltf.animations.map(c=>c.name.toLowerCase());
  const missing=required.filter(name=>!names.some(c=>c.includes(name)));
  if(missing.length)throw new Error('Missing required animations: '+missing.join(', '));
- if(token!==loadGeneration)return false;const colorMesh=gltf.scene.getObjectByProperty('isSkinnedMesh',true);let hasColors=false;gltf.scene.traverse(o=>{if(o.isMesh&&o.geometry?.attributes?.color)hasColors=true});if(!hasColors)throw new Error('This is the old uncolored GLB. Please select Girl_3D_V1_Experimental_Colors_Rigged.glb');assetDiagnostics=inspectGirl(gltf,buffer.byteLength);$('assetReport').disabled=false;$('assetStatus').textContent='Model inspected locally: '+assetDiagnostics.meshCount+' meshes, '+assetDiagnostics.animationCount+' animations, '+assetDiagnostics.morphTargetMeshes+' meshes with morph targets.';if(character)player.remove(character);mobileRig=null;character=gltf.scene;player.add(character);
+ if(token!==loadGeneration)return false;let hasColors=false;gltf.scene.traverse(o=>{if(o.isMesh&&o.geometry?.attributes?.color)hasColors=true});if(!hasColors)throw new Error('This is the old uncolored GLB. Please select Girl_3D_V1_Experimental_Colors_Rigged.glb');assetDiagnostics=inspectGirl(gltf,buffer.byteLength);$('assetReport').disabled=false;$('assetStatus').textContent='Model inspected locally: '+assetDiagnostics.meshCount+' meshes, '+assetDiagnostics.animationCount+' animations, '+assetDiagnostics.morphTargetMeshes+' meshes with morph targets.';if(character)player.remove(character);mobileRig=null;character=gltf.scene;player.add(character);
  character.traverse(o=>o.layers.enable(1));originalMaterials.clear();colorMaterials.forEach(m=>m.dispose());colorMaterials.clear();
  colorsOn=false;faceFlipped=false;character.rotation.y=0;clips=gltf.animations;mixer=new T.AnimationMixer(character);active=null;
  const bounds=new T.Box3().setFromObject(character),size=bounds.getSize(new T.Vector3());
@@ -189,7 +150,7 @@ $('file').onchange=async e=>{
  catch(err){if(token!==loadGeneration)return;$('status').textContent='Could not load colored girl: '+err.message+'. Choose the colored GLB to play.'}
 };
 $('forget').onclick=async()=>{try{await dbDelete();$('remember').checked=false;$('status').textContent='Saved local copy removed from this browser. Current session may still use the loaded model.'}catch(err){$('status').textContent='Unable to remove local copy: '+err.message}};
-(async()=>{try{const saved=await dbGet();if(saved&&!manualChoice){const token=loadGeneration;$('remember').checked=true;await loadRealGirl(saved,'restored from this device',token)}}catch(err){$('status').textContent='Choose your colored girl GLB once to play. Old uncolored copies are not accepted.'}})();
+(async()=>{try{const saved=await dbGet();if(saved&&!manualChoice){const token=loadGeneration;$('remember').checked=true;try{await loadRealGirl(saved,'restored from this device',token)}catch(error){await dbDelete();$('remember').checked=true;$('status').textContent='Old saved girl cleared. Choose the colored GLB once to continue.'}}}catch(err){$('status').textContent='Choose your colored girl GLB once to play. Old uncolored copies are not accepted.'}})();
 function animate(now){requestAnimationFrame(animate);if(document.hidden){if(!pausedAt)pausedAt=now;last=now;return}if(pausedAt){const delta=now-pausedAt;hazardStart+=delta;if(jumping)start+=delta;if(celebrationUntil)celebrationUntil+=delta;if(celebrateHideAt)celebrateHideAt+=delta;if(revealUntil)revealUntil+=delta;if(courseStart)courseStart+=delta;if(runStart)runStart+=delta;if(landingUntil){landingUntil+=delta;landingStart+=delta}pausedAt=0;last=now}if(celebrateHideAt&&now>celebrateHideAt){celebrateHideAt=0;$('celebrate').classList.remove('visible')}if(ready&&challenge==='memory'&&!guided&&revealUntil&&now>revealUntil){revealUntil=0;memoryPreviewActive=false;refreshCourseVisuals();updateHud();$('notice').textContent='🧠 Now jump from memory!'}if(ready&&speedRun&&courseStart&&lives>0&&step<5){runSeconds=(now-courseStart)/1000;$('timer').textContent='⏱ '+fmt(runSeconds)}const dt=Math.min((now-last)/1000,.05);last=now;if(mixer)mixer.update(dt);animateStandIn(now);
 if(ready&&character){if(levelIndex>=3&&step<5&&!guided){landingMarker.material.color.set(forestSafe(now)?'#fff3a1':'#ff5b6e')}else landingMarker.material.color.set('#fff3a1');if(landingUntil>now&&!jumping){const q=(now-landingStart)/430;player.scale.y=1-.10*Math.sin(Math.PI*q);landingRing.material.opacity=.8*(1-q);landingRing.scale.setScalar(.5+q*1.6)}else if(!jumping){player.scale.y=1;landingRing.material.opacity=0}if(celebrationUntil && now>celebrationUntil){celebrationUntil=0;if(!jumping)playClip('idle')}if(jumping){let t=Math.min((now-start)/950,1),smooth=t*t*(3-2*t);player.position.x=startLane+(endLane-startLane)*smooth;player.position.z=-step*3.3-3.3*smooth;player.position.y=Math.pow(Math.sin(Math.PI*t),.92)*1.48;player.rotation.z=-Math.sin(Math.PI*t)*Math.sign(endLane-startLane)*.075;
 if(t>=1){$('testStatus').textContent='Mobile check: landing completed';jumping=false;player.position.y=0;player.rotation.z=0;landingFx(now);if(lane===targets[step]){flash('good');step++;score++;combo++;if(['bonus','finale'].includes(challenge)&&step%2===0){bonusPoints+=2;beep(950,.17)}if(['memory','finale'].includes(challenge)&&!guided){bonusPoints+=1}revealUntil=0;memoryPreviewActive=false;refreshCourseVisuals();$('notice').textContent=combo>=3?'🔥 '+combo+' IN A ROW!':'⭐ Amazing! ⭐';celebrate(step===5?'🏆 YOU WIN!':combo>=3?'🔥 COMBO '+combo+'!':'⭐ +1 STAR!');beep(740,.22);burst();playClip('wave');celebrationUntil=now+1100}else{flash('bad');lives--;mistakes++;combo=0;memoryPreviewActive=false;revealUntil=performance.now()+1200;refreshCourseVisuals();beep(220,.25);player.position.x=startLane;player.position.z=-step*3.3;lane=lanes.indexOf(startLane);$('notice').textContent='Missed! Choose another lane';playClip('idle')}updateHud();if(lives<=0){$('grade').textContent='🏅 No clear · '+mistakes+' misses';celebrate('TRY AGAIN!');$('notice').textContent='Try again — press Restart';$('jump').disabled=true}else if(step===5){celebrate('🏆 LEVEL COMPLETE!');const elapsed=(performance.now()-courseStart)/1000;const timed=['speed','finale'].includes(challenge);const withinTime=elapsed<=(challenge==='speed'?25:30);const grade=usedGuidance?'ASSISTED':timed&&!withinTime?'FINISHED':mistakes===0?'GOLD':mistakes===1?'SILVER':'BRONZE';sessionWins++;const newResult={grade,assisted:usedGuidance,seconds:elapsed};const oldResult=levelResults[levelIndex];const rank={GOLD:5,SILVER:4,BRONZE:3,FINISHED:2,ASSISTED:1};const improved=!oldResult||(rank[grade]>rank[oldResult.grade])||(rank[grade]===rank[oldResult.grade]&&elapsed<oldResult.seconds);if(improved)levelResults[levelIndex]=newResult;try{const p=JSON.parse(localStorage.getItem(progressKey)||'{}');if(improved)p[7+levelIndex]=newResult;localStorage.setItem(progressKey,JSON.stringify(p))}catch(e){}drawLevelButtons();$('levelProgress').textContent=levelResults.filter(Boolean).length+' of 6 levels completed this session';$('levelDescription').textContent='Level '+(levelIndex+7)+' complete · '+grade+' · '+fmt(elapsed);if(!usedGuidance)sessionBest[challenge]=Math.min(sessionBest[challenge]??Infinity,elapsed);$('session').textContent='Session: '+sessionWins+' courses finished · Best independent '+(sessionBest[challenge]===undefined?'—':fmt(sessionBest[challenge]))+' ('+challenge+')';$('grade').textContent='🏅 '+grade+' · '+fmt(elapsed)+' · '+mistakes+' misses';if(speedRun){if(!usedGuidance)bestTime=Math.min(bestTime,elapsed);$('notice').textContent=usedGuidance?'🏆 Assisted finish '+fmt(elapsed)+' (not ranked)':'🏆 Independent '+fmt(elapsed)+' · Best '+fmt(bestTime)}else $('notice').textContent=usedGuidance?'🏆 Assisted mission complete!':'🏆 '+grade+' mission complete!';$('restart').textContent=levelIndex===5?'🌍 Next World →':'✨ Next Level →';$('jump').disabled=true}else if(!celebrationUntil){playClip('idle')}}}
