@@ -100,7 +100,7 @@ function reset(){
  landingUntil=0;player.scale.set(1,1,1);player.rotation.z=0;landingRing.material.opacity=0;
  bonusPoints=0;mistakes=0;usedGuidance=guided;courseStart=0;runStart=0;runSeconds=0;
  $('grade').textContent='🏅 Skill score: —';$('timer').textContent='⏱ 00:00';
- memoryPreviewActive=challenge==='memory'&&!guided;revealUntil=memoryPreviewActive?performance.now()+4200:0;combo=0;celebrationUntil=0;celebrateHideAt=0;
+ memoryPreviewActive=['memory','finale'].includes(challenge)&&!guided;revealUntil=memoryPreviewActive?performance.now()+4200:0;combo=0;celebrationUntil=0;celebrateHideAt=0;
  $('celebrate').classList.remove('visible');step=0;lane=1;score=0;lives=3;jumping=false;
  particles.forEach(p=>{p.life=0;p.mesh.visible=false});
  player.position.set(0,0,0);playClip('idle');refreshCourseVisuals();updateHud();
