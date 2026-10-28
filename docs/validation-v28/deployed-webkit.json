@@ -1,0 +1,50 @@
+{
+  "startedAt": "2026-10-28T06:27:56.251Z",
+  "engine": "webkit",
+  "suite": "smoke",
+  "limitation": "Headless browser with emulated viewports/touch; not physical iPhone/iPad testing or child playtesting.",
+  "tests": [
+    {
+      "name": "lava: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1658,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1706,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    }
+  ],
+  "browserVersion": "26.5",
+  "completedAt": "2026-10-28T06:27:59.777Z",
+  "summary": {
+    "passed": 2,
+    "failed": 0,
+    "not-run": 0
+  },
+  "deploymentBaseUrl": "https://thafarmaaitah.github.io/Bouncing-",
+  "codeCommit": "fea0e4659627654b7882c298750dcfd9a2fc5d65",
+  "transport": "Default HTTPS certificate validation; no certificate bypass."
+}

@@ -150,6 +150,29 @@ file loading passed. Mobile WebKit checks used actual touchscreen taps; simultan
 multi-touch and touch cancellation were exercised in Chromium, not claimed for
 WebKit. These results do not substitute for physical iPad Safari testing.
 
+### Published GitHub Pages verification
+
+Code commit: [`fea0e4659627654b7882c298750dcfd9a2fc5d65`](https://github.com/thafarmaaitah/Bouncing-/commit/fea0e4659627654b7882c298750dcfd9a2fc5d65).
+The [Pages deployment workflow](https://github.com/thafarmaaitah/Bouncing-/actions/runs/40643915633)
+completed successfully. The new hub and both versioned URLs were opened.
+
+A separate **uninstrumented WebKit check against the public HTTPS URLs passed
+2/2**: both stages loaded their engine, rendered the course, accepted Start and
+produced no JavaScript page errors or failed requests. Certificate validation
+remained enabled.
+
+Two environment limitations are kept separate from game results:
+
+- The embedded cloud Chrome browser reports `GL_VENDOR = Disabled` and cannot
+  create any WebGL context. It displayed the new error/reload UI. It was not
+  counted as a successful game-rendering test.
+- The normal deployed Chromium check stopped before application loading with
+  `ERR_CERT_AUTHORITY_INVALID` in that test environment. It is not counted as
+  validated live HTTPS playback. Its 30/30 local runtime suite remains valid.
+
+See [deployed WebKit results](./validation-v28/deployed-webkit.json) and
+[the live-page screenshot](./validation-v28/deployed-lava.png).
+
 ## Evidence and reproduction
 
 - [Browser test harness](../tools/test-sky-rush-v28.mjs)
