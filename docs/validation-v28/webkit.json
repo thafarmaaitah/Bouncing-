@@ -1,0 +1,929 @@
+{
+  "startedAt": "2026-10-28T06:25:21.343Z",
+  "engine": "webkit",
+  "suite": "full",
+  "limitation": "Headless browser with emulated viewports/touch; not physical iPhone/iPad testing or child playtesting.",
+  "tests": [
+    {
+      "name": "lava: previous version reproduces startup blocker",
+      "kind": "unaltered previous version in actual browser",
+      "status": "passed",
+      "milliseconds": 540,
+      "detail": {
+        "errors": [
+          "Cannot declare a const variable twice: 'dashTrail'."
+        ],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: previous version reproduces startup blocker",
+      "kind": "unaltered previous version in actual browser",
+      "status": "passed",
+      "milliseconds": 512,
+      "detail": {
+        "errors": [
+          "Cannot declare a const variable twice: 'dashTrail'."
+        ],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1378,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1222,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "Engine download failure is visible and Reload recovers",
+      "kind": "actual browser request failure and real Reload button",
+      "status": "passed",
+      "milliseconds": 866,
+      "detail": {
+        "failureMessage": "The game could not start or continue. Tap Reload game to try again.",
+        "recovered": true
+      }
+    },
+    {
+      "name": "lava: ready gate, keyboard movement, jump and pause",
+      "kind": "real keyboard/button input; read-only position observation",
+      "status": "passed",
+      "milliseconds": 858,
+      "detail": {
+        "jumpHeight": 1.06868,
+        "pausedTime": 0.3710000000000001
+      }
+    },
+    {
+      "name": "lava: Dash impulse and cooldown",
+      "kind": "real button input; read-only position and cooldown observation",
+      "status": "passed",
+      "milliseconds": 465,
+      "detail": {
+        "moved": 1.287,
+        "cooldown": 3.4010000000000002
+      }
+    },
+    {
+      "name": "lava: checkpoint, retry and moving-platform support",
+      "kind": "test-assisted positioning, actual simulation and Retry button",
+      "status": "passed",
+      "milliseconds": 951,
+      "detail": {
+        "checkpoint": "🏁 Checkpoint 2",
+        "movingPlatform": 4
+      }
+    },
+    {
+      "name": "lava: crumbling platform and recovery",
+      "kind": "test-assisted positioning, actual timed collapse and Retry button",
+      "status": "passed",
+      "milliseconds": 1449,
+      "detail": {
+        "platform": 3,
+        "collapseAt": 0.07
+      }
+    },
+    {
+      "name": "lava: rewards and shield-protected fall",
+      "kind": "test-assisted positioning/fall, actual reward and respawn handlers",
+      "status": "passed",
+      "milliseconds": 671,
+      "detail": {
+        "shieldLifeProtection": true,
+        "speedBoost": true,
+        "secretGem": true
+      }
+    },
+    {
+      "name": "lava: Practice finish and unlimited recovery",
+      "kind": "test-assisted route positioning/life setup, actual collisions and finish",
+      "status": "passed",
+      "milliseconds": 784,
+      "detail": {
+        "medal": "PRACTICE",
+        "competitiveRecordsUnchanged": true
+      }
+    },
+    {
+      "name": "lava: checkpoint retry cannot set a challenge record",
+      "kind": "real mode/Retry input; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 736,
+      "detail": {
+        "medal": "RETRY RUN",
+        "recordUnchanged": true
+      }
+    },
+    {
+      "name": "storm: ready gate, keyboard movement, jump and pause",
+      "kind": "real keyboard/button input; read-only position observation",
+      "status": "passed",
+      "milliseconds": 913,
+      "detail": {
+        "jumpHeight": 1.0825800000000003,
+        "pausedTime": 0.3900000000000001
+      }
+    },
+    {
+      "name": "storm: Dash impulse and cooldown",
+      "kind": "real button input; read-only position and cooldown observation",
+      "status": "passed",
+      "milliseconds": 492,
+      "detail": {
+        "moved": 1.3649999999999993,
+        "cooldown": 3.395
+      }
+    },
+    {
+      "name": "storm: checkpoint, retry and moving-platform support",
+      "kind": "test-assisted positioning, actual simulation and Retry button",
+      "status": "passed",
+      "milliseconds": 998,
+      "detail": {
+        "checkpoint": "🏁 Checkpoint 2",
+        "movingPlatform": 2
+      }
+    },
+    {
+      "name": "storm: crumbling platform and recovery",
+      "kind": "test-assisted positioning, actual timed collapse and Retry button",
+      "status": "passed",
+      "milliseconds": 2194,
+      "detail": {
+        "platform": 4,
+        "collapseAt": 0.18
+      }
+    },
+    {
+      "name": "storm: rewards and shield-protected fall",
+      "kind": "test-assisted positioning/fall, actual reward and respawn handlers",
+      "status": "passed",
+      "milliseconds": 2293,
+      "detail": {
+        "shieldLifeProtection": true,
+        "speedBoost": true,
+        "secretGem": true
+      }
+    },
+    {
+      "name": "storm: Practice finish and unlimited recovery",
+      "kind": "test-assisted route positioning/life setup, actual collisions and finish",
+      "status": "passed",
+      "milliseconds": 1056,
+      "detail": {
+        "medal": "PRACTICE",
+        "competitiveRecordsUnchanged": true
+      }
+    },
+    {
+      "name": "storm: checkpoint retry cannot set a challenge record",
+      "kind": "real mode/Retry input; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 737,
+      "detail": {
+        "medal": "RETRY RUN",
+        "recordUnchanged": true
+      }
+    },
+    {
+      "name": "Lava and Storm challenge records are isolated and persistent",
+      "kind": "actual mode selection and finish handling; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 2429,
+      "detail": {
+        "skyRushLavaBestV28": "0.40600000000000014",
+        "skyRushStormBestV5": "0.3700000000000001"
+      }
+    },
+    {
+      "name": "WebGL context loss pauses and restoration requires Resume",
+      "kind": "actual WEBGL_lose_context extension; not physical GPU/memory pressure",
+      "status": "passed",
+      "milliseconds": 930,
+      "detail": {
+        "lost": true,
+        "restored": true,
+        "resumedByButton": true
+      }
+    },
+    {
+      "name": "Approved V4.1 GLB loads locally without changing its bytes",
+      "kind": "real file-input loading; exact user-approved local asset",
+      "status": "passed",
+      "milliseconds": 983,
+      "detail": {
+        "sha256": "ddc97a68042b583a87c1744105d24972f6592930007781ee6800f68f05f2e0e9",
+        "bytes": 8205140,
+        "model": {
+          "meshes": 1,
+          "vertices": 170670,
+          "visible": true,
+          "scale": [
+            0.9459149551348028,
+            0.9459149551348028,
+            0.9459149551348028
+          ]
+        },
+        "requestsAfterSelection": []
+      }
+    },
+    {
+      "name": "lava: phone-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1386,
+      "detail": {
+        "viewport": {
+          "name": "phone-portrait",
+          "width": 390,
+          "height": 844
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 278,
+            "y": 689.984375,
+            "width": 104,
+            "height": 54,
+            "bottom": 743.984375,
+            "right": 382
+          },
+          {
+            "selector": "#dash",
+            "x": 278,
+            "y": 749.984375,
+            "width": 104,
+            "height": 44,
+            "bottom": 793.984375,
+            "right": 382
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 691.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 743.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 178,
+          "width": 390,
+          "height": 503.984375
+        },
+        "touchEvidence": {
+          "peakY": 0.46806000000000003,
+          "frames": 4,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: phone-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1257,
+      "detail": {
+        "viewport": {
+          "name": "phone-portrait",
+          "width": 390,
+          "height": 844
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 278,
+            "y": 689.984375,
+            "width": 104,
+            "height": 54,
+            "bottom": 743.984375,
+            "right": 382
+          },
+          {
+            "selector": "#dash",
+            "x": 278,
+            "y": 749.984375,
+            "width": 104,
+            "height": 44,
+            "bottom": 793.984375,
+            "right": 382
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 691.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 743.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 178,
+          "width": 390,
+          "height": 503.984375
+        },
+        "touchEvidence": {
+          "peakY": 0.37598,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava: phone-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1429,
+      "detail": {
+        "viewport": {
+          "name": "phone-landscape",
+          "width": 844,
+          "height": 390
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 730,
+            "y": 260,
+            "width": 104,
+            "height": 48,
+            "bottom": 308,
+            "right": 834
+          },
+          {
+            "selector": "#dash",
+            "x": 730,
+            "y": 314,
+            "width": 104,
+            "height": 44,
+            "bottom": 358,
+            "right": 834
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 262.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 310.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 844,
+          "height": 299.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.28937999999999997,
+          "frames": 4,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: phone-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1234,
+      "detail": {
+        "viewport": {
+          "name": "phone-landscape",
+          "width": 844,
+          "height": 390
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 730,
+            "y": 260,
+            "width": 104,
+            "height": 48,
+            "bottom": 308,
+            "right": 834
+          },
+          {
+            "selector": "#dash",
+            "x": 730,
+            "y": 314,
+            "width": 104,
+            "height": 44,
+            "bottom": 358,
+            "right": 834
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 262.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 310.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 844,
+          "height": 299.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.3416600000000001,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava: ipad-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1936,
+      "detail": {
+        "viewport": {
+          "name": "ipad-portrait",
+          "width": 820,
+          "height": 1180
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 708,
+            "y": 1039,
+            "width": 104,
+            "height": 54,
+            "bottom": 1093,
+            "right": 812
+          },
+          {
+            "selector": "#dash",
+            "x": 708,
+            "y": 1099,
+            "width": 104,
+            "height": 44,
+            "bottom": 1143,
+            "right": 812
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 1040.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1092.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 129,
+          "width": 820,
+          "height": 902
+        },
+        "touchEvidence": {
+          "peakY": 0.25872,
+          "frames": 2,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: ipad-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1795,
+      "detail": {
+        "viewport": {
+          "name": "ipad-portrait",
+          "width": 820,
+          "height": 1180
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 708,
+            "y": 1039,
+            "width": 104,
+            "height": 54,
+            "bottom": 1093,
+            "right": 812
+          },
+          {
+            "selector": "#dash",
+            "x": 708,
+            "y": 1099,
+            "width": 104,
+            "height": 44,
+            "bottom": 1143,
+            "right": 812
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 1040.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1092.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 129,
+          "width": 820,
+          "height": 902
+        },
+        "touchEvidence": {
+          "peakY": 0.36818,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava: ipad-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 2158,
+      "detail": {
+        "viewport": {
+          "name": "ipad-landscape",
+          "width": 1180,
+          "height": 820
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 1066,
+            "y": 690,
+            "width": 104,
+            "height": 48,
+            "bottom": 738,
+            "right": 1170
+          },
+          {
+            "selector": "#dash",
+            "x": 1066,
+            "y": 744,
+            "width": 104,
+            "height": 44,
+            "bottom": 788,
+            "right": 1170
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 692.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 740.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 1180,
+          "height": 729.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.57858,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm: ipad-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1699,
+      "detail": {
+        "viewport": {
+          "name": "ipad-landscape",
+          "width": 1180,
+          "height": 820
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 1066,
+            "y": 690,
+            "width": 104,
+            "height": 48,
+            "bottom": 738,
+            "right": 1170
+          },
+          {
+            "selector": "#dash",
+            "x": 1066,
+            "y": 744,
+            "width": 104,
+            "height": 44,
+            "bottom": 788,
+            "right": 1170
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 692.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 740.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 1180,
+          "height": 729.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.29312,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    }
+  ],
+  "browserVersion": "26.5",
+  "completedAt": "2026-10-28T06:25:58.958Z",
+  "summary": {
+    "passed": 30,
+    "failed": 0,
+    "not-run": 0
+  }
+}

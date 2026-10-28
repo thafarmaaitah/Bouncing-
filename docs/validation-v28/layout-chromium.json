@@ -1,0 +1,847 @@
+[
+  {
+    "size": [
+      320,
+      568
+    ],
+    "before": {
+      "viewport": [
+        320,
+        568
+      ],
+      "scrollWidth": 320,
+      "game": {
+        "x": 0,
+        "y": 196,
+        "width": 320,
+        "height": 210,
+        "right": 320,
+        "bottom": 406
+      },
+      "start": {
+        "x": 69.140625,
+        "y": 344.171875,
+        "width": 181.71875,
+        "height": 48,
+        "right": 250.859375,
+        "bottom": 392.171875
+      },
+      "overlay": {
+        "x": 0,
+        "y": 196,
+        "width": 320,
+        "height": 210,
+        "right": 320,
+        "bottom": 406
+      },
+      "status": {
+        "x": 0,
+        "y": 534,
+        "width": 320,
+        "height": 34,
+        "right": 320,
+        "bottom": 568
+      },
+      "controls": {
+        "x": 0,
+        "y": 406,
+        "width": 320,
+        "height": 128,
+        "right": 320,
+        "bottom": 534
+      },
+      "buttons": [
+        {
+          "id": "approvedFile",
+          "x": 182.875,
+          "y": 50,
+          "width": 129.125,
+          "height": 44,
+          "bottom": 94,
+          "right": 312
+        },
+        {
+          "id": "mode",
+          "x": 46.84375,
+          "y": 99,
+          "width": 162.15625,
+          "height": 44,
+          "bottom": 143,
+          "right": 209
+        },
+        {
+          "id": "pause",
+          "x": 214,
+          "y": 99,
+          "width": 98,
+          "height": 44,
+          "bottom": 143,
+          "right": 312
+        },
+        {
+          "id": "reset",
+          "x": 8,
+          "y": 148,
+          "width": 98,
+          "height": 44,
+          "bottom": 192,
+          "right": 106
+        },
+        {
+          "id": "retryCheckpoint",
+          "x": 111,
+          "y": 148,
+          "width": 201,
+          "height": 44,
+          "bottom": 192,
+          "right": 312
+        },
+        {
+          "id": "startRun",
+          "x": 69.140625,
+          "y": 344.171875,
+          "width": 181.71875,
+          "height": 48,
+          "bottom": 392.171875,
+          "right": 250.859375
+        },
+        {
+          "id": "forward",
+          "x": 65,
+          "y": 415.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 467.5,
+          "right": 117
+        },
+        {
+          "id": "left",
+          "x": 8,
+          "y": 472.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 524.5,
+          "right": 60
+        },
+        {
+          "id": "back",
+          "x": 65,
+          "y": 472.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 524.5,
+          "right": 117
+        },
+        {
+          "id": "right",
+          "x": 122,
+          "y": 472.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 524.5,
+          "right": 174
+        },
+        {
+          "id": "dash",
+          "x": 208,
+          "y": 474,
+          "width": 104,
+          "height": 44,
+          "bottom": 518,
+          "right": 312
+        },
+        {
+          "id": "jump",
+          "x": 208,
+          "y": 414,
+          "width": 104,
+          "height": 54,
+          "bottom": 468,
+          "right": 312
+        }
+      ]
+    },
+    "after": {
+      "padRowGap": 5,
+      "overflow": false,
+      "canvasCount": 1
+    },
+    "errors": []
+  },
+  {
+    "size": [
+      390,
+      844
+    ],
+    "before": {
+      "viewport": [
+        390,
+        844
+      ],
+      "scrollWidth": 390,
+      "game": {
+        "x": 0,
+        "y": 178,
+        "width": 390,
+        "height": 504,
+        "right": 390,
+        "bottom": 682
+      },
+      "start": {
+        "x": 104.140625,
+        "y": 473.171875,
+        "width": 181.71875,
+        "height": 48,
+        "right": 285.859375,
+        "bottom": 521.171875
+      },
+      "overlay": {
+        "x": 0,
+        "y": 178,
+        "width": 390,
+        "height": 504,
+        "right": 390,
+        "bottom": 682
+      },
+      "status": {
+        "x": 0,
+        "y": 810,
+        "width": 390,
+        "height": 34,
+        "right": 390,
+        "bottom": 844
+      },
+      "controls": {
+        "x": 0,
+        "y": 682,
+        "width": 390,
+        "height": 128,
+        "right": 390,
+        "bottom": 810
+      },
+      "buttons": [
+        {
+          "id": "approvedFile",
+          "x": 213.703125,
+          "y": 32,
+          "width": 168.296875,
+          "height": 44,
+          "bottom": 76,
+          "right": 382
+        },
+        {
+          "id": "mode",
+          "x": 46.84375,
+          "y": 81,
+          "width": 208.8125,
+          "height": 44,
+          "bottom": 125,
+          "right": 255.65625
+        },
+        {
+          "id": "pause",
+          "x": 260.65625,
+          "y": 81,
+          "width": 121.34375,
+          "height": 44,
+          "bottom": 125,
+          "right": 382
+        },
+        {
+          "id": "reset",
+          "x": 8,
+          "y": 130,
+          "width": 121.328125,
+          "height": 44,
+          "bottom": 174,
+          "right": 129.328125
+        },
+        {
+          "id": "retryCheckpoint",
+          "x": 134.328125,
+          "y": 130,
+          "width": 247.671875,
+          "height": 44,
+          "bottom": 174,
+          "right": 382
+        },
+        {
+          "id": "startRun",
+          "x": 104.140625,
+          "y": 473.171875,
+          "width": 181.71875,
+          "height": 48,
+          "bottom": 521.171875,
+          "right": 285.859375
+        },
+        {
+          "id": "forward",
+          "x": 65,
+          "y": 691.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 743.5,
+          "right": 117
+        },
+        {
+          "id": "left",
+          "x": 8,
+          "y": 748.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 800.5,
+          "right": 60
+        },
+        {
+          "id": "back",
+          "x": 65,
+          "y": 748.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 800.5,
+          "right": 117
+        },
+        {
+          "id": "right",
+          "x": 122,
+          "y": 748.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 800.5,
+          "right": 174
+        },
+        {
+          "id": "dash",
+          "x": 278,
+          "y": 750,
+          "width": 104,
+          "height": 44,
+          "bottom": 794,
+          "right": 382
+        },
+        {
+          "id": "jump",
+          "x": 278,
+          "y": 690,
+          "width": 104,
+          "height": 54,
+          "bottom": 744,
+          "right": 382
+        }
+      ]
+    },
+    "after": {
+      "padRowGap": 5,
+      "overflow": false,
+      "canvasCount": 1
+    },
+    "errors": []
+  },
+  {
+    "size": [
+      844,
+      390
+    ],
+    "before": {
+      "viewport": [
+        844,
+        390
+      ],
+      "scrollWidth": 844,
+      "game": {
+        "x": 0,
+        "y": 70.796875,
+        "width": 844,
+        "height": 299.203125,
+        "right": 844,
+        "bottom": 370
+      },
+      "start": {
+        "x": 331.140625,
+        "y": 255.875,
+        "width": 181.71875,
+        "height": 48,
+        "right": 512.859375,
+        "bottom": 303.875
+      },
+      "overlay": {
+        "x": 0,
+        "y": 70.796875,
+        "width": 844,
+        "height": 299.203125,
+        "right": 844,
+        "bottom": 370
+      },
+      "status": {
+        "x": 0,
+        "y": 370,
+        "width": 844,
+        "height": 20,
+        "right": 844,
+        "bottom": 390
+      },
+      "controls": {
+        "x": 0,
+        "y": 260,
+        "width": 844,
+        "height": 106,
+        "right": 844,
+        "bottom": 366
+      },
+      "buttons": [
+        {
+          "id": "approvedFile",
+          "x": 190.921875,
+          "y": 24.796875,
+          "width": 125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 315.921875
+        },
+        {
+          "id": "mode",
+          "x": 439.09375,
+          "y": 24.796875,
+          "width": 125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 564.09375
+        },
+        {
+          "id": "pause",
+          "x": 568.09375,
+          "y": 24.796875,
+          "width": 53.03125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 621.125
+        },
+        {
+          "id": "reset",
+          "x": 625.125,
+          "y": 24.796875,
+          "width": 74.890625,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 700.015625
+        },
+        {
+          "id": "retryCheckpoint",
+          "x": 704.015625,
+          "y": 24.796875,
+          "width": 131.984375,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 836
+        },
+        {
+          "id": "startRun",
+          "x": 331.140625,
+          "y": 255.875,
+          "width": 181.71875,
+          "height": 48,
+          "bottom": 303.875,
+          "right": 512.859375
+        },
+        {
+          "id": "forward",
+          "x": 63,
+          "y": 262.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 310.5,
+          "right": 111
+        },
+        {
+          "id": "left",
+          "x": 10,
+          "y": 315.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 363.5,
+          "right": 58
+        },
+        {
+          "id": "back",
+          "x": 63,
+          "y": 315.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 363.5,
+          "right": 111
+        },
+        {
+          "id": "right",
+          "x": 116,
+          "y": 315.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 363.5,
+          "right": 164
+        },
+        {
+          "id": "dash",
+          "x": 730,
+          "y": 314,
+          "width": 104,
+          "height": 44,
+          "bottom": 358,
+          "right": 834
+        },
+        {
+          "id": "jump",
+          "x": 730,
+          "y": 260,
+          "width": 104,
+          "height": 48,
+          "bottom": 308,
+          "right": 834
+        }
+      ]
+    },
+    "after": {
+      "padRowGap": 5,
+      "overflow": false,
+      "canvasCount": 1
+    },
+    "errors": []
+  },
+  {
+    "size": [
+      768,
+      1024
+    ],
+    "before": {
+      "viewport": [
+        768,
+        1024
+      ],
+      "scrollWidth": 768,
+      "game": {
+        "x": 0,
+        "y": 129,
+        "width": 768,
+        "height": 746,
+        "right": 768,
+        "bottom": 875
+      },
+      "start": {
+        "x": 293.140625,
+        "y": 537.484375,
+        "width": 181.71875,
+        "height": 48,
+        "right": 474.859375,
+        "bottom": 585.484375
+      },
+      "overlay": {
+        "x": 0,
+        "y": 129,
+        "width": 768,
+        "height": 746,
+        "right": 768,
+        "bottom": 875
+      },
+      "status": {
+        "x": 0,
+        "y": 1003,
+        "width": 768,
+        "height": 21,
+        "right": 768,
+        "bottom": 1024
+      },
+      "controls": {
+        "x": 0,
+        "y": 875,
+        "width": 768,
+        "height": 128,
+        "right": 768,
+        "bottom": 1003
+      },
+      "buttons": [
+        {
+          "id": "approvedFile",
+          "x": 190.75,
+          "y": 32,
+          "width": 170,
+          "height": 44,
+          "bottom": 76,
+          "right": 360.75
+        },
+        {
+          "id": "mode",
+          "x": 404.59375,
+          "y": 32,
+          "width": 135,
+          "height": 44,
+          "bottom": 76,
+          "right": 539.59375
+        },
+        {
+          "id": "pause",
+          "x": 544.59375,
+          "y": 32,
+          "width": 58.40625,
+          "height": 44,
+          "bottom": 76,
+          "right": 603
+        },
+        {
+          "id": "reset",
+          "x": 608,
+          "y": 32,
+          "width": 82.25,
+          "height": 44,
+          "bottom": 76,
+          "right": 690.25
+        },
+        {
+          "id": "retryCheckpoint",
+          "x": 8,
+          "y": 81,
+          "width": 144.53125,
+          "height": 44,
+          "bottom": 125,
+          "right": 152.53125
+        },
+        {
+          "id": "startRun",
+          "x": 293.140625,
+          "y": 537.484375,
+          "width": 181.71875,
+          "height": 48,
+          "bottom": 585.484375,
+          "right": 474.859375
+        },
+        {
+          "id": "forward",
+          "x": 65,
+          "y": 884.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 936.5,
+          "right": 117
+        },
+        {
+          "id": "left",
+          "x": 8,
+          "y": 941.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 993.5,
+          "right": 60
+        },
+        {
+          "id": "back",
+          "x": 65,
+          "y": 941.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 993.5,
+          "right": 117
+        },
+        {
+          "id": "right",
+          "x": 122,
+          "y": 941.5,
+          "width": 52,
+          "height": 52,
+          "bottom": 993.5,
+          "right": 174
+        },
+        {
+          "id": "dash",
+          "x": 656,
+          "y": 943,
+          "width": 104,
+          "height": 44,
+          "bottom": 987,
+          "right": 760
+        },
+        {
+          "id": "jump",
+          "x": 656,
+          "y": 883,
+          "width": 104,
+          "height": 54,
+          "bottom": 937,
+          "right": 760
+        }
+      ]
+    },
+    "after": {
+      "padRowGap": 5,
+      "overflow": false,
+      "canvasCount": 1
+    },
+    "errors": []
+  },
+  {
+    "size": [
+      1024,
+      768
+    ],
+    "before": {
+      "viewport": [
+        1024,
+        768
+      ],
+      "scrollWidth": 1024,
+      "game": {
+        "x": 0,
+        "y": 70.796875,
+        "width": 1024,
+        "height": 677.203125,
+        "right": 1024,
+        "bottom": 748
+      },
+      "start": {
+        "x": 421.140625,
+        "y": 444.875,
+        "width": 181.71875,
+        "height": 48,
+        "right": 602.859375,
+        "bottom": 492.875
+      },
+      "overlay": {
+        "x": 0,
+        "y": 70.796875,
+        "width": 1024,
+        "height": 677.203125,
+        "right": 1024,
+        "bottom": 748
+      },
+      "status": {
+        "x": 0,
+        "y": 748,
+        "width": 1024,
+        "height": 20,
+        "right": 1024,
+        "bottom": 768
+      },
+      "controls": {
+        "x": 0,
+        "y": 638,
+        "width": 1024,
+        "height": 106,
+        "right": 1024,
+        "bottom": 744
+      },
+      "buttons": [
+        {
+          "id": "approvedFile",
+          "x": 190.921875,
+          "y": 24.796875,
+          "width": 125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 315.921875
+        },
+        {
+          "id": "mode",
+          "x": 619.09375,
+          "y": 24.796875,
+          "width": 125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 744.09375
+        },
+        {
+          "id": "pause",
+          "x": 748.09375,
+          "y": 24.796875,
+          "width": 53.03125,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 801.125
+        },
+        {
+          "id": "reset",
+          "x": 805.125,
+          "y": 24.796875,
+          "width": 74.890625,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 880.015625
+        },
+        {
+          "id": "retryCheckpoint",
+          "x": 884.015625,
+          "y": 24.796875,
+          "width": 131.984375,
+          "height": 44,
+          "bottom": 68.796875,
+          "right": 1016
+        },
+        {
+          "id": "startRun",
+          "x": 421.140625,
+          "y": 444.875,
+          "width": 181.71875,
+          "height": 48,
+          "bottom": 492.875,
+          "right": 602.859375
+        },
+        {
+          "id": "forward",
+          "x": 63,
+          "y": 640.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 688.5,
+          "right": 111
+        },
+        {
+          "id": "left",
+          "x": 10,
+          "y": 693.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 741.5,
+          "right": 58
+        },
+        {
+          "id": "back",
+          "x": 63,
+          "y": 693.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 741.5,
+          "right": 111
+        },
+        {
+          "id": "right",
+          "x": 116,
+          "y": 693.5,
+          "width": 48,
+          "height": 48,
+          "bottom": 741.5,
+          "right": 164
+        },
+        {
+          "id": "dash",
+          "x": 910,
+          "y": 692,
+          "width": 104,
+          "height": 44,
+          "bottom": 736,
+          "right": 1014
+        },
+        {
+          "id": "jump",
+          "x": 910,
+          "y": 638,
+          "width": 104,
+          "height": 48,
+          "bottom": 686,
+          "right": 1014
+        }
+      ]
+    },
+    "after": {
+      "padRowGap": 5,
+      "overflow": false,
+      "canvasCount": 1
+    },
+    "errors": []
+  }
+]

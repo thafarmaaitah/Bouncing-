@@ -1,0 +1,562 @@
+[
+  {
+    "stage": "lava",
+    "completed": true,
+    "final": {
+      "p": {
+        "x": -0.03488906011208204,
+        "y": 0,
+        "z": -33.19772471164638
+      },
+      "vy": 0,
+      "onGround": true,
+      "score": 5,
+      "lives": 3,
+      "won": true,
+      "running": true,
+      "simTime": 10.61879999999999,
+      "runTime": 10.58549999999999,
+      "shields": 1,
+      "checkpointZ": -30,
+      "platform": 11,
+      "platforms": [
+        {
+          "i": 0,
+          "x": 0,
+          "z": 3,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 1,
+          "x": -2.2,
+          "z": -0.2999999999999998,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 2,
+          "x": 2.2,
+          "z": -3.5999999999999996,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 3,
+          "x": 0,
+          "z": -6.899999999999999,
+          "moving": false,
+          "fragile": true,
+          "visible": false
+        },
+        {
+          "i": 4,
+          "x": -2.893517415112577,
+          "z": -10.2,
+          "moving": true,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 5,
+          "x": 2.2,
+          "z": -13.5,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 6,
+          "x": 0,
+          "z": -16.799999999999997,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 7,
+          "x": -2.2,
+          "z": -20.099999999999998,
+          "moving": false,
+          "fragile": true,
+          "visible": false
+        },
+        {
+          "i": 8,
+          "x": 2.5035859314920548,
+          "z": -23.4,
+          "moving": true,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 9,
+          "x": 0,
+          "z": -26.7,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 10,
+          "x": -2.2,
+          "z": -30,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 11,
+          "x": 0,
+          "z": -33.3,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 12,
+          "x": 5.8,
+          "z": -13.5,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        }
+      ],
+      "stars": [
+        {
+          "i": 1,
+          "visible": false
+        },
+        {
+          "i": 3,
+          "visible": false
+        },
+        {
+          "i": 5,
+          "visible": false
+        },
+        {
+          "i": 8,
+          "visible": false
+        },
+        {
+          "i": 10,
+          "visible": false
+        }
+      ],
+      "message": "🎉 Practice complete! Try Time Challenge next.",
+      "keys": []
+    },
+    "recoveries": 0,
+    "iterations": 310,
+    "log": [
+      {
+        "event": "score",
+        "score": 1,
+        "z": 0.21163460772870674,
+        "time": 0.4884999999999999
+      },
+      {
+        "event": "ground",
+        "platform": 1,
+        "target": 2,
+        "time": 0.9484999999999998,
+        "x": -2.1133653922712936,
+        "z": -0.2878653922712926
+      },
+      {
+        "event": "ground",
+        "platform": 2,
+        "target": 3,
+        "time": 1.926899999999998,
+        "x": 3.1332900134737502,
+        "z": -4.522020798016337
+      },
+      {
+        "event": "score",
+        "score": 2,
+        "z": -6.846987894557707,
+        "time": 2.410299999999998
+      },
+      {
+        "event": "ground",
+        "platform": 3,
+        "target": 4,
+        "time": 2.9052999999999973,
+        "x": 0.1333229169323794,
+        "z": -6.846987894557707
+      },
+      {
+        "event": "ground",
+        "platform": 4,
+        "target": 5,
+        "time": 3.8719999999999954,
+        "x": -1.8126682335717201,
+        "z": -10.055979045061806
+      },
+      {
+        "event": "score",
+        "score": 3,
+        "z": -13.511609884720443,
+        "time": 4.523599999999993
+      },
+      {
+        "event": "ground",
+        "platform": 5,
+        "target": 6,
+        "time": 4.8385999999999925,
+        "x": 3.6100567606887632,
+        "z": -14.466204039322278
+      },
+      {
+        "event": "ground",
+        "platform": 6,
+        "target": 7,
+        "time": 5.7919999999999945,
+        "x": -0.15484789001208699,
+        "z": -16.75510869002313
+      },
+      {
+        "event": "ground",
+        "platform": 7,
+        "target": 8,
+        "time": 6.756999999999996,
+        "x": -2.190679023726285,
+        "z": -19.946539823737314
+      },
+      {
+        "event": "score",
+        "score": 4,
+        "z": -23.23416209218604,
+        "time": 7.273599999999996
+      },
+      {
+        "event": "ground",
+        "platform": 8,
+        "target": 9,
+        "time": 7.700399999999994,
+        "x": 1.5958777895276768,
+        "z": -23.328096636991262
+      },
+      {
+        "event": "ground",
+        "platform": 9,
+        "target": 10,
+        "time": 8.673799999999991,
+        "x": 1.5013068486193926,
+        "z": -27.529476860826087
+      },
+      {
+        "event": "score",
+        "score": 5,
+        "z": -30.09669874060197,
+        "time": 9.12719999999999
+      },
+      {
+        "event": "ground",
+        "platform": 10,
+        "target": 11,
+        "time": 9.627199999999988,
+        "x": -2.325915031156496,
+        "z": -30.09669874060197
+      },
+      {
+        "event": "ground",
+        "platform": 11,
+        "target": 11,
+        "time": 10.58549999999999,
+        "x": -0.03488906011208204,
+        "z": -33.19772471164638
+      }
+    ],
+    "errors": [],
+    "method": "Read-only state instrumentation; all movement uses actual keyboard input. No teleportation, score mutation, lives alteration, or invulnerability."
+  },
+  {
+    "stage": "storm",
+    "completed": true,
+    "final": {
+      "p": {
+        "x": -0.07406930804666512,
+        "y": 0,
+        "z": -33.24303443422603
+      },
+      "vy": 0,
+      "onGround": true,
+      "score": 5,
+      "lives": 3,
+      "won": true,
+      "running": true,
+      "simTime": 10.759699999999988,
+      "runTime": 10.714699999999988,
+      "shields": 2,
+      "checkpointZ": -30,
+      "platform": 11,
+      "platforms": [
+        {
+          "i": 0,
+          "x": 0,
+          "z": 3,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 1,
+          "x": 2.4,
+          "z": -0.2999999999999998,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 2,
+          "x": 0.3931228880658989,
+          "z": -3.5999999999999996,
+          "moving": true,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 3,
+          "x": -2.4,
+          "z": -6.899999999999999,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 4,
+          "x": 2.4,
+          "z": -10.2,
+          "moving": false,
+          "fragile": true,
+          "visible": false
+        },
+        {
+          "i": 5,
+          "x": -0.29683707757766903,
+          "z": -13.5,
+          "moving": true,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 6,
+          "x": -2.4,
+          "z": -16.799999999999997,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 7,
+          "x": 0,
+          "z": -20.099999999999998,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 8,
+          "x": 2.4,
+          "z": -23.4,
+          "moving": false,
+          "fragile": true,
+          "visible": false
+        },
+        {
+          "i": 9,
+          "x": -2.912036701328046,
+          "z": -26.7,
+          "moving": true,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 10,
+          "x": 0,
+          "z": -30,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 11,
+          "x": 0,
+          "z": -33.3,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        },
+        {
+          "i": 12,
+          "x": -5.8,
+          "z": -13.5,
+          "moving": false,
+          "fragile": false,
+          "visible": true
+        }
+      ],
+      "stars": [
+        {
+          "i": 1,
+          "visible": false
+        },
+        {
+          "i": 3,
+          "visible": false
+        },
+        {
+          "i": 5,
+          "visible": false
+        },
+        {
+          "i": 8,
+          "visible": false
+        },
+        {
+          "i": 10,
+          "visible": false
+        }
+      ],
+      "message": "🎉 Practice complete! Try Time Challenge next.",
+      "keys": []
+    },
+    "recoveries": 0,
+    "iterations": 395,
+    "log": [
+      {
+        "event": "ground",
+        "platform": 0,
+        "target": 1,
+        "time": 0.016700000000000045,
+        "x": 0,
+        "z": 3
+      },
+      {
+        "event": "score",
+        "score": 1,
+        "z": 0.3385935636304111,
+        "time": 0.4999000000000001
+      },
+      {
+        "event": "ground",
+        "platform": 1,
+        "target": 2,
+        "time": 0.9949000000000006,
+        "x": 2.323906436369589,
+        "z": -0.33640643636958883
+      },
+      {
+        "event": "ground",
+        "platform": 2,
+        "target": 3,
+        "time": 1.9764999999999997,
+        "x": -0.6544273259881508,
+        "z": -3.587443121426409
+      },
+      {
+        "event": "score",
+        "score": 2,
+        "z": -6.385034190531853,
+        "time": 2.4647999999999994
+      },
+      {
+        "event": "ground",
+        "platform": 3,
+        "target": 4,
+        "time": 3.0031999999999996,
+        "x": -0.9545941546018448,
+        "z": -7.869958431023602
+      },
+      {
+        "event": "ground",
+        "platform": 4,
+        "target": 5,
+        "time": 3.9698999999999978,
+        "x": 2.4443912319027525,
+        "z": -10.256443817528194
+      },
+      {
+        "event": "score",
+        "score": 3,
+        "z": -12.99665937132136,
+        "time": 4.486599999999998
+      },
+      {
+        "event": "ground",
+        "platform": 5,
+        "target": 6,
+        "time": 4.913299999999999,
+        "x": -0.7731213991913388,
+        "z": -13.473956448622278
+      },
+      {
+        "event": "ground",
+        "platform": 6,
+        "target": 7,
+        "time": 5.868199999999996,
+        "x": -1.1883698564431349,
+        "z": -17.839093052280415
+      },
+      {
+        "event": "ground",
+        "platform": 7,
+        "target": 8,
+        "time": 6.8732,
+        "x": 0.0313893411036692,
+        "z": -19.98360224982722
+      },
+      {
+        "event": "score",
+        "score": 4,
+        "z": -22.733573810540413,
+        "time": 7.373099999999999
+      },
+      {
+        "event": "ground",
+        "platform": 8,
+        "target": 9,
+        "time": 7.811399999999998,
+        "x": 2.4438609018168704,
+        "z": -23.40857381054041
+      },
+      {
+        "event": "ground",
+        "platform": 9,
+        "target": 10,
+        "time": 8.754699999999994,
+        "x": -1.6218548948968294,
+        "z": -26.599039607254106
+      },
+      {
+        "event": "score",
+        "score": 5,
+        "z": -29.420683517659963,
+        "time": 9.246199999999991
+      },
+      {
+        "event": "ground",
+        "platform": 10,
+        "target": 11,
+        "time": 9.73119999999999,
+        "x": 1.3493366424818434,
+        "z": -30.819878483697508
+      },
+      {
+        "event": "ground",
+        "platform": 11,
+        "target": 11,
+        "time": 10.714699999999988,
+        "x": -0.07406930804666512,
+        "z": -33.24303443422603
+      }
+    ],
+    "errors": [],
+    "method": "Read-only state instrumentation; all movement uses actual keyboard input. No teleportation, score mutation, lives alteration, or invulnerability."
+  }
+]
