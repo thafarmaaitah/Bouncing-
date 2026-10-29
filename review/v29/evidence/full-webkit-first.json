@@ -1,0 +1,1484 @@
+{
+  "startedAt": "2026-10-29T04:40:39.113Z",
+  "engine": "webkit",
+  "suite": "full",
+  "limitation": "Headless browser with emulated viewports/touch; not physical iPhone/iPad testing or child playtesting.",
+  "tests": [
+    {
+      "name": "lava: saved RC1 reproduces missing relative-asset startup",
+      "kind": "historical saved candidate bytes served unchanged locally; actual browser network and startup observation",
+      "status": "passed",
+      "milliseconds": 284,
+      "detail": {
+        "baselineCommit": "eb9e67ee92377725eeac9f6145ac352256f27c35",
+        "sourceSha256": "cc38408e4ddc2a1624b91d135d632ddaff0db337a651c658865ca0b058d352c9",
+        "errors": [],
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-v28.css",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-boot-v28.js",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/three.module.min.js",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "error": "Load request cancelled"
+          }
+        ],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html?baseline=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-v28.css",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-boot-v28.js",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 404
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: saved RC1 reproduces missing relative-asset startup",
+      "kind": "historical saved candidate bytes served unchanged locally; actual browser network and startup observation",
+      "status": "passed",
+      "milliseconds": 296,
+      "detail": {
+        "baselineCommit": "eb9e67ee92377725eeac9f6145ac352256f27c35",
+        "sourceSha256": "9a8a286cf743c420acaf9e7bc9388d69a47f5e5d76713ba47195f86d0a1907e0",
+        "errors": [],
+        "failedRequests": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-v28.css",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-boot-v28.js",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/three.module.min.js",
+            "error": "Load request cancelled"
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "error": "Load request cancelled"
+          }
+        ],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html?baseline=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-v28.css",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/sky-rush-boot-v28.js",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 404
+          },
+          {
+            "url": "http://127.0.0.1:33577/review/v29/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 404
+          }
+        ]
+      }
+    },
+    {
+      "name": "lava: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1008,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: uninstrumented WebGL startup",
+      "kind": "actual browser, no test instrumentation",
+      "status": "passed",
+      "milliseconds": 1002,
+      "detail": {
+        "canvas": {
+          "x": 0,
+          "y": 175.8125,
+          "width": 1280,
+          "height": 520
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "Engine download failure is visible and Reload recovers",
+      "kind": "actual browser request failure and real Reload button",
+      "status": "passed",
+      "milliseconds": 613,
+      "detail": {
+        "failureMessage": "The game could not start or continue. Tap Reload game to try again.",
+        "recovered": true
+      }
+    },
+    {
+      "name": "lava: ready gate, keyboard movement, jump and pause",
+      "kind": "real keyboard/button input; read-only position observation",
+      "status": "failed",
+      "milliseconds": 439,
+      "error": "AssertionError [ERR_ASSERTION]: Jump should become airborne\n    at file:///workspace/scratch/7d185e77f252/sky-rush/tools/test-sky-rush-v29-review.mjs:263:9\n    at async test (file:///workspace/scratch/7d185e77f252/sky-rush/tools/test-sky-rush-v29-review.mjs:126:20)\n    at async file:///workspace/scratch/7d185e77f252/sky-rush/tools/test-sky-rush-v29-review.mjs:247:7",
+      "stateAtFailure": {
+        "position": {
+          "x": 0,
+          "y": 0.15777777777777777,
+          "z": 2.3499999999999996
+        },
+        "rotationY": 0,
+        "onGround": false,
+        "vy": 9.466666666666667,
+        "score": 0,
+        "lives": 3,
+        "won": false,
+        "running": true,
+        "hasStarted": true,
+        "contextLost": false,
+        "runTime": 0.15,
+        "simTime": 0.15,
+        "shields": 0,
+        "secretCollected": false,
+        "checkpointZ": 3,
+        "checkpointX": 0,
+        "keys": [],
+        "dashUntil": 0,
+        "dashReadyAt": 0,
+        "dashRemaining": 0,
+        "dashActive": false,
+        "speedRemaining": 0,
+        "frames": 15,
+        "approvedModel": null,
+        "avatarVisible": true,
+        "platform": -1,
+        "platforms": [
+          {
+            "index": 0,
+            "x": 0,
+            "z": 3,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 1,
+            "x": -2.2,
+            "z": -0.2999999999999998,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 2,
+            "x": 2.2,
+            "z": -3.5999999999999996,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 3,
+            "x": 0,
+            "z": -6.899999999999999,
+            "visible": true,
+            "moving": false,
+            "fragile": true,
+            "collapseAt": 0
+          },
+          {
+            "index": 4,
+            "x": -2.893874559736587,
+            "z": -10.2,
+            "visible": true,
+            "moving": true,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 5,
+            "x": 2.2,
+            "z": -13.5,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 6,
+            "x": 0,
+            "z": -16.799999999999997,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 7,
+            "x": -2.2,
+            "z": -20.099999999999998,
+            "visible": true,
+            "moving": false,
+            "fragile": true,
+            "collapseAt": 0
+          },
+          {
+            "index": 8,
+            "x": 2.501180218299638,
+            "z": -23.4,
+            "visible": true,
+            "moving": true,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 9,
+            "x": 0,
+            "z": -26.7,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 10,
+            "x": -2.2,
+            "z": -30,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 11,
+            "x": 0,
+            "z": -33.3,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          },
+          {
+            "index": 12,
+            "x": 5.8,
+            "z": -13.5,
+            "visible": true,
+            "moving": false,
+            "fragile": false,
+            "collapseAt": 0
+          }
+        ],
+        "stars": [
+          {
+            "index": 0,
+            "platform": 1,
+            "visible": true
+          },
+          {
+            "index": 1,
+            "platform": 3,
+            "visible": true
+          },
+          {
+            "index": 2,
+            "platform": 5,
+            "visible": true
+          },
+          {
+            "index": 3,
+            "platform": 8,
+            "visible": true
+          },
+          {
+            "index": 4,
+            "platform": 10,
+            "visible": true
+          }
+        ],
+        "crates": [
+          {
+            "index": 0,
+            "platform": 2,
+            "kind": "shield",
+            "collected": false
+          },
+          {
+            "index": 1,
+            "platform": 6,
+            "kind": "speed",
+            "collected": false
+          },
+          {
+            "index": 2,
+            "platform": 9,
+            "kind": "shield",
+            "collected": false
+          }
+        ],
+        "checkpointLabel": "🏁 Checkpoint: Start",
+        "message": "Jump!",
+        "medal": "—",
+        "best": "—"
+      }
+    },
+    {
+      "name": "lava: Dash impulse and cooldown",
+      "kind": "real button input; read-only position and cooldown observation",
+      "status": "passed",
+      "milliseconds": 673,
+      "detail": {
+        "moved": 1.083333333333334,
+        "cooldown": 3.4166666666666665
+      }
+    },
+    {
+      "name": "lava: checkpoint, retry and moving-platform support",
+      "kind": "test-assisted positioning, actual simulation and Retry button",
+      "status": "passed",
+      "milliseconds": 1190,
+      "detail": {
+        "checkpoint": "🏁 Checkpoint 2",
+        "movingPlatform": 4
+      }
+    },
+    {
+      "name": "lava: crumbling platform and recovery",
+      "kind": "test-assisted positioning, actual timed collapse and Retry button",
+      "status": "passed",
+      "milliseconds": 1384,
+      "detail": {
+        "platform": 3,
+        "collapseAt": 0.06666666666666667
+      }
+    },
+    {
+      "name": "lava: rewards and shield-protected fall",
+      "kind": "test-assisted positioning/fall, actual reward and respawn handlers",
+      "status": "passed",
+      "milliseconds": 545,
+      "detail": {
+        "shieldLifeProtection": true,
+        "speedBoost": true,
+        "secretGem": true
+      }
+    },
+    {
+      "name": "lava: Practice finish and unlimited recovery",
+      "kind": "test-assisted route positioning/life setup, actual collisions and finish",
+      "status": "passed",
+      "milliseconds": 569,
+      "detail": {
+        "medal": "PRACTICE",
+        "competitiveRecordsUnchanged": true
+      }
+    },
+    {
+      "name": "lava: checkpoint retry cannot set a challenge record",
+      "kind": "real mode/Retry input; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 485,
+      "detail": {
+        "medal": "RETRY RUN",
+        "recordUnchanged": true
+      }
+    },
+    {
+      "name": "storm: ready gate, keyboard movement, jump and pause",
+      "kind": "real keyboard/button input; read-only position observation",
+      "status": "passed",
+      "milliseconds": 763,
+      "detail": {
+        "jumpHeight": 1.2199999999999998,
+        "pausedTime": 0.3333333333333333
+      }
+    },
+    {
+      "name": "storm: Dash impulse and cooldown",
+      "kind": "real button input; read-only position and cooldown observation",
+      "status": "passed",
+      "milliseconds": 410,
+      "detail": {
+        "moved": 1.083333333333334,
+        "cooldown": 3.4166666666666665
+      }
+    },
+    {
+      "name": "storm: checkpoint, retry and moving-platform support",
+      "kind": "test-assisted positioning, actual simulation and Retry button",
+      "status": "passed",
+      "milliseconds": 844,
+      "detail": {
+        "checkpoint": "🏁 Checkpoint 2",
+        "movingPlatform": 2
+      }
+    },
+    {
+      "name": "storm: crumbling platform and recovery",
+      "kind": "test-assisted positioning, actual timed collapse and Retry button",
+      "status": "passed",
+      "milliseconds": 1344,
+      "detail": {
+        "platform": 4,
+        "collapseAt": 0.05
+      }
+    },
+    {
+      "name": "storm: rewards and shield-protected fall",
+      "kind": "test-assisted positioning/fall, actual reward and respawn handlers",
+      "status": "passed",
+      "milliseconds": 523,
+      "detail": {
+        "shieldLifeProtection": true,
+        "speedBoost": true,
+        "secretGem": true
+      }
+    },
+    {
+      "name": "storm: Practice finish and unlimited recovery",
+      "kind": "test-assisted route positioning/life setup, actual collisions and finish",
+      "status": "passed",
+      "milliseconds": 524,
+      "detail": {
+        "medal": "PRACTICE",
+        "competitiveRecordsUnchanged": true
+      }
+    },
+    {
+      "name": "storm: checkpoint retry cannot set a challenge record",
+      "kind": "real mode/Retry input; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 498,
+      "detail": {
+        "medal": "RETRY RUN",
+        "recordUnchanged": true
+      }
+    },
+    {
+      "name": "Lava and Storm challenge records are isolated and persistent",
+      "kind": "actual mode selection and finish handling; test-assisted route positioning",
+      "status": "passed",
+      "milliseconds": 1675,
+      "detail": {
+        "skyRushLavaBestV29Review": "0.3",
+        "skyRushStormBestV29Review": "0.2833333333333333"
+      }
+    },
+    {
+      "name": "WebGL context loss pauses and restoration requires Resume",
+      "kind": "actual WEBGL_lose_context extension; not physical GPU/memory pressure",
+      "status": "passed",
+      "milliseconds": 778,
+      "detail": {
+        "lost": true,
+        "restored": true,
+        "resumedByButton": true
+      }
+    },
+    {
+      "name": "Approved V4.1 GLB loads locally without changing its bytes",
+      "kind": "real file-input loading; exact user-approved local asset",
+      "status": "passed",
+      "milliseconds": 731,
+      "detail": {
+        "sha256": "ddc97a68042b583a87c1744105d24972f6592930007781ee6800f68f05f2e0e9",
+        "bytes": 8205140,
+        "model": {
+          "meshes": 1,
+          "vertices": 170670,
+          "visible": true,
+          "scale": [
+            0.9459149551348028,
+            0.9459149551348028,
+            0.9459149551348028
+          ]
+        },
+        "requestsAfterSelection": []
+      }
+    },
+    {
+      "name": "lava: phone-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 979,
+      "detail": {
+        "viewport": {
+          "name": "phone-portrait",
+          "width": 390,
+          "height": 844
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 278,
+            "y": 689.984375,
+            "width": 104,
+            "height": 54,
+            "bottom": 743.984375,
+            "right": 382
+          },
+          {
+            "selector": "#dash",
+            "x": 278,
+            "y": 749.984375,
+            "width": 104,
+            "height": 44,
+            "bottom": 793.984375,
+            "right": 382
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 691.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 743.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 178,
+          "width": 390,
+          "height": 503.984375
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 5,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: phone-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 931,
+      "detail": {
+        "viewport": {
+          "name": "phone-portrait",
+          "width": 390,
+          "height": 844
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 278,
+            "y": 689.984375,
+            "width": 104,
+            "height": 54,
+            "bottom": 743.984375,
+            "right": 382
+          },
+          {
+            "selector": "#dash",
+            "x": 278,
+            "y": 749.984375,
+            "width": 104,
+            "height": 44,
+            "bottom": 793.984375,
+            "right": 382
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 691.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 743.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 748.484375,
+            "width": 52,
+            "height": 52,
+            "bottom": 800.484375,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 178,
+          "width": 390,
+          "height": 503.984375
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 4,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "lava: phone-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1006,
+      "detail": {
+        "viewport": {
+          "name": "phone-landscape",
+          "width": 844,
+          "height": 390
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 730,
+            "y": 260,
+            "width": 104,
+            "height": 48,
+            "bottom": 308,
+            "right": 834
+          },
+          {
+            "selector": "#dash",
+            "x": 730,
+            "y": 314,
+            "width": 104,
+            "height": 44,
+            "bottom": 358,
+            "right": 834
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 262.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 310.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 844,
+          "height": 299.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 5,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: phone-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1040,
+      "detail": {
+        "viewport": {
+          "name": "phone-landscape",
+          "width": 844,
+          "height": 390
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 730,
+            "y": 260,
+            "width": 104,
+            "height": 48,
+            "bottom": 308,
+            "right": 834
+          },
+          {
+            "selector": "#dash",
+            "x": 730,
+            "y": 314,
+            "width": 104,
+            "height": 44,
+            "bottom": 358,
+            "right": 834
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 262.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 310.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 315.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 363.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 844,
+          "height": 299.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 5,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "lava: ipad-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1400,
+      "detail": {
+        "viewport": {
+          "name": "ipad-portrait",
+          "width": 820,
+          "height": 1180
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 708,
+            "y": 1039,
+            "width": 104,
+            "height": 54,
+            "bottom": 1093,
+            "right": 812
+          },
+          {
+            "selector": "#dash",
+            "x": 708,
+            "y": 1099,
+            "width": 104,
+            "height": 44,
+            "bottom": 1143,
+            "right": 812
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 1040.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1092.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 129,
+          "width": 820,
+          "height": 902
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 3,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: ipad-portrait layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1368,
+      "detail": {
+        "viewport": {
+          "name": "ipad-portrait",
+          "width": 820,
+          "height": 1180
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 708,
+            "y": 1039,
+            "width": 104,
+            "height": 54,
+            "bottom": 1093,
+            "right": 812
+          },
+          {
+            "selector": "#dash",
+            "x": 708,
+            "y": 1099,
+            "width": 104,
+            "height": 44,
+            "bottom": 1143,
+            "right": 812
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 65,
+            "y": 1040.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1092.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 8,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 60
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 65,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 117
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 122,
+            "y": 1097.5,
+            "width": 52,
+            "height": 52,
+            "bottom": 1149.5,
+            "right": 174
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 129,
+          "width": 820,
+          "height": 902
+        },
+        "touchEvidence": {
+          "peakY": 0.45666666666666655,
+          "frames": 4,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "lava: ipad-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1400,
+      "detail": {
+        "viewport": {
+          "name": "ipad-landscape",
+          "width": 1180,
+          "height": 820
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 1066,
+            "y": 690,
+            "width": 104,
+            "height": 48,
+            "bottom": 738,
+            "right": 1170
+          },
+          {
+            "selector": "#dash",
+            "x": 1066,
+            "y": 744,
+            "width": 104,
+            "height": 44,
+            "bottom": 788,
+            "right": 1170
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 692.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 740.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 1180,
+          "height": 729.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.45666666666666655,
+          "frames": 4,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/lava-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "storm: ipad-landscape layout and touch",
+      "kind": "emulated viewport plus real touchscreen taps",
+      "status": "passed",
+      "milliseconds": 1337,
+      "detail": {
+        "viewport": {
+          "name": "ipad-landscape",
+          "width": 1180,
+          "height": 820
+        },
+        "controls": [
+          {
+            "selector": "#jump",
+            "x": 1066,
+            "y": 690,
+            "width": 104,
+            "height": 48,
+            "bottom": 738,
+            "right": 1170
+          },
+          {
+            "selector": "#dash",
+            "x": 1066,
+            "y": 744,
+            "width": 104,
+            "height": 44,
+            "bottom": 788,
+            "right": 1170
+          },
+          {
+            "selector": "[data-dir=\"forward\"]",
+            "x": 63,
+            "y": 692.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 740.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"left\"]",
+            "x": 10,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 58
+          },
+          {
+            "selector": "[data-dir=\"back\"]",
+            "x": 63,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 111
+          },
+          {
+            "selector": "[data-dir=\"right\"]",
+            "x": 116,
+            "y": 745.5,
+            "width": 48,
+            "height": 48,
+            "bottom": 793.5,
+            "right": 164
+          }
+        ],
+        "canvas": {
+          "x": 0,
+          "y": 70.796875,
+          "width": 1180,
+          "height": 729.203125
+        },
+        "touchEvidence": {
+          "peakY": 0.30999999999999994,
+          "frames": 5,
+          "multiTouch": false,
+          "input": "touchscreen.tap"
+        },
+        "errors": [],
+        "failedRequests": [],
+        "responses": [
+          {
+            "url": "http://127.0.0.1:33577/review/v29/storm-v29-candidate.html?skytest=1",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-v28.css",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/sky-rush-boot-v28.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/GLTFLoader.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/three.module.min.js",
+            "status": 200
+          },
+          {
+            "url": "http://127.0.0.1:33577/assets/vendor/three-0.160.1/BufferGeometryUtils.js",
+            "status": 200
+          }
+        ]
+      }
+    }
+  ],
+  "screenshots": [
+    "webkit-lava-desktop.png",
+    "webkit-storm-desktop.png",
+    "webkit-lava-phone-portrait.png",
+    "webkit-storm-phone-portrait.png",
+    "webkit-lava-phone-landscape.png",
+    "webkit-storm-phone-landscape.png",
+    "webkit-lava-ipad-portrait.png",
+    "webkit-storm-ipad-portrait.png",
+    "webkit-lava-ipad-landscape.png",
+    "webkit-storm-ipad-landscape.png"
+  ],
+  "baselineCommit": "eb9e67ee92377725eeac9f6145ac352256f27c35",
+  "sourceSha256": {
+    "review/v29/lava-v29-candidate.html": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110",
+    "review/v29/storm-v29-candidate.html": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de"
+  },
+  "browserVersion": "26.5",
+  "completedAt": "2026-10-29T04:41:06.018Z",
+  "summary": {
+    "passed": 29,
+    "failed": 1,
+    "not-run": 0
+  },
+  "evidenceNote": "First full WebKit attempt retained, including the early sampled jump-height failure. See the separate targeted retest; do not label this file as a clean full pass. Private character screenshots excluded."
+}

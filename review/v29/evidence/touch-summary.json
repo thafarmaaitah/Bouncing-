@@ -1,0 +1,1693 @@
+{
+  "note": "Baseline PASS for expected-defect assertions means the old defect was reproduced, not that baseline behavior was correct. Full native event traces are in touch-chromium.json and touch-webkit.json.",
+  "cases": [
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "real-time-secondary-pause",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.05010000000000002,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.6743499999999996
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "controlled-secondary-pause-resume",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forward-plus-secondary-jump",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forward-plus-secondary-dash",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "keyboard-touch-independent-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "same-direction-two-finger-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "native-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "active-lostpointercapture-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "real-time-secondary-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.09999999999999999,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "controlled-secondary-pause-resume",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.11666666666666665,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forward-plus-secondary-jump",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forward-plus-secondary-dash",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "keyboard-touch-independent-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "same-direction-two-finger-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "native-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "active-lostpointercapture-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.11666666666666665,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "real-time-secondary-pause",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.13330000000000003,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.19990000000000008,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.5670999999999995
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "controlled-secondary-pause-resume",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forward-plus-secondary-jump",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forward-plus-secondary-dash",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "keyboard-touch-independent-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "same-direction-two-finger-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "native-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "active-lostpointercapture-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "PASS",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "baselineDefectReproduced": true,
+      "observedGameBehavior": "FAIL_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": true,
+          "runTime": 0.032,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true
+    },
+    {
+      "engine": "chromium",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "real-time-secondary-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.016666666666666666,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.09999999999999999,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 2.8916666666666666
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "controlled-secondary-pause-resume",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.11666666666666665,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forward-plus-secondary-jump",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forward-plus-secondary-dash",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "keyboard-touch-independent-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "same-direction-two-finger-release",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "native-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "active-lostpointercapture-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "baselineDefectReproduced": null,
+      "observedGameBehavior": "PASS_SECONDARY_PAUSE",
+      "eventSummary": {
+        "counts": {
+          "pointerdown:forward:true": 1,
+          "touchstart:forward:-": 1,
+          "pointerdown:pause:false": 1,
+          "touchstart:pause:-": 1,
+          "gotpointercapture:pause:false": 1,
+          "pointerup:pause:false": 1,
+          "lostpointercapture:pause:false": 1,
+          "touchend:pause:-": 1
+        },
+        "primaryForwardDowns": 1,
+        "secondaryPauseDowns": 1,
+        "pauseClicks": 0
+      },
+      "states": {
+        "held": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [
+            "forward"
+          ],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterSecondary": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "heldPaused": {
+          "running": false,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "resumed": {
+          "running": true,
+          "runTime": 0.03333333333333333,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        },
+        "afterResume": {
+          "running": true,
+          "runTime": 0.11666666666666665,
+          "keys": [],
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true
+        }
+      }
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true
+    },
+    {
+      "engine": "chromium",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "real-time-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "controlled-secondary-pause-resume",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forward-plus-secondary-jump",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forward-plus-secondary-dash",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "keyboard-touch-independent-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "same-direction-two-finger-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "native-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "active-lostpointercapture-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "lava",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "real-time-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "controlled-secondary-pause-resume",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forward-plus-secondary-jump",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forward-plus-secondary-dash",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "keyboard-touch-independent-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "same-direction-two-finger-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "native-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "active-lostpointercapture-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "lava",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "real-time-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "controlled-secondary-pause-resume",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forward-plus-secondary-jump",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forward-plus-secondary-dash",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "keyboard-touch-independent-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "same-direction-two-finger-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "native-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "active-lostpointercapture-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Reproduce current baseline secondary-Pause failure",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "baseline",
+      "stage": "storm",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "real-time-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "controlled-secondary-pause-resume",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forward-plus-secondary-jump",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forward-plus-secondary-dash",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "keyboard-touch-independent-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "same-direction-two-finger-release",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "native-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "active-lostpointercapture-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": false,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forced-legacy-touchstart-secondary-pause",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "forced-legacy-touchcancel-clears",
+      "status": "NOT_EXECUTED",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "CONTROLLED_AFTER_REAL_BOOT",
+      "legacyFallbackForced": true,
+      "reason": "Native multi-touch driver is CDP-only; WebKit has no equivalent supported by this harness."
+    },
+    {
+      "engine": "webkit",
+      "target": "candidate",
+      "stage": "storm",
+      "name": "ordinary-mouse-keyboard-primary-tap-pause",
+      "status": "PASS",
+      "expectation": "Input behavior works and releases correctly",
+      "clock": "REAL_TIME",
+      "legacyFallbackForced": false
+    }
+  ]
+}

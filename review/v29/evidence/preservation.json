@@ -1,0 +1,26 @@
+{
+  "baseline": "e12e280ead14557881886ad90eaaef9cf2e2de14",
+  "baselineFileCount": 69,
+  "changedBaselineFiles": [],
+  "candidateParent": "eb9e67ee92377725eeac9f6145ac352256f27c35",
+  "sourceChecks": [
+    {
+      "baseline": "sky-rush-lava-obby-v28-stable.html",
+      "candidate": "review/v29/lava-v29-candidate.html",
+      "candidateSha256": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110",
+      "modelLoaderIdentical": true,
+      "modelLoaderSha256": "bc0bd879ed3138e47bbd67b7c8fa7089f9705f6df4d8e1d1a16714d79c8fdaa6",
+      "sceneAndRouteInitializationIdentical": true,
+      "directionAndJumpBindingsIdentical": true
+    },
+    {
+      "baseline": "sky-rush-storm-circuit-v5-stable.html",
+      "candidate": "review/v29/storm-v29-candidate.html",
+      "candidateSha256": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de",
+      "modelLoaderIdentical": true,
+      "modelLoaderSha256": "bc0bd879ed3138e47bbd67b7c8fa7089f9705f6df4d8e1d1a16714d79c8fdaa6",
+      "sceneAndRouteInitializationIdentical": true,
+      "directionAndJumpBindingsIdentical": true
+    }
+  ]
+}

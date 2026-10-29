@@ -1,0 +1,5566 @@
+{
+  "startedAt": "2026-10-29T04:46:16.018Z",
+  "engine": "webkit",
+  "suite": "all",
+  "sources": [
+    {
+      "stage": "lava",
+      "kind": "baseline",
+      "file": "sky-rush-lava-obby-v28-stable.html",
+      "sha256": "95caf6afe401a9a87f45a8d9845ba11ecc1bcfbc7e61c49f9d0b32ddc4d083ef"
+    },
+    {
+      "stage": "lava",
+      "kind": "candidate",
+      "file": "review/v29/lava-v29-candidate.html",
+      "sha256": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110"
+    },
+    {
+      "stage": "storm",
+      "kind": "baseline",
+      "file": "sky-rush-storm-circuit-v5-stable.html",
+      "sha256": "6dea443d55d395f6b013aa7f76f3f449b4b78f45c862a6bc03df026659031d3f"
+    },
+    {
+      "stage": "storm",
+      "kind": "candidate",
+      "file": "review/v29/storm-v29-candidate.html",
+      "sha256": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de"
+    }
+  ],
+  "method": {
+    "controlled": "Exact delivered RAF timestamps, 15/30/60/120 Hz; real module, real WebGL renderer, no copied physics model. This is not measured device FPS.",
+    "wall": "Native browser RAF timestamps paced to at most approximately 15 Hz in real wall time; no accelerated/fabricated clock.",
+    "observation": "HTTP response replaces only the existing test-hook comment. Pass-through wrappers count real simulation updates/render calls and observe state.",
+    "assistance": "Only isolated Dash/platform tests place the player on an existing platform. No score/lives/invulnerability changes, no replacement collision code, and no skipped rendering.",
+    "limits": "Headless desktop browser with software rendering; no physical phone/iPad or child playtest, no character visual certification, no complete route completion."
+  },
+  "tests": [
+    {
+      "name": "lava baseline: delivered cadence 15/30/60/120",
+      "method": "controlled delivered timestamps; native input; explicitly assisted Dash/platform isolation",
+      "status": "passed",
+      "milliseconds": 7957,
+      "detail": {
+        "outcome": "existing defects freshly reproduced",
+        "matrix": [
+          {
+            "hz": 15,
+            "inputSeconds": 1,
+            "gameSeconds": 0.675,
+            "simulationSeconds": 0.675,
+            "clockUpdates": 15,
+            "clockRenders": 15,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.8151077763097327
+              },
+              {
+                "index": 8,
+                "x": 2.0710846544195274
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.08
+              },
+              {
+                "index": 5,
+                "angle": 1.08
+              },
+              {
+                "index": 9,
+                "angle": -1.08
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 0.8775,
+              "simulationSeconds": 0.135,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.182499999999999,
+              "visibleFrameSamplePeakY": 2.182499999999999,
+              "landedAtSimulation": 0.9450000000000003,
+              "observedLandingDeliveredSeconds": 1.4,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.925,
+              "observedEndDeliveredSeconds": 0.4,
+              "observedCooldownDeliveredSeconds": 5.2,
+              "readyAtSimulation": 3.5099999999999967,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.8151077763097327,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.045,
+              "hiddenAtSimulation": 1.1700000000000002,
+              "observedHiddenDeliveredSeconds": 1.7333333333333334,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 30,
+            "inputSeconds": 1,
+            "gameSeconds": 0.9999999999999994,
+            "simulationSeconds": 0.9999999999999994,
+            "clockUpdates": 30,
+            "clockRenders": 30,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.6418866465106254
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774414
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.5999999999999992
+              },
+              {
+                "index": 5,
+                "angle": 1.5999999999999992
+              },
+              {
+                "index": 9,
+                "angle": -1.5999999999999992
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.2999999999999998,
+              "simulationSeconds": 0.2,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.240000000000001,
+              "visibleFrameSamplePeakY": 2.240000000000001,
+              "landedAtSimulation": 0.966666666666666,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.6,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5,
+              "readyAtSimulation": 3.500000000000006,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.6418866465106254,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.033333333333333486,
+              "hiddenAtSimulation": 1.1666666666666663,
+              "observedHiddenDeliveredSeconds": 1.1666666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 60,
+            "inputSeconds": 1,
+            "gameSeconds": 0.999999999999999,
+            "simulationSeconds": 0.999999999999999,
+            "clockUpdates": 60,
+            "clockRenders": 60,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.6418866465106254
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774414
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.5999999999999985
+              },
+              {
+                "index": 5,
+                "angle": 1.5999999999999985
+              },
+              {
+                "index": 9,
+                "angle": -1.5999999999999985
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.2999999999999998,
+              "simulationSeconds": 0.2,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.9666666666666656,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666664,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5,
+              "readyAtSimulation": 3.500000000000012,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.6418866465106254,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.01666666666666697,
+              "hiddenAtSimulation": 1.1333333333333326,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 120,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000022,
+            "simulationSeconds": 1.0000000000000022,
+            "clockUpdates": 120,
+            "clockRenders": 120,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.641886646510623
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774392
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.6000000000000036
+              },
+              {
+                "index": 5,
+                "angle": 1.6000000000000036
+              },
+              {
+                "index": 9,
+                "angle": -1.6000000000000036
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3602777777777777,
+              "visibleFrameSamplePeakY": 2.3602777777777777,
+              "landedAtSimulation": 0.9750000000000022,
+              "observedLandingDeliveredSeconds": 0.975,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.925,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5083333333333333,
+              "readyAtSimulation": 3.5083333333333093,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.641886646510623,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.00833333333333303,
+              "hiddenAtSimulation": 1.108333333333336,
+              "observedHiddenDeliveredSeconds": 1.1083333333333334,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          }
+        ],
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava baseline: real-wall approximately 15 Hz probe",
+      "method": "native RAF timestamps gated in real time, no accelerated clock, no player-state assistance",
+      "status": "passed",
+      "milliseconds": 2779,
+      "detail": {
+        "begin": {
+          "fixedUpdates": false,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.011,
+          "simTime": 0.011,
+          "lastFrame": 364,
+          "accumulator": null,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.011,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.8689030933172273,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.6019120831405145,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.0176
+            },
+            {
+              "index": 5,
+              "angle": 0.0176
+            },
+            {
+              "index": 9,
+              "angle": -0.0176
+            }
+          ],
+          "trace": {
+            "updates": 1,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "end": {
+          "fixedUpdates": false,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 1.226,
+          "simTime": 1.226,
+          "lastFrame": 2529,
+          "accumulator": null,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -1.226,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.480300515456081,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 1.675760054744842,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -1.9616
+            },
+            {
+              "index": 5,
+              "angle": 1.9616
+            },
+            {
+              "index": 9,
+              "angle": -1.9616
+            }
+          ],
+          "trace": {
+            "updates": 28,
+            "renders": 28,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "wallSeconds": 2.214,
+        "deliveredSeconds": 2.165,
+        "stamps": [
+          364,
+          435,
+          515,
+          596,
+          676,
+          757,
+          837,
+          918,
+          998,
+          1079,
+          1159,
+          1240,
+          1321,
+          1401,
+          1482,
+          1562,
+          1643,
+          1723,
+          1804,
+          1884,
+          1965,
+          2046,
+          2126,
+          2207,
+          2287,
+          2368,
+          2449,
+          2529
+        ],
+        "intervals": [
+          0.071,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08
+        ],
+        "deliveredFrames": 27,
+        "actualDeliveredHz": 12.471131639722863,
+        "clockAdvance": 1.215,
+        "errorSeconds": -0.95,
+        "ratio": 0.561200923787529,
+        "maxGapSeconds": 0.081,
+        "screenshot": "/workspace/scratch/7d185e77f252/review-timing-webkit-rc2/webkit-lava-baseline-wall.png",
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava candidate: delivered cadence 15/30/60/120",
+      "method": "controlled delivered timestamps; native input; explicitly assisted Dash/platform isolation",
+      "status": "passed",
+      "milliseconds": 7741,
+      "detail": {
+        "outcome": "cadence independence verified",
+        "matrix": [
+          {
+            "hz": 15,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 15,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.641886646510624
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774403
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 5,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 9,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.317777777777778,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 1,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.26666666666666666,
+              "observedCooldownDeliveredSeconds": 3.533333333333333,
+              "readyAtSimulation": 3.5333333333333257,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.641886646510624,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 30,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 30,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.641886646510624
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774403
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 5,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 9,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.317777777777778,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.533333333333333,
+              "readyAtSimulation": 3.5333333333333257,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.641886646510624,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 60,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 60,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.641886646510624
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774403
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 5,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 9,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5166666666666666,
+              "readyAtSimulation": 3.516666666666659,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.641886646510624,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1166666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 120,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 120,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 4,
+                "x": -2.641886646510624
+              },
+              {
+                "index": 8,
+                "x": 1.8191852223774403
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 2,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 5,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 9,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5166666666666666,
+              "readyAtSimulation": 3.516666666666659,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 4,
+              "offset": 0,
+              "playerX": -2.641886646510624,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 3,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1166666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          }
+        ],
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava candidate: 300 ms catch-up",
+      "method": "single controlled 300 ms RAF interval; read-only simulation/render counters",
+      "status": "passed",
+      "milliseconds": 518,
+      "detail": {
+        "before": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0,
+          "simTime": 0,
+          "lastFrame": 349,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": 0,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.2,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.2,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": 0
+            },
+            {
+              "index": 5,
+              "angle": 0
+            },
+            {
+              "index": 9,
+              "angle": 0
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 0,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "after": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.3,
+          "simTime": 0.3,
+          "lastFrame": 649,
+          "accumulator": 4.85722573273506e-17,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.3,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.89920676664329,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.383186481309064,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.48
+            },
+            {
+              "index": 5,
+              "angle": 0.48
+            },
+            {
+              "index": 9,
+              "angle": -0.48
+            }
+          ],
+          "trace": {
+            "updates": 18,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava candidate: 1 second interruption pauses and resumes",
+      "method": "controlled stall after native jump; native Resume button; no player-state assistance",
+      "status": "passed",
+      "milliseconds": 882,
+      "detail": {
+        "airborne": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 546,
+          "accumulator": 3.8163916471489756e-17,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Jump!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.8981667431886655,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.462747339316323,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.32
+            },
+            {
+              "index": 5,
+              "angle": 0.32
+            },
+            {
+              "index": 9,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "paused": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": false,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": null,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Paused after an interruption. Tap Resume when you are ready.",
+          "overlayVisible": true,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.8981667431886655,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.462747339316323,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.32
+            },
+            {
+              "index": 5,
+              "angle": 0.32
+            },
+            {
+              "index": 9,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "stillPaused": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": false,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 2046,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Paused after an interruption. Tap Resume when you are ready.",
+          "overlayVisible": true,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.8981667431886655,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.462747339316323,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.32
+            },
+            {
+              "index": 5,
+              "angle": 0.32
+            },
+            {
+              "index": 9,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "resumed": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 446,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.8981667431886655,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.462747339316323,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -0.32
+            },
+            {
+              "index": 5,
+              "angle": 0.32
+            },
+            {
+              "index": 9,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 0,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "landed": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 1.2000000000000006,
+          "simTime": 1.2000000000000006,
+          "lastFrame": 1446,
+          "accumulator": 1.491862189340054e-16,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -1.2000000000000006,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.500173447933377,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 1.6904854907551838,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -1.920000000000001
+            },
+            {
+              "index": 5,
+              "angle": 1.920000000000001
+            },
+            {
+              "index": 9,
+              "angle": -1.920000000000001
+            }
+          ],
+          "trace": {
+            "updates": 60,
+            "renders": 60,
+            "peakY": 2.3200000000000003,
+            "landedAtSimulation": 0.966666666666668,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 272,
+            "triangles": 16283,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "lava candidate: real-wall approximately 15 Hz probe",
+      "method": "native RAF timestamps gated in real time, no accelerated clock, no player-state assistance",
+      "status": "passed",
+      "milliseconds": 2835,
+      "detail": {
+        "begin": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0,
+          "simTime": 0,
+          "lastFrame": 397,
+          "accumulator": 0.012,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": 0,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -2.2,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.2,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": 0
+            },
+            {
+              "index": 5,
+              "angle": 0
+            },
+            {
+              "index": 9,
+              "angle": 0
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "end": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 2.1499999999999972,
+          "simTime": 2.1499999999999972,
+          "lastFrame": 2546,
+          "accumulator": 0.011000000000000225,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -2.1499999999999972,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": -2.2,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 2.2,
+              "z": -3.5999999999999996,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": 0,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": -1.7507552838875484,
+              "z": -10.2,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 2.2,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": 0,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": -2.2,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 1.5510902288601032,
+              "z": -23.4,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": 0,
+              "z": -26.7,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": -2.2,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": 5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 2,
+              "angle": -3.439999999999996
+            },
+            {
+              "index": 5,
+              "angle": 3.439999999999996
+            },
+            {
+              "index": 9,
+              "angle": -3.439999999999996
+            }
+          ],
+          "trace": {
+            "updates": 129,
+            "renders": 28,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "wallSeconds": 2.214,
+        "deliveredSeconds": 2.149,
+        "stamps": [
+          397,
+          466,
+          549,
+          628,
+          708,
+          789,
+          869,
+          950,
+          1030,
+          1097,
+          1177,
+          1257,
+          1338,
+          1418,
+          1499,
+          1580,
+          1660,
+          1741,
+          1821,
+          1902,
+          1982,
+          2063,
+          2143,
+          2224,
+          2304,
+          2385,
+          2465,
+          2546
+        ],
+        "intervals": [
+          0.069,
+          0.083,
+          0.079,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.067,
+          0.08,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081
+        ],
+        "deliveredFrames": 27,
+        "actualDeliveredHz": 12.563983248022335,
+        "clockAdvance": 2.1499999999999972,
+        "errorSeconds": 0.0009999999999972253,
+        "ratio": 1.0004653327128885,
+        "maxGapSeconds": 0.083,
+        "screenshot": "/workspace/scratch/7d185e77f252/review-timing-webkit-rc2/webkit-lava-candidate-wall.png",
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm baseline: delivered cadence 15/30/60/120",
+      "method": "controlled delivered timestamps; native input; explicitly assisted Dash/platform isolation",
+      "status": "passed",
+      "milliseconds": 7870,
+      "detail": {
+        "outcome": "existing defects freshly reproduced",
+        "matrix": [
+          {
+            "hz": 15,
+            "inputSeconds": 1,
+            "gameSeconds": 0.675,
+            "simulationSeconds": 0.675,
+            "clockUpdates": 15,
+            "clockRenders": 15,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": 0.09184923450512865
+              },
+              {
+                "index": 5,
+                "x": 0.018768035662525266
+              },
+              {
+                "index": 9,
+                "x": -3.0716500204310497
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.08
+              },
+              {
+                "index": 6,
+                "angle": 1.08
+              },
+              {
+                "index": 10,
+                "angle": -1.08
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 0.8775,
+              "simulationSeconds": 0.135,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.182499999999999,
+              "visibleFrameSamplePeakY": 2.182499999999999,
+              "landedAtSimulation": 0.9450000000000003,
+              "observedLandingDeliveredSeconds": 1.4,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.925,
+              "observedEndDeliveredSeconds": 0.4,
+              "observedCooldownDeliveredSeconds": 5.2,
+              "readyAtSimulation": 3.5099999999999967,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": 0.09184923450512865,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.045,
+              "hiddenAtSimulation": 1.1700000000000002,
+              "observedHiddenDeliveredSeconds": 1.7333333333333334,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 30,
+            "inputSeconds": 1,
+            "gameSeconds": 0.9999999999999994,
+            "simulationSeconds": 0.9999999999999994,
+            "clockUpdates": 30,
+            "clockRenders": 30,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878153
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316182
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.5999999999999992
+              },
+              {
+                "index": 6,
+                "angle": 1.5999999999999992
+              },
+              {
+                "index": 10,
+                "angle": -1.5999999999999992
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.2999999999999998,
+              "simulationSeconds": 0.2,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.240000000000001,
+              "visibleFrameSamplePeakY": 2.240000000000001,
+              "landedAtSimulation": 0.966666666666666,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.6,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5,
+              "readyAtSimulation": 3.500000000000006,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878153,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.033333333333333486,
+              "hiddenAtSimulation": 1.1666666666666663,
+              "observedHiddenDeliveredSeconds": 1.1666666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 60,
+            "inputSeconds": 1,
+            "gameSeconds": 0.999999999999999,
+            "simulationSeconds": 0.999999999999999,
+            "clockUpdates": 60,
+            "clockRenders": 60,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878125
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316182
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.5999999999999985
+              },
+              {
+                "index": 6,
+                "angle": 1.5999999999999985
+              },
+              {
+                "index": 10,
+                "angle": -1.5999999999999985
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.2999999999999998,
+              "simulationSeconds": 0.2,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.9666666666666656,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666664,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5,
+              "readyAtSimulation": 3.500000000000012,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878125,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.016666666666666514,
+              "hiddenAtSimulation": 1.1333333333333326,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 120,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000022,
+            "simulationSeconds": 1.0000000000000022,
+            "clockUpdates": 120,
+            "clockRenders": 120,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878394
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316205
+              },
+              {
+                "index": 9,
+                "x": -3.096186811742792
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.6000000000000036
+              },
+              {
+                "index": 6,
+                "angle": 1.6000000000000036
+              },
+              {
+                "index": 10,
+                "angle": -1.6000000000000036
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3602777777777777,
+              "visibleFrameSamplePeakY": 2.3602777777777777,
+              "landedAtSimulation": 0.9750000000000022,
+              "observedLandingDeliveredSeconds": 0.975,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.925,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5083333333333333,
+              "readyAtSimulation": 3.5083333333333093,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878394,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.00833333333333303,
+              "hiddenAtSimulation": 1.1083333333333363,
+              "observedHiddenDeliveredSeconds": 1.1083333333333334,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          }
+        ],
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm baseline: real-wall approximately 15 Hz probe",
+      "method": "native RAF timestamps gated in real time, no accelerated clock, no player-state assistance",
+      "status": "passed",
+      "milliseconds": 2858,
+      "detail": {
+        "begin": {
+          "fixedUpdates": false,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.016,
+          "simTime": 0.016,
+          "lastFrame": 406,
+          "accumulator": null,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.016,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.5579342013702847,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.48426326247012225,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.7321660891970643,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.0256
+            },
+            {
+              "index": 6,
+              "angle": 0.0256
+            },
+            {
+              "index": 10,
+              "angle": -0.0256
+            }
+          ],
+          "trace": {
+            "updates": 1,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "end": {
+          "fixedUpdates": false,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 1.2309999999999999,
+          "simTime": 1.2309999999999999,
+          "lastFrame": 2574,
+          "accumulator": null,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -1.2309999999999999,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": -0.35725439849955454,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 0.447739851981914,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -3.0496422790338085,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -1.9695999999999998
+            },
+            {
+              "index": 6,
+              "angle": 1.9695999999999998
+            },
+            {
+              "index": 10,
+              "angle": -1.9695999999999998
+            }
+          ],
+          "trace": {
+            "updates": 28,
+            "renders": 28,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "wallSeconds": 2.201,
+        "deliveredSeconds": 2.168,
+        "stamps": [
+          406,
+          479,
+          559,
+          640,
+          720,
+          801,
+          882,
+          962,
+          1043,
+          1123,
+          1204,
+          1284,
+          1365,
+          1445,
+          1526,
+          1607,
+          1687,
+          1768,
+          1848,
+          1929,
+          2009,
+          2090,
+          2170,
+          2251,
+          2332,
+          2413,
+          2494,
+          2574
+        ],
+        "intervals": [
+          0.073,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.081,
+          0.081,
+          0.08
+        ],
+        "deliveredFrames": 27,
+        "actualDeliveredHz": 12.453874538745387,
+        "clockAdvance": 1.2149999999999999,
+        "errorSeconds": -0.9530000000000003,
+        "ratio": 0.5604243542435423,
+        "maxGapSeconds": 0.081,
+        "screenshot": "/workspace/scratch/7d185e77f252/review-timing-webkit-rc2/webkit-storm-baseline-wall.png",
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm candidate: delivered cadence 15/30/60/120",
+      "method": "controlled delivered timestamps; native input; explicitly assisted Dash/platform isolation",
+      "status": "passed",
+      "milliseconds": 7942,
+      "detail": {
+        "outcome": "cadence independence verified",
+        "matrix": [
+          {
+            "hz": 15,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 15,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878306
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316194
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 6,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 10,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.317777777777778,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 1,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.26666666666666666,
+              "observedCooldownDeliveredSeconds": 3.533333333333333,
+              "readyAtSimulation": 3.5333333333333257,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878306,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 30,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 30,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878306
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316194
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 6,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 10,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.317777777777778,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.533333333333333,
+              "readyAtSimulation": 3.5333333333333257,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878306,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1333333333333333,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 60,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 60,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878306
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316194
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 6,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 10,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5166666666666666,
+              "readyAtSimulation": 3.516666666666659,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878306,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1166666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          },
+          {
+            "hz": 120,
+            "inputSeconds": 1,
+            "gameSeconds": 1.0000000000000013,
+            "simulationSeconds": 1.0000000000000013,
+            "clockUpdates": 60,
+            "clockRenders": 120,
+            "movingPlatformAtOneSecond": [
+              {
+                "index": 2,
+                "x": -0.17887877141878306
+              },
+              {
+                "index": 5,
+                "x": 0.2833949444316194
+              },
+              {
+                "index": 9,
+                "x": -3.0961868117427924
+              }
+            ],
+            "hazardAnglesAtOneSecond": [
+              {
+                "index": 3,
+                "angle": -1.6000000000000023
+              },
+              {
+                "index": 6,
+                "angle": 1.6000000000000023
+              },
+              {
+                "index": 10,
+                "angle": -1.6000000000000023
+              }
+            ],
+            "walking": {
+              "deliveredSeconds": 0.2,
+              "distance": 1.3000000000000005,
+              "simulationSeconds": 0.19999999999999998,
+              "input": "native ArrowRight; no position assistance"
+            },
+            "jump": {
+              "peakY": 2.3200000000000003,
+              "visibleFrameSamplePeakY": 2.3200000000000003,
+              "landedAtSimulation": 0.966666666666668,
+              "observedLandingDeliveredSeconds": 0.9666666666666667,
+              "input": "native Space; no position assistance; peak observed after every actual physics update; visible samples may miss that peak"
+            },
+            "dash": {
+              "distance": 2.816666666666667,
+              "observedEndDeliveredSeconds": 0.23333333333333334,
+              "observedCooldownDeliveredSeconds": 3.5166666666666666,
+              "readyAtSimulation": 3.516666666666659,
+              "cooldown": 3.5,
+              "nativeRetriggerAfterCooldown": true,
+              "assistance": "Placed at x=-1.6 on existing start platform before native ArrowRight+Shift; no state changes during Dash"
+            },
+            "ride": {
+              "platform": 2,
+              "offset": 0,
+              "playerX": -0.17887877141878306,
+              "assistance": "Placed on existing moving platform before stepping; unaltered support and movement code"
+            },
+            "crumble": {
+              "platform": 4,
+              "armedAtSimulation": 0.016666666666666666,
+              "hiddenAtSimulation": 1.1166666666666676,
+              "observedHiddenDeliveredSeconds": 1.1166666666666667,
+              "assistance": "Placed on existing fragile platform before stepping; no collapse-time override"
+            }
+          }
+        ],
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm candidate: 300 ms catch-up",
+      "method": "single controlled 300 ms RAF interval; read-only simulation/render counters",
+      "status": "passed",
+      "milliseconds": 562,
+      "detail": {
+        "before": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0,
+          "simTime": 0,
+          "lastFrame": 379,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": 0,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 0,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.4,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": 0
+            },
+            {
+              "index": 6,
+              "angle": 0
+            },
+            {
+              "index": 10,
+              "angle": 0
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 0,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "after": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.3,
+          "simTime": 0.3,
+          "lastFrame": 679,
+          "accumulator": 4.85722573273506e-17,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.3,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.38454880549898857,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.28746679380603857,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.9190118648603423,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.48
+            },
+            {
+              "index": 6,
+              "angle": 0.48
+            },
+            {
+              "index": 10,
+              "angle": -0.48
+            }
+          ],
+          "trace": {
+            "updates": 18,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm candidate: 1 second interruption pauses and resumes",
+      "method": "controlled stall after native jump; native Resume button; no player-state assistance",
+      "status": "passed",
+      "milliseconds": 924,
+      "detail": {
+        "airborne": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 581,
+          "accumulator": 3.8163916471489756e-17,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Jump!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.45180449883405943,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.3618058110782001,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.8590495425996574,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.32
+            },
+            {
+              "index": 6,
+              "angle": 0.32
+            },
+            {
+              "index": 10,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "paused": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": false,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": null,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Paused after an interruption. Tap Resume when you are ready.",
+          "overlayVisible": true,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.45180449883405943,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.3618058110782001,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.8590495425996574,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.32
+            },
+            {
+              "index": 6,
+              "angle": 0.32
+            },
+            {
+              "index": 10,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "stillPaused": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": false,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 2081,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Paused after an interruption. Tap Resume when you are ready.",
+          "overlayVisible": true,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.45180449883405943,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.3618058110782001,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.8590495425996574,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.32
+            },
+            {
+              "index": 6,
+              "angle": 0.32
+            },
+            {
+              "index": 10,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 12,
+            "renders": 12,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "resumed": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 1.5266666666666664,
+            "z": 3
+          },
+          "vy": 5.8,
+          "onGround": false,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0.19999999999999998,
+          "simTime": 0.19999999999999998,
+          "lastFrame": 506,
+          "accumulator": 0,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -0.19999999999999998,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0.45180449883405943,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": -0.3618058110782001,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.8590495425996574,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -0.32
+            },
+            {
+              "index": 6,
+              "angle": 0.32
+            },
+            {
+              "index": 10,
+              "angle": -0.32
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 0,
+            "peakY": 1.5266666666666664,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "landed": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 1.2000000000000006,
+          "simTime": 1.2000000000000006,
+          "lastFrame": 1506,
+          "accumulator": 1.491862189340054e-16,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -1.2000000000000006,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Resume",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": -0.33461907229474025,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 0.42741816453488535,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -3.0588886636889208,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -1.920000000000001
+            },
+            {
+              "index": 6,
+              "angle": 1.920000000000001
+            },
+            {
+              "index": 10,
+              "angle": -1.920000000000001
+            }
+          ],
+          "trace": {
+            "updates": 60,
+            "renders": 60,
+            "peakY": 2.3200000000000003,
+            "landedAtSimulation": 0.966666666666668,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 272,
+            "triangles": 16283,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    },
+    {
+      "name": "storm candidate: real-wall approximately 15 Hz probe",
+      "method": "native RAF timestamps gated in real time, no accelerated clock, no player-state assistance",
+      "status": "passed",
+      "milliseconds": 2833,
+      "detail": {
+        "begin": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 0,
+          "simTime": 0,
+          "lastFrame": 391,
+          "accumulator": 0.014,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": 0,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": 0,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 0,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.4,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": 0
+            },
+            {
+              "index": 6,
+              "angle": 0
+            },
+            {
+              "index": 10,
+              "angle": 0
+            }
+          ],
+          "trace": {
+            "updates": 0,
+            "renders": 1,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "end": {
+          "fixedUpdates": true,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 3
+          },
+          "vy": 0,
+          "onGround": true,
+          "running": true,
+          "won": false,
+          "hasStarted": true,
+          "contextLost": false,
+          "runTime": 2.166666666666664,
+          "simTime": 2.166666666666664,
+          "lastFrame": 2560,
+          "accumulator": 0.01633333333333353,
+          "score": 0,
+          "lives": 3,
+          "shields": 0,
+          "invulnerable": -2.166666666666664,
+          "dashUntil": 0,
+          "dashReadyAt": 0,
+          "dashActive": false,
+          "dashReady": true,
+          "keys": [],
+          "message": "Practice — try a jump, then follow the stars!",
+          "overlayVisible": false,
+          "startText": "Start playing",
+          "platforms": [
+            {
+              "index": 0,
+              "x": 0,
+              "z": 3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 1,
+              "x": 2.4,
+              "z": -0.2999999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 2,
+              "x": -0.6973152261850886,
+              "z": -3.5999999999999996,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 3,
+              "x": -2.4,
+              "z": -6.899999999999999,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 4,
+              "x": 2.4,
+              "z": -10.2,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 5,
+              "x": 0.678922867591561,
+              "z": -13.5,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 6,
+              "x": -2.4,
+              "z": -16.799999999999997,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 7,
+              "x": 0,
+              "z": -20.099999999999998,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 8,
+              "x": 2.4,
+              "z": -23.4,
+              "moving": false,
+              "fragile": true,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 9,
+              "x": -2.446425328145843,
+              "z": -26.7,
+              "moving": true,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 10,
+              "x": 0,
+              "z": -30,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 11,
+              "x": 0,
+              "z": -33.3,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            },
+            {
+              "index": 12,
+              "x": -5.8,
+              "z": -13.5,
+              "moving": false,
+              "fragile": false,
+              "visible": true,
+              "collapseAt": 0
+            }
+          ],
+          "obstacles": [
+            {
+              "index": 3,
+              "angle": -3.4666666666666623
+            },
+            {
+              "index": 6,
+              "angle": 3.4666666666666623
+            },
+            {
+              "index": 10,
+              "angle": -3.4666666666666623
+            }
+          ],
+          "trace": {
+            "updates": 130,
+            "renders": 28,
+            "peakY": 0,
+            "landedAtSimulation": null,
+            "collapseAtSimulation": {}
+          },
+          "webgl": {
+            "lost": false,
+            "calls": 260,
+            "triangles": 15707,
+            "width": 640,
+            "height": 325
+          }
+        },
+        "wallSeconds": 2.201,
+        "deliveredSeconds": 2.169,
+        "stamps": [
+          391,
+          463,
+          545,
+          624,
+          705,
+          785,
+          866,
+          947,
+          1027,
+          1108,
+          1188,
+          1269,
+          1350,
+          1430,
+          1511,
+          1591,
+          1672,
+          1753,
+          1833,
+          1914,
+          1994,
+          2075,
+          2156,
+          2236,
+          2317,
+          2398,
+          2481,
+          2560
+        ],
+        "intervals": [
+          0.072,
+          0.082,
+          0.079,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.08,
+          0.081,
+          0.081,
+          0.083,
+          0.079
+        ],
+        "deliveredFrames": 27,
+        "actualDeliveredHz": 12.448132780082988,
+        "clockAdvance": 2.166666666666664,
+        "errorSeconds": -0.002333333333336185,
+        "ratio": 0.998924235438757,
+        "maxGapSeconds": 0.083,
+        "screenshot": "/workspace/scratch/7d185e77f252/review-timing-webkit-rc2/webkit-storm-candidate-wall.png",
+        "initialWebGL": {
+          "lost": false,
+          "calls": 260,
+          "triangles": 15707,
+          "width": 640,
+          "height": 325
+        },
+        "errors": [],
+        "failedRequests": []
+      }
+    }
+  ],
+  "screenshots": [
+    "webkit-lava-baseline-wall.png",
+    "webkit-lava-candidate-wall.png",
+    "webkit-storm-baseline-wall.png",
+    "webkit-storm-candidate-wall.png"
+  ],
+  "browserVersion": "26.5",
+  "finishedAt": "2026-10-29T04:47:01.866Z",
+  "sourceIntegrity": [
+    {
+      "file": "sky-rush-lava-obby-v28-stable.html",
+      "before": "95caf6afe401a9a87f45a8d9845ba11ecc1bcfbc7e61c49f9d0b32ddc4d083ef",
+      "after": "95caf6afe401a9a87f45a8d9845ba11ecc1bcfbc7e61c49f9d0b32ddc4d083ef",
+      "unchanged": true
+    },
+    {
+      "file": "review/v29/lava-v29-candidate.html",
+      "before": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110",
+      "after": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110",
+      "unchanged": true
+    },
+    {
+      "file": "sky-rush-storm-circuit-v5-stable.html",
+      "before": "6dea443d55d395f6b013aa7f76f3f449b4b78f45c862a6bc03df026659031d3f",
+      "after": "6dea443d55d395f6b013aa7f76f3f449b4b78f45c862a6bc03df026659031d3f",
+      "unchanged": true
+    },
+    {
+      "file": "review/v29/storm-v29-candidate.html",
+      "before": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de",
+      "after": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de",
+      "unchanged": true
+    }
+  ],
+  "summary": {
+    "passed": 12,
+    "failed": 0,
+    "sourceChangedDuringRun": false
+  },
+  "evidenceNote": "Local screenshot paths normalized. Exact delivered timestamps and the independent real-wall probe are distinguished in this report."
+}

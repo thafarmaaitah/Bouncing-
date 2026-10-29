@@ -1,0 +1,76 @@
+{
+  "startedAt": "2026-10-29T04:43:41.915Z",
+  "engine": "webkit",
+  "suite": "full",
+  "filter": "lava: ready gate, keyboard movement, jump and pause",
+  "limitation": "Headless browser with emulated viewports/touch; not physical iPhone/iPad testing or child playtesting.",
+  "tests": [
+    {
+      "name": "lava: ready gate, keyboard movement, jump and pause",
+      "kind": "real keyboard/button input; read-only position observation",
+      "status": "passed",
+      "milliseconds": 698,
+      "detail": {
+        "jumpHeight": 0.30999999999999994,
+        "jumpTrace": {
+          "active": false,
+          "startedAt": 691,
+          "inputAt": 692,
+          "initialFrame": 15,
+          "peakY": 0.30999999999999994,
+          "airborne": true,
+          "firstSample": {
+            "rafTimestamp": 694,
+            "wallMs": 8,
+            "frame": 16,
+            "frameSinceSetup": 1,
+            "simTime": 0.16666666666666666,
+            "y": 0.30999999999999994,
+            "vy": 9.133333333333333,
+            "onGround": false,
+            "running": true
+          },
+          "firstAirborne": {
+            "rafTimestamp": 694,
+            "wallMs": 8,
+            "frame": 16,
+            "frameSinceSetup": 1,
+            "simTime": 0.16666666666666666,
+            "y": 0.30999999999999994,
+            "vy": 9.133333333333333,
+            "onGround": false,
+            "running": true
+          },
+          "samples": [
+            {
+              "rafTimestamp": 694,
+              "wallMs": 8,
+              "frame": 16,
+              "frameSinceSetup": 1,
+              "simTime": 0.16666666666666666,
+              "y": 0.30999999999999994,
+              "vy": 9.133333333333333,
+              "onGround": false,
+              "running": true
+            }
+          ]
+        },
+        "pausedTime": 0.2333333333333333
+      }
+    }
+  ],
+  "screenshots": [],
+  "baselineCommit": "eb9e67ee92377725eeac9f6145ac352256f27c35",
+  "sourceSha256": {
+    "review/v29/lava-v29-candidate.html": "2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110",
+    "review/v29/storm-v29-candidate.html": "a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de"
+  },
+  "browserVersion": "26.5",
+  "completedAt": "2026-10-29T04:43:43.557Z",
+  "summary": {
+    "passed": 1,
+    "failed": 0,
+    "not-run": 0
+  },
+  "evidenceNote": "Single targeted WebKit rerun after replacing fixed wall-delay sampling with a bounded frame-observed jump check. Production source unchanged. Original full29/30 remains in full-webkit-first.json."
+}

@@ -1,30 +1,186 @@
-# Sky Rush V29 — isolated review candidate (29 Oct 2026)
+# Sky Rush Adventure — V29 RC2 للمراجعة
 
-**Status: CANDIDATE ONLY. NOT RELEASED.** This is a **new reimplementation**, not a recovery of a lost V29 artifact. Repository search found no V29-named commits or branches before this work. V28 source files were found and preserved.
+29 أكتوبر 2026 — توقيت دبي.
 
-## Provenance and preservation
-- V28 Lava: `sky-rush-lava-obby-v28-stable.html`, original blob `777056c1a2a35b8c3edf47e3ea45f70d44a1f0e5`.
-- V28 Storm: `sky-rush-storm-circuit-v5-stable.html`, original blob `804b7d1e039314ab092250386b88ea2c8a91aefe`.
-- V28 original validation: `docs/sky-rush-v28-validation.md`.
-- Candidate branch: `review/sky-rush-v29-input-timing`. No changes to `main`, public adventure hub, approved V4.1 GLB, stage content, Practice or Time Challenge logic.
-- Candidate files: `review/v29/lava-v29-candidate.html` and `review/v29/storm-v29-candidate.html`.
-- Existing local V4.1 file input and approved model geometry are unchanged. No new stage or feature.
+**مرشح مراجعة محفوظ على فرع منفصل. لا نشر عام ولا اعتماد نهائي للهاتف أو iPad.**
 
-## Change diff — exactly two defects
-1. **Second-finger movement stop:** per-direction pointer-ID ownership (`active` Set), release only the matching pointer, keep `pointerDirs` and keyboard-direction reconciliation. Suppress native touchmove/contextmenu on the controls to reduce gesture interception. No jump/Dash game rule changed.
-2. **Low-FPS timing and movement:** replace variable/clamped per-render simulation step with a 60 Hz fixed-step accumulator, max 0.25s backlog and 15 catch-up steps. Render once per animation frame; advance simulation clock, movement, jump, hazard cycles, Dash and game timer by identical fixed increments. Reset accumulator on Pause/Resume. Very long stalls >250 ms are deliberately discarded to avoid unsafe catch-up bursts; this is not a real-time multiplayer clock.
+## الخلاصة ومصدر العمل
 
-## Executed checks (non-browser)
-- Both candidate module bodies parse with JavaScript Function constructor after removing static import statements: **PASS (2/2)**.
-- Source invariants: per-pointer ownership, touchmove suppression, fixed step, pause accumulator reset, separate rendering: **PASS (2/2)**.
-- Deterministic accumulator model, 4 simulated seconds at 15/30/60/120 FPS: **240 updates, 4.00000 simulation seconds, 26.0 distance units at 6.5 units/s in all four cases**.
-- Pointer-state model: press direction pointer 1, press/release second pointer 2, direction 1 remains active; releasing pointer 1 clears it: **PASS**.
-- **NOT EXECUTED:** real browser integration tests, touch-device two-finger test, low-FPS GPU/browser tests, complete gameplay regression, actual iPad/phone, V4.1 visual verification. Source parsing and simplified deterministic models are not evidence of end-to-end gameplay correctness.
+وجد الفحص الفعلي فرع `review/sky-rush-v29-input-timing` عند الالتزام
+`eb9e67ee92377725eeac9f6145ac352256f27c35`، وفيه مرشح محفوظ للمرحلتين.
+لذلك استُخدم ذلك المصدر الموجود وأُكمل إصلاحه؛ لم تُعد كتابة V29 من الذاكرة.
+تقرير ذلك الالتزام يصف أصل المرشح بأنه **إعادة تنفيذ سابقة** بعد فقد الملفات
+الأولى، وليس استعادة لتلك الملفات المفقودة. هذا التقرير يحافظ على هذا التمييز.
 
-## Review and rollback
-- Review the candidate files and this report in the isolated branch, not GitHub Pages. GitHub Pages on `main` has **not** been changed.
-- Review diff against V28 originals. To reject, leave `main` untouched and disregard/delete this review branch; no rollback of production is required.
-- If approved later, run browser and physical-device acceptance before any public deployment. Do not merge or publish based only on the checks above.
+فحص النسخة المحفوظة وجد أن زر Pause ما زال مرتبطًا بـ`click` فقط، وأن
+مسارات المحرك تشير إلى مجلد `assets` غير موجود داخل `review/v29`.
+كما أن المجمع الزمني كان يُسقط الزمن الذي يتجاوز 250ms ويرسم داخل كل خطوة
+محاكاة ثم يرسم مرة إضافية؛ اختبارات المرشح السابقة اقتصرت على الصياغة ونماذج
+مبسطة، ولم تكن دليل تشغيل فعلي. أُكملت هذه النقاط في RC2 مع إبقاء نطاق العمل
+في إصلاحي الإيقاف والتوقيت وما يلزم لتشغيل المرشح ومراجعته.
 
-## One consolidated phone/iPad acceptance session (after browser tests)
-Open a **private preview of the candidate** (not yet available; requires a review environment), press Start, hold Forward with finger 1, press/release Jump and Dash with finger 2 repeatedly; verify Forward never stops until finger 1 releases. Repeat while frame rate is throttled, then Pause/Resume; compare movement over 10 seconds, game timer, cooldown, crumble timing, checkpoint, Practice/Challenge records and Restart. Record device/browser and any errors. **Blocker:** no private browser preview or physical-device execution is available in this run. No public URL should be used for this candidate before approval.
+## النسخة القابلة للمراجعة
+
+- نقطة البدء: `review/v29/index.html` عبر خادم HTTP محلي.
+- Lava Rush: `review/v29/lava-v29-candidate.html`.
+- Storm Circuit: `review/v29/storm-v29-candidate.html`.
+- صفحة V28 المنشورة وجميع الإصدارات السابقة لم تتغير.
+- تعليمات تشغيل المرشح والجلسة المجمعة: [PHONE-IPAD-TEST.md](./PHONE-IPAD-TEST.md).
+
+يمكن تنزيل أرشيف فرع المراجعة من GitHub وفكّه ثم تشغيل خادم محلي من جذر
+المجلد. لا تفتح الملف مباشرة ببروتوكول `file://`؛ وحدات المحرك تحتاج HTTP.
+لا يوجد رابط GitHub Pages لهذا المرشح، ولم تُطلب أو تُنفّذ عملية نشر.
+
+## فرق التغييرات
+
+| التغيير | السبب والأثر |
+|---|---|
+| ربط Pause بمساعد `bindAction` الموجود أصلًا | يستقبل `pointerdown` أو `touchstart` من الإصبع الثاني؛ يظل تنشيط لوحة المفاتيح عبر `click` ذي `detail=0` متاحًا. |
+| استمرار المحاكاة بخطوة ثابتة 1/60 ثانية | الحركة والجاذبية والقفز وDash والمنصات والعداد تتلقى الزمن نفسه عند اختلاف معدل الرسم. |
+| تجميع الزمن كاملًا حتى فجوة 750ms، بحد 45 خطوة | يحتسب التأخر القصير بدل إسقاطه، مع حد لعمل الإطار الواحد. |
+| إيقاف مرئي عند انقطاع أطول من 750ms | يجمّد اللعب والعداد وينتظر Resume؛ زمن الانقطاع المستبعد معلن بإيقاف فعلي. |
+| رسم واحد بعد خطوات المحاكاة | يمنع تكرار الرسم المكلف داخل حلقة التعويض. |
+| تصفير المجمع عند Pause وResume وRestart | يمنع انتقال الزمن المتبقي بين جولات أو عبر توقف؛ يبدأ مرجع Resume من توقيت الاستئناف. |
+| تصحيح المسارات إلى `../../assets/` وإضافة مدخل مراجعة | يشغّل الملفات من موقعها المحفوظ ويمنع العودة غير المقصودة إلى مرحلة V28 أثناء مراجعة المرشح. |
+| مفاتيح سجلات المرشح منفصلة | لا تُقرأ أو تُكتب أرقام V28/V5 الأصلية أثناء اختبار المرشح على الأصل نفسه. |
+
+قواعد الحركة والسرعة والجاذبية والقفز وDash والمراحل والمكافآت والأوضاع
+والفتاة لم تُعدّل. أزيلت إضافات ملكية المؤشر المحلية غير اللازمة من المرشح
+السابق، وأُبقي ربط الاتجاهات كما هو في V28 الذي يتتبع معرفات الأصابع أصلًا.
+لم تُضف مستويات أو مزايا لعب أو تغييرات للمظهر.
+
+الفرق القابل للتطبيق على المرشح المحفوظ السابق:
+[RC2-source.patch](./RC2-source.patch). وهو يغيّر ملفات المرشح فقط ولا يبدّل
+ملفات V28. الفرق التوضيحي مع مصدر V28:
+[V28-comparison.diff](./V28-comparison.diff)، للقراءة والمقارنة فقط.
+
+## نتائج الاختبارات المنفذة لهذا المرشح
+
+| مجموعة الفحص | ما نُفّذ والنتيجة |
+|---|---|
+| الإيقاف والتحكم في Chromium 151.0.7922.34 | **22/22 حالة للمرشح نجحت**. أُعيد إنتاج عيب V28 نفسه بست حالات تحقق: مرحلتان × وقت فعلي/عزل زمني/مسار touchstart القديم. لا تُحسب إعادة إنتاج العيب نجاحًا للعبة القديمة. |
+| إدخال WebKit 26.5 | **2/2 فحص للمرشح نجح** للفأرة ولوحة المفاتيح واللمسة الأساسية. اللمس المتعدد غير منفذ: 20 حالة مرشح و20 حالة أساس في سجل المقارنة. |
+| الفحص الشامل Chromium | **28/28 فحصًا للمرشح نجح**، إضافة إلى حالتين أعادتا إنتاج تعطل تحميل RC1 السابق من مساره المحفوظ. الإجمالي المسجل 30/30. |
+| الفحص الشامل WebKit | المحاولة الأولى: **27/28 للمرشح** وحالتا RC1 السابقتان؛ الإجمالي 29 نجاحًا وفشل قياس واحد. أُعيدت حالة القفز وحدها بعد تصحيح أخذ العينة في أداة الاختبار، فنجحت **1/1**. لم يُدّعَ تشغيل شامل جديد بنتيجة 30/30. |
+| مقارنة التوقيت — Chromium | **12/12 تحققًا نجح**: 8 للمرشح و4 لقياس سلوك V28/V5. تشمل المرحلتين ومعدلات 15/30/60/120 Hz، وفجوتي 300ms و1s، والوقت الفعلي. |
+| مقارنة التوقيت — WebKit | **12/12 تحققًا نجح** بالطريقة نفسها، مع تسجيل معدل الإطارات الفعلي المختلف في تجربة الوقت الحقيقي. |
+| تحميل الفتاة V4.1 | نجح في المحركين من الملف الأصلي نفسه، دون تعديل البايتات أو طلبات شبكة بعد اختياره. |
+
+في فحص الإيقاف الفعلي سجل Chromium `pointerdown` و`pointerup` على Pause
+بـ`isPrimary=false`، بينما ظل الإصبع الأول على Forward. لم ينتج `click`.
+استمر V28 في الحركة؛ توقف المرشح ومسح الإدخال وجمّد الموضع والعداد. بعد رفع
+الأصابع وResume لم تعد الحركة تلقائيًا. نجحت الحركة مع Jump وDash، والفصل
+بين لوحة المفاتيح واللمس، والإلغاء وفقد الالتقاط النشط، واللمسة الأساسية.
+
+فشل WebKit الأول كان حدًا في أخذ عينة الاختبار: بعد انتظار ثابت 120ms كانت
+القفزة قد بدأت بالفعل (`y=0.15778` و`vy=+9.4667`)، لكن العينة لم تصل إلى
+شرط `y>0.2`. استُبدلت العينة الوحيدة بمراقبة إطارات ذات مهلة محددة، مع إبقاء
+الشرط نفسه. في إعادة الفحص وصل `y=0.31`، ثم نجح الإيقاف والاستئناف الفعليان.
+تغيرت أداة الاختبار فقط؛ بقيت ملفات اللعبة وبصماتها كما هي.
+
+### القياسات التي تثبت إصلاح التوقيت
+
+| القياس | V28 عند 15 Hz بأوقات إطارات مضبوطة | RC2 عند 15 و30 و60 و120 Hz |
+|---|---:|---:|
+| تقدم المحاكاة خلال ثانية | 0.675 ثانية | 1.000 ثانية في كل معدل |
+| الحركة خلال 200ms | 0.8775 وحدة | 1.3000 وحدة في كل معدل |
+| قمة القفزة من رصد خطوات الفيزياء | تتغير مع الخطوة القديمة | 2.3200 وحدة في كل معدل |
+
+الفجوة القصيرة 300ms نُفّذت في **18 خطوة محاكاة ورسم واحد**. فجوة ثانية
+كاملة أوقفت اللعبة قبل تغيير الموضع أو سرعة القفز أو العداد، ثم استؤنفت
+القفزة نفسها وهبطت طبيعيًا.
+
+في القياس المستقل بالوقت الفعلي كان معدل Chromium نحو **14.98 إطارًا/ثانية**،
+وخسر الأساس نحو 0.718 ثانية خلال 2.203 ثانية. خطأ المرشح كان 3.5–3.7ms فقط.
+أما WebKit فسلّم فعليًا نحو **12.45–12.56 إطارًا/ثانية** تحت السقف المطلوب
+15Hz؛ خسر الأساس نحو 0.95 ثانية، وبقي خطأ المرشح بين −2.33 و+1ms. هذه
+فوارق أصغر من خطوة 1/60 ثانية، ولا تُقدَّم كقياسات FPS لأجهزة iPad حقيقية.
+
+
+تُفصل اختبارات أحداث اللمس الأصلية في المتصفح عن المحاكاة الزمنية المتحكم بها.
+اختبارات 15/30/60/120 Hz تفرض أوقات وصول الإطارات على وحدة اللعبة الفعلية؛
+ليست قياس أداء هاتف حقيقي. اختبار الوقت الفعلي المحدود إلى نحو 15 إطارًا
+بالثانية مستقل عنها. إعداد موضع اللاعب أو الحياة أو نقطة الحفظ في اختبارات
+الآليات موسوم صراحة، ولا يُقدَّم كاجتياز متصل للمرحلة.
+
+### عبور المرحلتين بإدخال عادي
+
+اكتمل اختبار Chromium المتصل للمرحلتين بأوامر لوحة مفاتيح حقيقية ورصد
+للقراءة فقط. انتهت كل مرحلة بـ**5/5 نجوم، 3 أرواح، ودون سقوط أو إعادة تموضع
+أو إيقاف تلقائي أو أخطاء تشغيل/تحميل**. زمن اللعبة كان 10.850 ثانية لـLava
+و10.867 ثانية لـStorm. لم يُنقل اللاعب آليًا بين المنصات ولم تُعدّل النقاط
+أو الأرواح أو المناعة أو الساعة. هذا تحكم اختباري آلي، وليس تجربة طفل أو
+دليلًا على المتعة. [سجل العبور](./evidence/routes-chromium.json).
+
+
+### ما لم يُنفّذ
+
+- تجربة هاتف أو iPad حقيقي، وأداء ملف V4.1 على عتاده.
+- تبديل التطبيقات على نظام هاتف فعلي أو اختبار لعب طويل على البطارية.
+- لمس WebKit متعدد الأصابع إذا لم تدعمه واجهة الاختبار؛ يظل موسومًا غير منفذ.
+- اختبار متعة طفل بعمر 10 سنوات أو فهمه الهدف أو اختياره إعادة اللعب.
+
+عيوب لوحة المفاتيح المركبة ورسائل النهاية التي ذُكرت في التحقيق السابق
+ليست ضمن الإصلاحين المصرّح بهما هنا. لوحظ أيضًا تمدد لوحة الرسالة في عرض مكتبي 640×500 مع CSS القائم؛ لم يُعدّل التنسيق ضمن هذين الإصلاحين. لا يعلن هذا التقرير إغلاقها أو قبول
+اللعبة نهائيًا على جميع الأجهزة.
+
+## ملفات الأدلة
+
+- [الفحص الشامل: Chromium](./evidence/full-chromium.json).
+- [محاولة WebKit الشاملة الأولى](./evidence/full-webkit-first.json) و[إعادة فحص القفز وحده](./evidence/webkit-jump-retest.json).
+- [توقيت Chromium](./evidence/timing-chromium.json) و[توقيت WebKit](./evidence/timing-webkit.json).
+- [ملخص اللمس](./evidence/touch-summary.json)، مع [أحداث Chromium كاملة](./evidence/touch-chromium.json) و[حدود WebKit](./evidence/touch-webkit.json).
+- [لقطة عرض iPad بالمؤشر التجريبي](./evidence/lava-ipad-landscape.png)، لا تتضمن الفتاة الخاصة.
+- [فحص تطبيق الرقعة على فهرس Git مؤقت](./evidence/patch-check.json).
+- احتُفظ بنسخة برنامج الفحص التي نفّذت المحاولات الشاملة الأولى، وبنسخة برنامج اللمس التي نفّذت Chromium، بجانب الأدلة. برنامج الفحص الحالي يتضمن تصحيح طريقة أخذ عينة القفز فقط؛ لم تتغير ملفات اللعبة بين هذه النتائج.
+
+## إعادة الاختبارات دون تغيير اللعبة
+
+تشغّل البرامج خادمًا محليًا خاصًا وتستخدم Playwright. يحتاج تنفيذها Node.js
+وPlaywright ومتصفحاته المثبتة؛ أدوات الاختبار ليست مطلوبة للعب المرشح.
+لا يُضاف أي API للتحكم بالاختبار إلى الملفات المسلّمة. تُحقن أدوات الرصد فقط
+في استجابات خادم الاختبار المحلي، وتُسجل بصمات الشفرة التي اختُبرت.
+
+```bash
+node tools/test-sky-rush-v29-review.mjs --browser chromium --output /tmp/sky-review-full
+node tools/test-sky-rush-review-touch.cjs --browser chromium --target both --output /tmp/sky-review-touch
+node tools/test-sky-rush-review-timing.mjs --browser chromium --out /tmp/sky-review-timing
+node tools/test-sky-rush-review-routes.mjs --browser chromium --out /tmp/sky-review-routes
+```
+
+يمكن اختيار `--browser webkit` للتحققات المدعومة. مرّر مسار ملف V4.1 الخاص
+لبرنامج الفحص الأساسي بواسطة `--character` عند توافره؛ لا يتضمنه المستودع.
+شُغّلت المتصفحات بالتتابع، كي لا يؤثر تنافس الرسم البرمجي في توقيت الاختبارات.
+
+## إثبات حفظ الأصول
+
+مرجع main الذي بدأ منه الفحص: `e12e280ead14557881886ad90eaaef9cf2e2de14`.
+جميع ملفاته الـ69 بقيت مطابقة بالبايت. بقيت ملفات V28 وV5، ومحرك Three.js
+المحلي، وCSS، والفتاة والمراحل والأوضاع بلا تغيير. [دليل المقارنة](./evidence/preservation.json).
+
+- SHA-256 لمرشح Lava: `2757996620180826fbfaf261883f3962a06a5e8770994b9f56d1fe55f4bcf110`.
+- SHA-256 لمرشح Storm: `a6913446606f73729bf3096c12900a87b62c33718580bf36b249f6aefedd35de`.
+- مقطع تحميل الفتاة وإعداد المشهد والمسار وربط الاتجاهات والقفز مطابق للمصدر.
+- ملف V4.1 الأصلي خاص، ولا يتضمنه مستودع المراجعة أو أرشيف الشفرة.
+
+نجح تحميل الملف الأصلي في Chromium وWebKit: **8,205,140 بايت**، وبصمة SHA-256 بقيت `ddc97a68042b583a87c1744105d24972f6592930007781ee6800f68f05f2e0e9` قبل التحميل وبعده. لم يُرصد أي طلب شبكة بعد اختيار الملف. بقي مقطع الاستيراد نفسه ببصمة `688d31b506c504228c5473e771bc1d3c92ca1d9794907fcc886c36ad6e633428`. صور الفتاة الناتجة عن الاختبار وملفها الخاص لا يدخلان في حزمة الشفرة العامة.
+
+## الحفظ والرجوع
+
+تُحفظ ملفات RC2 وتقريرها وأدلتها وبرامج اختبارها على فرع المراجعة الموجود `review/sky-rush-v29-input-timing`، مع إبقاء تاريخه السابق. تشمل الحزمة المصدر القابل للتشغيل محليًا، فرقًا قابلًا للمراجعة، النتائج الخام، وإجراء الهاتف/iPad. معرف الالتزام النهائي المثبت ورابط أرشيفه يُسلّمان في رسالة التسليم. لا يعتمد الحفظ على ملفات مساحة العمل المؤقتة وحدها.
+
+**الرجوع للإصدار المنشور لا يحتاج نشرًا معاكسًا:** أغلق المرشح وافتح صفحة
+V28 المعتادة. لم يتغير main ولا إعداد Pages ولم تُشغّل `workflow_dispatch`.
+عند رفض RC2 يمكن إبقاء الفرع كدليل أو تجاهله؛ لا يلزم حذف أي إصدار.
+
+للمقارنة مع المرشح السابق استخدم الالتزام المثبت `eb9e67e…` في واجهة GitHub
+أو افتحه في نسخة عمل منفصلة؛ لا تستخدم إعادة ضبط تمحو العمل. السجلات القديمة
+تبقى في `skyRushLavaBestV28` و`skyRushStormBestV5`، بينما يكتب المرشح فقط إلى
+`skyRushLavaBestV29Review` و`skyRushStormBestV29Review`.
+
+## قرار المراجعة المطلوب لاحقًا
+
+نفّذ **جلسة واحدة مجمعة** على هاتف أو iPad وفق الملف المرفق، وسجّل الجهاز
+والنظام والمتصفح ونجاح الحالات أو أول خلل. أي خلل مثبت يعود للتصحيح على
+المرشح. لا يُعد نجاح جهاز واحد قبولًا لجميع الأجهزة، ولا يصبح المرشح إصدارًا
+عامًا دون مراجعتك وموافقتك اللاحقة.
