@@ -22,7 +22,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/sky-review-test"
           cd "$RUNNER_TEMP/sky-review-test"
           npm install --no-save --package-lock=false playwright@1.56.1
-          npx playwright install --with-deps chromium webkit
+          npx playwright install --with-deps chromium
       - name: Verify live bytes, rendering and review controls
         run: |
           cat > "$RUNNER_TEMP/sky-review-test/smoke.cjs" <<'JS'
@@ -37,7 +37,7 @@ jobs:
           fs.mkdirSync(out, {recursive:true});
           const base = 'https://thafarmaaitah.github.io/Bouncing-/';
           const build = '918ac7b549f41d85f3c76087e94691cf5f4c7c3f';
-          const report = {build, candidate:'969bf77e75aadc943e9b02d8800e78ad41fda65f', started:new Date().toISOString(), http:[], browsers:[], notTested:['Physical iPhone/iPad hardware and Safari', 'Private V4.1 GLB (not provided, not uploaded)', 'WebKit simultaneous multi-touch', 'Full-route, frame-rate and reward regressions are not repeated in this deployment smoke check']};
+          const report = {build, candidate:'969bf77e75aadc943e9b02d8800e78ad41fda65f', scope:'Chromium-only follow-up; retain WebKit 4/4 results from run 41063432361 without repeating them', started:new Date().toISOString(), http:[], browsers:[], notTested:['Physical iPhone/iPad hardware and Safari', 'Private V4.1 GLB (not provided, not uploaded)', 'WebKit simultaneous multi-touch', 'Full-route, frame-rate and reward regressions are not repeated in this deployment smoke check']};
           const pause = ms => new Promise(r=>setTimeout(r,ms));
           const hash = b => crypto.createHash('sha256').update(b).digest('hex');
           const gitBlob = b => crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
@@ -81,7 +81,7 @@ jobs:
                 const first={id:1,...await point(page,'[data-dir="forward"]'),radiusX:5,radiusY:5,force:1};
                 const second={id:2,...await point(page,'#pause'),radiusX:5,radiusY:5,force:1};
                 await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[first]});
-                await page.waitForTimeout(120);
+                await page.waitForFunction(()=>parseFloat(document.getElementById('progressBar').style.width)>0,{},{timeout:5000});
                 await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[first,second]});
                 await page.waitForFunction(()=>!document.getElementById('readyOverlay').hidden);
                 assert.equal(await page.locator('#startRun').textContent(),'Resume');
@@ -92,8 +92,17 @@ jobs:
                 await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
                 await page.locator('#startRun').tap();
                 await page.waitForTimeout(180);
-                assert.equal(await page.locator('#progressBar').evaluate(e=>e.style.width),before.progress,'Movement stuck after Resume');
-                check('Native two-finger Pause; timer/progress frozen; Resume clears movement',before);
+                const resumed=await page.evaluate(()=>({timer:document.getElementById('timer').textContent,progress:document.getElementById('progressBar').style.width}));
+                // The real simulation updates this HUD before movement, so its paused
+                // value lags one 6.5/60-unit step. Allow only that step plus 0.1% rounding,
+                // then require an exactly stable progress reading while time advances.
+                const maxHudCatchup=(6.5/60)/(11*3.3)*100+.1;
+                assert(Math.abs(parseFloat(resumed.progress)-parseFloat(before.progress))<=maxHudCatchup,'Resume progress exceeded one stale HUD step');
+                await page.waitForTimeout(350);
+                const settled=await page.evaluate(()=>({timer:document.getElementById('timer').textContent,progress:document.getElementById('progressBar').style.width}));
+                assert.equal(settled.progress,resumed.progress,'Movement continued after Resume');
+                assert(Number(settled.timer)>Number(resumed.timer),'Resume did not keep the game running');
+                check('Native two-finger Pause; frozen HUD; stable post-Resume progress while timer advances',{before,after,resumed,settled,maxHudCatchup});
                 await cdp.detach();
               } else {
                 await page.locator('#pause').tap();
@@ -148,12 +157,12 @@ jobs:
                 console.log('HTTP_RESULT '+JSON.stringify(entry));
                 assert.equal(r.status,200,file+' HTTP error');assert(entry.sameBytes,file+' differs from published commit');
               }
-              for(const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
+              for(const [name,type] of [['chromium',chromium]]) {
                 const browser=await type.launch({headless:true});
                 try {for(const viewport of [{width:390,height:844},{width:1024,height:768}]) for(const stage of ['lava','storm']) await oneCase(browser,name,viewport,stage);}
                 finally {await browser.close();}
               }
-              report.pass=report.browsers.length===8&&report.browsers.every(x=>x.pass);
+              report.pass=report.browsers.length===4&&report.browsers.every(x=>x.pass);
             } catch(e) {report.pass=false;report.fatal=e.stack||String(e);}
             finally {
               report.finished=new Date().toISOString();
