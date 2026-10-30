@@ -66,7 +66,7 @@ jobs:
               await page.locator('#startRun:not([disabled])').waitFor({timeout:30000});
               assert.equal(await page.locator('#game canvas').count(),1);
               assert.match(await page.title(),/V29 RC2/);
-              assert.match(await page.locator('#status').textContent(),/3D engine loaded/);
+              assert.match(await page.locator('#status').textContent(),/^3D ready\./);
               assert.equal(await page.locator('#bootError').isVisible(),false);
               check('Live HTTPS engine loaded and WebGL scene created');
               const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,buttons:[...document.querySelectorAll('#pad button,#jump,#dash')].map(e=>({id:e.id||e.dataset.dir,w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height}))}));
