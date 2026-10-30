@@ -1,0 +1,174 @@
+name: V29 RC2 public review verification
+on:
+  push:
+    branches: [review/v29-rc2-publication-check-20261030]
+    paths: [.github/workflows/v29-rc2-publication-check.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 918ac7b549f41d85f3c76087e94691cf5f4c7c3f
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare isolated browser tools
+        run: |
+          mkdir -p "$RUNNER_TEMP/sky-review-test"
+          cd "$RUNNER_TEMP/sky-review-test"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Verify live bytes, rendering and review controls
+        run: |
+          cat > "$RUNNER_TEMP/sky-review-test/smoke.cjs" <<'JS'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const crypto = require('node:crypto');
+          const assert = require('node:assert/strict');
+          const {execFileSync} = require('node:child_process');
+          const {chromium, webkit} = require('playwright');
+          const root = process.env.GITHUB_WORKSPACE;
+          const out = path.join(root, 'qa-artifacts');
+          fs.mkdirSync(out, {recursive:true});
+          const base = 'https://thafarmaaitah.github.io/Bouncing-/';
+          const build = '918ac7b549f41d85f3c76087e94691cf5f4c7c3f';
+          const report = {build, candidate:'969bf77e75aadc943e9b02d8800e78ad41fda65f', started:new Date().toISOString(), http:[], browsers:[], notTested:['Physical iPhone/iPad hardware and Safari', 'Private V4.1 GLB (not provided, not uploaded)', 'WebKit simultaneous multi-touch', 'Full-route, frame-rate and reward regressions are not repeated in this deployment smoke check']};
+          const pause = ms => new Promise(r=>setTimeout(r,ms));
+          const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+          const gitBlob = b => crypto.createHash('sha1').update(Buffer.from('blob '+b.length+'\0')).update(b).digest('hex');
+          const files = ['review/v29/index.html','review/v29/lava-v29-candidate.html','review/v29/storm-v29-candidate.html','assets/sky-rush-v28.css','assets/sky-rush-boot-v28.js','assets/vendor/three-0.160.1/three.module.min.js','assets/vendor/three-0.160.1/GLTFLoader.js','assets/vendor/three-0.160.1/BufferGeometryUtils.js','index.html','sky-rush-adventure.html','sky-rush-adventure-v28.html','sky-rush-lava-obby-v28-stable.html','sky-rush-storm-circuit-v5-stable.html'];
+          async function liveBytes(file) {
+            const url = base+file+'?review_build='+build;
+            const r = await fetch(url,{signal:AbortSignal.timeout(20000),cache:'no-store'});
+            const bytes = Buffer.from(await r.arrayBuffer());
+            return {url,status:r.status,bytes};
+          }
+          async function point(page, selector) {
+            const b = await page.locator(selector).boundingBox();
+            assert(b, 'No visible bounds: '+selector);
+            return {x:Math.round(b.x+b.width/2),y:Math.round(b.y+b.height/2)};
+          }
+          async function oneCase(browser, browserName, viewport, stage) {
+            const row={browser:browserName,version:browser.version(),viewport,stage,checks:[],errors:[],failedRequests:[]};
+            const context=await browser.newContext({viewport,hasTouch:true,isMobile:true,deviceScaleFactor:1,ignoreHTTPSErrors:false});
+            const page=await context.newPage();
+            page.on('pageerror',e=>row.errors.push(e.message));
+            page.on('requestfailed',r=>row.failedRequests.push({url:r.url(),error:r.failure()?.errorText}));
+            const check=(name,detail=true)=>row.checks.push({name,detail});
+            try {
+              const response=await page.goto(base+'review/v29/'+stage+'-v29-candidate.html?review_build='+build,{waitUntil:'networkidle',timeout:45000});
+              assert.equal(response.status(),200);
+              await page.locator('#startRun:not([disabled])').waitFor({timeout:30000});
+              assert.equal(await page.locator('#game canvas').count(),1);
+              assert.match(await page.title(),/V29 RC2/);
+              assert.match(await page.locator('#status').textContent(),/3D engine loaded/);
+              assert.equal(await page.locator('#bootError').isVisible(),false);
+              check('Live HTTPS engine loaded and WebGL scene created');
+              const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,buttons:[...document.querySelectorAll('#pad button,#jump,#dash')].map(e=>({id:e.id||e.dataset.dir,w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height}))}));
+              assert(layout.scroll<=layout.width+1,'Horizontal overflow');
+              assert(layout.buttons.every(b=>b.w>=44&&b.h>=44),'Touch control below 44px');
+              check('Touch layout',layout);
+              await page.locator('#startRun').tap();
+              await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0,{},{timeout:5000});
+              check('Start accepted and live timer advances');
+              if(browserName==='chromium') {
+                const cdp=await context.newCDPSession(page);
+                const first={id:1,...await point(page,'[data-dir="forward"]'),radiusX:5,radiusY:5,force:1};
+                const second={id:2,...await point(page,'#pause'),radiusX:5,radiusY:5,force:1};
+                await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[first]});
+                await page.waitForTimeout(120);
+                await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[first,second]});
+                await page.waitForFunction(()=>!document.getElementById('readyOverlay').hidden);
+                assert.equal(await page.locator('#startRun').textContent(),'Resume');
+                const before=await page.evaluate(()=>({timer:document.getElementById('timer').textContent,progress:document.getElementById('progressBar').style.width}));
+                await page.waitForTimeout(350);
+                const after=await page.evaluate(()=>({timer:document.getElementById('timer').textContent,progress:document.getElementById('progressBar').style.width}));
+                assert.deepEqual(after,before,'Pause did not freeze timer/progress');
+                await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+                await page.locator('#startRun').tap();
+                await page.waitForTimeout(180);
+                assert.equal(await page.locator('#progressBar').evaluate(e=>e.style.width),before.progress,'Movement stuck after Resume');
+                check('Native two-finger Pause; timer/progress frozen; Resume clears movement',before);
+                await cdp.detach();
+              } else {
+                await page.locator('#pause').tap();
+                const t=await page.locator('#timer').textContent();
+                await page.waitForTimeout(350);
+                assert.equal(await page.locator('#timer').textContent(),t);
+                await page.locator('#startRun').tap();
+                check('Primary-touch Pause/Resume (not multi-touch)');
+              }
+              await page.locator('#jump').tap();
+              await page.waitForFunction(()=>document.getElementById('message').textContent==='Jump!',{},{timeout:5000});
+              check('Touch JUMP handler accepted (no hidden physics instrumentation)');
+              await page.locator('#dash').tap();
+              await page.waitForFunction(()=>document.getElementById('dash').disabled,{},{timeout:5000});
+              check('Touch DASH handler and cooldown activated');
+              await page.locator('#retryCheckpoint').tap();
+              await page.waitForTimeout(100);
+              check('Retry checkpoint control activated');
+              await page.locator('#pause').tap();
+              await page.locator('#mode').selectOption('challenge');
+              await page.locator('#startRun').tap();
+              await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0,{},{timeout:5000});
+              check('Time Challenge mode resets and starts');
+              await page.locator('#pause').tap();
+              await page.screenshot({path:path.join(out,browserName+'-'+viewport.width+'x'+viewport.height+'-'+stage+'.png'),fullPage:true});
+              assert.deepEqual(row.errors,[]);
+              assert.deepEqual(row.failedRequests,[]);
+              check('No JavaScript page errors or failed network requests');
+              row.pass=true;
+            } catch(e) {
+              row.pass=false;row.failure=e.stack||String(e);
+              await page.screenshot({path:path.join(out,'FAIL-'+browserName+'-'+viewport.width+'-'+stage+'.png'),fullPage:true}).catch(()=>{});
+            } finally { await context.close(); }
+            report.browsers.push(row);
+            console.log('BROWSER_RESULT '+JSON.stringify(row));
+          }
+          (async()=>{
+            try {
+              const tracked=execFileSync('git',['ls-tree','-r','--name-only','HEAD'],{cwd:root,encoding:'utf8'}).trim().split('\n');
+              assert(!tracked.some(p=>/\.(glb|gltf|blend)$/i.test(p)),'Unexpected model file in published tree');
+              report.noPrivateModelFiles=true;
+              const expected={'review/v29/lava-v29-candidate.html':'48317552d657b2791ce13ae9f5a10480f47f93b4','review/v29/storm-v29-candidate.html':'9b6fa19674a085425633062c726e58af372a7cdb'};
+              for(const [f,h] of Object.entries(expected)) assert.equal(gitBlob(fs.readFileSync(path.join(root,f))),h);
+              const expectedHub=hash(fs.readFileSync(path.join(root,files[0])));
+              let ready=false;
+              for(let i=0;i<18;i++) {const r=await liveBytes(files[0]);if(r.status===200&&hash(r.bytes)===expectedHub){ready=true;break}await pause(5000)}
+              assert(ready,'Public review hub not available at expected build');
+              for(const file of files) {
+                const r=await liveBytes(file),local=fs.readFileSync(path.join(root,file));
+                const entry={file,url:r.url,status:r.status,sha256:hash(r.bytes),expectedSha256:hash(local),sameBytes:r.bytes.equals(local)};
+                report.http.push(entry);
+                console.log('HTTP_RESULT '+JSON.stringify(entry));
+                assert.equal(r.status,200,file+' HTTP error');assert(entry.sameBytes,file+' differs from published commit');
+              }
+              for(const [name,type] of [['chromium',chromium],['webkit',webkit]]) {
+                const browser=await type.launch({headless:true});
+                try {for(const viewport of [{width:390,height:844},{width:1024,height:768}]) for(const stage of ['lava','storm']) await oneCase(browser,name,viewport,stage);}
+                finally {await browser.close();}
+              }
+              report.pass=report.browsers.length===8&&report.browsers.every(x=>x.pass);
+            } catch(e) {report.pass=false;report.fatal=e.stack||String(e);}
+            finally {
+              report.finished=new Date().toISOString();
+              fs.writeFileSync(path.join(out,'v29-rc2-publication.json'),JSON.stringify(report,null,2));
+              console.log('FINAL_SUMMARY '+JSON.stringify({pass:report.pass,http:report.http.length,browserPassed:report.browsers.filter(x=>x.pass).length,browserTotal:report.browsers.length,fatal:report.fatal||null,notTested:report.notTested}));
+              if(!report.pass)process.exitCode=1;
+            }
+          })();
+          JS
+          node "$RUNNER_TEMP/sky-review-test/smoke.cjs"
+      - name: Preserve public verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v29-rc2-publication-evidence
+          path: qa-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
