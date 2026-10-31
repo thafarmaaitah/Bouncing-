@@ -1,0 +1,56 @@
+name: V29 RC3 published link verification
+on:
+  push:
+    branches: [review/sky-rush-v29-rc3-ipad-build-20261031]
+    paths: [.github/workflows/v29-rc3-live-check.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 818825185df212520ec863b50ab43f25aedc5229
+          persist-credentials: false
+      - name: Check live review and preserved pages
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,time,json,hashlib
+          from pathlib import Path
+          base='https://thafarmaaitah.github.io/Bouncing-/'
+          names=['review/v29-rc3/index.html','review/v29-rc3/lava-v29-candidate.html','review/v29-rc3/storm-v29-candidate.html','review/v29-rc3/controls-ipad-rc3.css','review/v29/index.html','review/v29/lava-v29-candidate.html','review/v29/storm-v29-candidate.html','sky-rush-adventure.html','sky-rush-adventure-v28.html','sky-rush-lava-obby-v28-stable.html','sky-rush-storm-circuit-v5-stable.html']
+          sha=lambda b:hashlib.sha256(b).hexdigest()
+          report={'build':'818825185df212520ec863b50ab43f25aedc5229','checks':[],'scope':'Live HTTPS byte verification; runtime checks are recorded separately in build run 41176068914'}
+          Path('qa-live').mkdir()
+          def get(name):
+            req=urllib.request.Request(base+name,headers={'Cache-Control':'no-cache','User-Agent':'SkyRush-RC3-Verification'})
+            with urllib.request.urlopen(req,timeout=20) as r:return r.status,r.read()
+          try:
+            for i in range(30):
+              try:
+                status,data=get(names[0])
+                if status==200 and data==Path(names[0]).read_bytes():break
+              except urllib.error.HTTPError as e:
+                if e.code!=404:raise
+              time.sleep(3)
+            else:raise AssertionError('New published hub unavailable')
+            for name in names:
+              status,data=get(name);expected=Path(name).read_bytes()
+              row={'path':name,'status':status,'matchesTestedCommit':data==expected,'sha256':sha(data)}
+              report['checks'].append(row);print(json.dumps(row))
+              assert status==200 and data==expected,name
+            report['pass']=True
+          except Exception as e:
+            report['pass']=False;report['error']=str(e);raise
+          finally:
+            Path('qa-live/rc3-live.json').write_text(json.dumps(report,indent=2))
+            print('SUMMARY '+json.dumps({'pass':report['pass'],'count':len(report['checks'])}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v29-rc3-live-evidence
+          path: qa-live/
+          retention-days: 30
