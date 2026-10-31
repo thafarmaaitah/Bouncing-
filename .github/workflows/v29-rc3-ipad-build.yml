@@ -1,0 +1,208 @@
+name: V29 RC3 iPad controls build and verification
+on:
+  push:
+    branches: [review/sky-rush-v29-rc3-ipad-build-20261031]
+    paths: [.github/workflows/v29-rc3-ipad-build.yml]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 918ac7b549f41d85f3c76087e94691cf5f4c7c3f
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build additive CSS-only review copy
+        run: |
+          mkdir -p qa-artifacts
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, json, hashlib, subprocess
+          root=Path('.')
+          dest=root/'review/v29-rc3'
+          assert not dest.exists(), 'Refuse to replace an existing RC3'
+          dest.mkdir(parents=True)
+          css='''/* RC3: larger tablet touch controls only. Shared V28 CSS is unchanged. */
+          @media (pointer: coarse) and (min-width: 700px) and (min-height: 500px) {
+            #controls { align-items: flex-end; padding-left: 18px; padding-right: 18px; }
+            #pad {
+              grid-template-columns: repeat(3, 88px);
+              grid-template-rows: repeat(2, 88px);
+              gap: 10px;
+              width: 284px;
+              height: 186px;
+              flex: 0 0 284px;
+            }
+            #pad button {
+              width: 88px; height: 88px;
+              min-width: 88px; min-height: 88px;
+              padding: 0; font-size: 32px; line-height: 1;
+              border-radius: 20px;
+            }
+            #actionButtons { flex: 0 0 140px; width: 140px; gap: 10px; align-items: flex-end; }
+            #jump {
+              width: 140px; height: 96px;
+              min-width: 140px; min-height: 96px !important;
+              padding: 0 12px; font-size: 28px; line-height: 1.1;
+              border-radius: 20px;
+            }
+          }
+          @media (pointer: coarse) and (min-width: 700px) and (min-height: 500px) and (orientation: landscape) {
+            #progressRail { left: 318px; right: 174px; }
+            #checkpointLabel, #message {
+              left: calc(50% + 72px);
+              max-width: calc(100% - 510px);
+            }
+          }
+          '''
+          (dest/'controls-ipad-rc3.css').write_text(css,encoding='utf-8')
+          report={'base':'918ac7b549f41d85f3c76087e94691cf5f4c7c3f','scope':'CSS size/layout only; unchanged JavaScript, private V4.1 loader and old releases','stages':[]}
+          expected={'lava':'48317552d657b2791ce13ae9f5a10480f47f93b4','storm':'9b6fa19674a085425633062c726e58af372a7cdb'}
+          for stage,blob in expected.items():
+            src=root/f'review/v29/{stage}-v29-candidate.html'
+            data=src.read_bytes()
+            assert hashlib.sha1(f'blob {len(data)}\0'.encode()+data).hexdigest()==blob
+            old=data.decode('utf-8')
+            new=old.replace('V29 RC2','V29 RC3').replace('</head>','<link rel="stylesheet" href="./controls-ipad-rc3.css"></head>',1)
+            scripts=lambda t: re.findall(r'<script\b[^>]*>(.*?)</script>',t,re.S)
+            assert scripts(new)==scripts(old),'JavaScript unexpectedly changed'
+            (dest/src.name).write_text(new,encoding='utf-8')
+            report['stages'].append({'stage':stage,'sourceBlob':blob,'scriptIdentical':True,'sha256':hashlib.sha256(new.encode()).hexdigest()})
+          old=(root/'review/v29/index.html').read_text()
+          new=old.replace('V29 RC2','V29 RC3')
+          new=new.replace('This candidate checks two repairs: Pause with a second finger while moving, and consistent simulation timing at lower frame rates.','Larger iPad controls: 88 x 88 movement buttons and a 140 x 96 JUMP button. Existing gameplay is unchanged.')
+          new=new.replace('Both stage files are unchanged. This separate review link does not replace V28 or the original homepage.','Only display labels and a tablet-control stylesheet were added to the RC2 stages. V28, RC2 and the original homepage remain unchanged.')
+          (dest/'index.html').write_text(new,encoding='utf-8')
+          tracked=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          report['preservedFiles']=len(tracked)
+          for name in tracked:
+            assert (root/name).read_bytes()==subprocess.check_output(['git','show','HEAD:'+name]),name
+          assert not any(dest.rglob('*.glb'))
+          Path('qa-artifacts/preservation.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report))
+          PY
+      - name: Install isolated test browsers
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc3-test"
+          cd "$RUNNER_TEMP/rc3-test"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Runtime and tablet geometry checks
+        run: |
+          python3 -m http.server 8000 --bind 127.0.0.1 > "$RUNNER_TEMP/rc3-http.log" 2>&1 &
+          cat > "$RUNNER_TEMP/rc3-test/test.cjs" <<'JS'
+          const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+          const {chromium,webkit}=require('playwright');
+          const out=path.join(process.env.GITHUB_WORKSPACE,'qa-artifacts');
+          const report={started:new Date().toISOString(),cases:[],notTested:['Physical iPad/iPhone hardware','Private V4.1 GLB (not uploaded)','Child playtesting','Full-route and reward regressions (JavaScript unchanged)','WebKit simultaneous multi-touch']};
+          const rects=()=>{
+            const ids=['[data-dir="forward"]','[data-dir="left"]','[data-dir="back"]','[data-dir="right"]','#jump','#dash'];
+            return ids.map(id=>{const el=document.querySelector(id),r=el.getBoundingClientRect();return {id,x:r.x,y:r.y,w:r.width,h:r.height}});
+          };
+          const overlap=(a,b)=>Math.min(a.x+a.w,b.x+b.w)>Math.max(a.x,b.x)+.5&&Math.min(a.y+a.h,b.y+b.h)>Math.max(a.y,b.y)+.5;
+          async function runCase(browser,name,viewport,stage){
+            const tablet=viewport.width>=700&&viewport.height>=500;
+            const row={browser:name,version:browser.version(),viewport,stage,tablet,checks:[],errors:[],failedRequests:[]};
+            const context=await browser.newContext({viewport,hasTouch:true,isMobile:true,deviceScaleFactor:1});
+            const page=await context.newPage();page.setDefaultTimeout(7000);
+            page.on('pageerror',e=>row.errors.push(e.message));
+            page.on('requestfailed',r=>row.failedRequests.push(r.url()));
+            const base='http://127.0.0.1:8000/';
+            try{
+              // Compare dimensions with the actual untouched RC2 page.
+              await page.goto(base+'review/v29/'+stage+'-v29-candidate.html',{waitUntil:'networkidle'});
+              await page.locator('#startRun:not([disabled])').waitFor();
+              row.before=await page.evaluate(rects);
+              await page.goto(base+'review/v29-rc3/'+stage+'-v29-candidate.html',{waitUntil:'networkidle'});
+              await page.locator('#startRun:not([disabled])').waitFor();
+              assert.match(await page.title(),/V29 RC3/);
+              assert.equal(await page.locator('#game canvas').count(),1);
+              assert.equal(await page.locator('#bootError').isVisible(),false);
+              await page.locator('#startRun').tap();
+              await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0);
+              row.checks.push('Engine rendered, Start accepted, timer advances');
+              row.after=await page.evaluate(rects);
+              for(let i=0;i<row.after.length;i++){
+                const r=row.after[i];
+                assert(r.x>=-.5&&r.y>=-.5&&r.x+r.w<=viewport.width+.5&&r.y+r.h<=viewport.height+.5,'Control outside viewport: '+r.id);
+                for(let j=i+1;j<row.after.length;j++)assert(!overlap(r,row.after[j]),'Overlapping controls');
+                if(tablet&&i<4){assert.equal(r.w,88);assert.equal(r.h,88)}
+                if(tablet&&i===4){assert.equal(r.w,140);assert.equal(r.h,96)}
+                if(!tablet){assert.equal(r.w,row.before[i].w);assert.equal(r.h,row.before[i].h)}
+              }
+              assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow');
+              // Test the visibly enlarged hit areas, not only their CSS declarations.
+              const targets=await page.evaluate(()=>[...document.querySelectorAll('#pad button,#jump')].map(e=>{
+                const r=e.getBoundingClientRect();
+                return [.22,.5,.78].every(f=>{const hit=document.elementFromPoint(r.x+r.width*f,r.y+r.height*f);return hit===e||e.contains(hit)})
+              }));
+              assert(targets.every(Boolean),'Button hit area covered');
+              row.checks.push(tablet?'88x88 directions, 140x96 JUMP; no overlap/clipping; enlarged hit areas exposed':'Phone control sizes unchanged; no overlap/clipping');
+              await page.locator('#jump').tap();
+              await page.waitForFunction(()=>document.getElementById('message').textContent==='Jump!');
+              row.checks.push('Actual JUMP touch accepted');
+              await page.locator('#pause').tap();
+              const timer=await page.locator('#timer').textContent();
+              await page.waitForTimeout(180);assert.equal(await page.locator('#timer').textContent(),timer);
+              await page.locator('#startRun').tap();
+              await page.locator('#dash').tap();
+              await page.waitForFunction(()=>document.getElementById('dash').disabled);
+              row.checks.push('Pause/Resume and touch DASH/cooldown accepted');
+              await page.locator('#retryCheckpoint').tap();
+              await page.waitForFunction(()=>document.getElementById('message').textContent.includes('Back to checkpoint'));
+              row.checks.push('Retry checkpoint accepted');
+              await page.locator('#mode').selectOption('challenge');
+              await page.locator('#startRun').tap();
+              await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0);
+              row.checks.push('Time Challenge starts');
+              await page.locator('#pause').tap();
+              await page.locator('#reset').tap();
+              await page.locator('#startRun').tap();
+              if(tablet)await page.screenshot({path:path.join(out,`${name}-${viewport.width}x${viewport.height}-${stage}.png`),fullPage:true});
+              assert.deepEqual(row.errors,[]);assert.deepEqual(row.failedRequests,[]);
+              row.pass=true;
+            }catch(e){row.pass=false;row.failure=String(e.stack||e);await page.screenshot({path:path.join(out,`FAIL-${name}-${viewport.width}-${stage}.png`)}).catch(()=>{});}
+            finally{await context.close();}
+            report.cases.push(row);console.log('CASE '+JSON.stringify(row));
+          }
+          (async()=>{
+            try{
+              for(const [name,type] of [['chromium',chromium],['webkit',webkit]]){
+                const browser=await type.launch({headless:true});
+                try{for(const v of [{width:768,height:1024},{width:1024,height:768},{width:1024,height:650},{width:390,height:844},{width:844,height:390}])for(const s of ['lava','storm'])await runCase(browser,name,v,s)}finally{await browser.close()}
+              }
+              report.pass=report.cases.length===20&&report.cases.every(c=>c.pass);
+            }catch(e){report.pass=false;report.fatal=String(e.stack||e)}
+            finally{report.finished=new Date().toISOString();fs.writeFileSync(path.join(out,'rc3-runtime.json'),JSON.stringify(report,null,2));console.log('SUMMARY '+JSON.stringify({pass:report.pass,passed:report.cases.filter(x=>x.pass).length,total:report.cases.length}));if(!report.pass)process.exitCode=1}
+          })();
+          JS
+          cp "$RUNNER_TEMP/rc3-test/test.cjs" qa-artifacts/executed-test.cjs
+          node "$RUNNER_TEMP/rc3-test/test.cjs"
+      - name: Save tested payload on a review branch (do not deploy)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- review/v29-rc3
+          python3 - <<'PY'
+          import subprocess
+          lines=subprocess.check_output(['git','diff','--cached','--name-status'],text=True).splitlines()
+          assert len(lines)==4
+          assert all(x.startswith('A\treview/v29-rc3/') for x in lines)
+          PY
+          git commit -m 'Add V29 RC3 enlarged iPad controls as a separate review copy; preserve all existing files'
+          git rev-parse HEAD > qa-artifacts/payload-commit.txt
+          git push origin HEAD:refs/heads/review/sky-rush-v29-rc3-ipad-ready
+          git show --stat --oneline HEAD
+      - name: Preserve verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v29-rc3-ipad-build-evidence
+          path: |
+            qa-artifacts/
+            review/v29-rc3/
+          retention-days: 30
