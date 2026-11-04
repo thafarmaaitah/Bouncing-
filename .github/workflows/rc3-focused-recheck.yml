@@ -1,0 +1,81 @@
+name: RC3 two-case tablet input recheck
+on:
+  push:
+    branches: [review/sky-rush-rc3-focused-20261104]
+    paths: [.github/workflows/rc3-focused-recheck.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 818825185df212520ec863b50ab43f25aedc5229
+          path: frozen-app
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: sky-rc3-focused-review
+          run-id: 41782500148
+          github-token: ${{ github.token }}
+          path: previous-results
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Remove test-driver observation latency between the two fingers
+        run: |
+          python3 - <<'PY'
+          import pathlib,os,shutil,difflib
+          ws=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'sky-rc3-recheck'
+          shutil.copytree(ws/'frozen-app',root,ignore=shutil.ignore_patterns('.git'))
+          (root/'tools').mkdir(exist_ok=True)
+          out=ws/'qa-recheck';out.mkdir()
+          name='test-sky-rush-review-touch.cjs'
+          old=(ws/'previous-results/executed'/name).read_text()
+          a="  const held = await snapshot(page);\n  assert(held.running && held.keys.includes('forward'), 'Forward must be held before second finger');\n"
+          assert old.count(a)==1
+          new=old.replace(a,'',1)
+          a='  const summary = eventSummary(traceAtPause);'
+          b="  const primaryDown = traceAtPause.find(e => e.type==='pointerdown' && e.target==='forward' && e.isPrimary===true);\n  const held = primaryDown?.afterState;\n  assert(held?.running && held.keys.includes('forward'), 'Native event record must prove Forward held before second finger');\n  const summary = eventSummary(traceAtPause);"
+          assert new.count(a)==1
+          new=new.replace(a,b,1)
+          (root/'tools'/name).write_text(new)
+          (out/name).write_text(new)
+          (out/'harness-only.diff').write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True))))
+          PY
+          cd "$RUNNER_TEMP/sky-rc3-recheck"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Retest only Lava tablet landscape and portrait
+        run: |
+          cd "$RUNNER_TEMP/sky-rc3-recheck"
+          export CODEX_PRIMARY_RUNTIME_NODE_MODULES="$PWD/node_modules"
+          set +e
+          node tools/test-sky-rush-review-touch.cjs --browser chromium --target candidate --stage lava --case real-time-secondary-pause --width 1024 --height 768 --output "$GITHUB_WORKSPACE/qa-recheck/lava-1024-768"
+          node tools/test-sky-rush-review-touch.cjs --browser chromium --target candidate --stage lava --case real-time-secondary-pause --width 768 --height 1024 --output "$GITHUB_WORKSPACE/qa-recheck/lava-768-1024"
+          exit 0
+      - name: Report the two retests without overwriting previous outcomes
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import pathlib,os,json
+          out=pathlib.Path(os.environ['GITHUB_WORKSPACE'])/'qa-recheck'
+          rows=[]
+          for p in sorted(out.glob('lava-*/touch-results.json')):
+            d=json.loads(p.read_text())
+            rows.append({'case':p.parent.name,'summary':d['summary'],'sourceUnchanged':d.get('sourceFilesUnchanged'),'tests':d['tests']})
+          result={'priorRun':41782500148,'reason':'Two prior runs reached the starting-platform edge before Pause; not valid grounded-resume measurements. Remove one remote observation between first and second native touch, proving held direction from the already-recorded trusted event. Same game, assertions, real clock and browser.','expected':2,'passed':sum(x['summary']['PASS'] for x in rows),'failed':sum(x['summary']['FAIL'] for x in rows),'notRun':max(0,2-len(rows)),'cases':rows,'limits':['Chromium software rendering, not physical Safari','Only two invalid-precondition cases rerun','No gameplay modifications or release']}
+          (out/'RECHECK.json').write_text(json.dumps(result,indent=2))
+          print(json.dumps({k:v for k,v in result.items() if k!='cases'},indent=2))
+          if result['passed']!=2 or any(not x['sourceUnchanged'] for x in rows):raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc3-two-case-recheck
+          path: qa-recheck/
+          retention-days: 30
