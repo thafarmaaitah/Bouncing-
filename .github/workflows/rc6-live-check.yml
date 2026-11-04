@@ -1,0 +1,40 @@
+name: RC6 public HTTPS verification
+on:
+  push:
+    branches: [review/sky-rush-rc6-goals-20261104]
+    paths: [.github/workflows/rc6-live-check.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 98856342a2f2c13227145865e079d780f2a37db7
+          path: app
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Isolated browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/rc6-live" --no-save --package-lock=false playwright@1.56.1
+          "$RUNNER_TEMP/rc6-live/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Public HTTP bytes and real browser startup
+        working-directory: app
+        env:
+          NODE_PATH: ${{ runner.temp }}/rc6-live/node_modules
+          BUILD_SHA: 98856342a2f2c13227145865e079d780f2a37db7
+        run: node ../tooling/tools/rc6/live.cjs ../evidence-live
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc6-live-evidence
+          path: evidence-live/
+          retention-days: 30
