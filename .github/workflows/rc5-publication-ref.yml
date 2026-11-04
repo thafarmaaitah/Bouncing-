@@ -1,0 +1,32 @@
+name: RC5 publication ref recovery
+on:
+  push:
+    branches: [review/sky-rush-rc5-local-session-20261104]
+    paths: [.github/workflows/rc5-publication-ref.yml]
+permissions:
+  contents: write
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Check exact change scope and fast-forward main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,urllib.request
+          base='0c43dbee3dcab7fa89d82906288f9bbf21210eb4'; head='8f197e1dc49397ecce334f450fe616af12f3af14'
+          api='https://api.github.com/repos/thafarmaaitah/Bouncing-'
+          def call(route,method='GET',data=None):
+              req=urllib.request.Request(api+route,method=method,data=None if data is None else json.dumps(data).encode(),headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json','User-Agent':'sky-rc5-publisher','X-GitHub-Api-Version':'2022-11-28'})
+              with urllib.request.urlopen(req,timeout=45) as r:return json.load(r)
+          current=call('/git/ref/heads/main')['object']['sha']
+          assert current in [base,head], 'Main changed; stop without overwrite'
+          diff=call('/compare/'+base+'...'+head)
+          assert len(diff['files'])==10 and all(f['status']=='added' and f['filename'].startswith('review/v29-rc5/') for f in diff['files'])
+          if current==base:call('/git/refs/heads/main','PATCH',{'sha':head,'force':False})
+          assert call('/git/ref/heads/main')['object']['sha']==head
+          print('MAIN_AT_TESTED_RC5 '+head)
+          print('All older files preserved; this token-generated ref change does not itself guarantee a Pages deployment.')
+          PY
