@@ -1,0 +1,124 @@
+name: RC6 goals and progress review
+on:
+  push:
+    branches: [review/sky-rush-rc6-goals-20261104]
+    paths: [.github/workflows/rc6-goals-review.yml]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: a3e317944895d4149e76b56310e0fea04b7813af
+          path: app
+      - uses: actions/checkout@v4
+        with:
+          ref: 2f2e3b1a691bc5e8315a9415912fe7970ee7f3b2
+          path: rc5tools
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 969bf77e75aadc943e9b02d8800e78ad41fda65f
+          path: oldtools
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build additive RC6 and freeze previous versions
+        run: |
+          mkdir -p evidence
+          cd app
+          python - <<'PY'
+          import json,hashlib,subprocess
+          from pathlib import Path
+          paths=subprocess.check_output(['git','ls-files','-z']).decode().split('\0')
+          Path('../evidence/baseline.json').write_text(json.dumps({p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in paths if p},indent=2))
+          PY
+          python ../tooling/tools/rc6/build.py
+          for f in review/v29-rc6/*.js; do node --check "$f"; done
+          cp rc6-payload-hashes.json ../evidence/
+          cd ..
+          python tooling/tools/rc6/prepare-tests.py
+      - name: Check progress rules without a browser
+        run: |
+          cat > evidence/unit.cjs <<'JS'
+          const fs=require('fs'),assert=require('assert/strict');
+          const mem=new Map();global.localStorage={getItem:k=>mem.get(k)||null,setItem:(k,v)=>mem.set(k,v)};
+          (async()=>{const p=await import('data:text/javascript;base64,'+fs.readFileSync('app/review/v29-rc6/progress.js').toString('base64'));const rows=[];const run={complete:true,score:5,seconds:15,setbacks:0,retries:0,challenge:false,eligible:true};
+          const test=(name,fn)=>{fn();rows.push({name,pass:true})};
+          test('Empty board',()=>assert.equal(p.countBadges(p.readProgress().value),0));
+          test('Practice no time reward',()=>assert.deepEqual(p.recordCompletion('lava',run).value.lava,{explorer:true,clean:true,time:false}));
+          test('Duplicate finish idempotent',()=>assert.deepEqual(p.recordCompletion('lava',run).earned,[]));
+          test('Incomplete run rejected',()=>assert.equal(p.recordCompletion('storm',{...run,score:4}).valid,false));
+          test('Retry does not earn clean or timed badge',()=>assert.deepEqual(p.recordCompletion('storm',{...run,retries:1,challenge:true,eligible:false}).value.storm,{explorer:true,clean:false,time:false}));
+          test('Eligible challenge time badge',()=>assert.equal(p.recordCompletion('storm',{...run,setbacks:1,challenge:true}).value.storm.time,true));
+          test('Unknown stage rejected',()=>assert.equal(p.recordCompletion('__proto__',run).valid,false));
+          test('Corrupt storage safe',()=>{mem.set(p.PROGRESS_KEY,'broken');assert.equal(p.countBadges(p.readProgress().value),0)});
+          test('Unknown fields and false-like values ignored',()=>{mem.set(p.PROGRESS_KEY,JSON.stringify({version:1,lava:{explorer:'true',clean:true},injected:'ignored'}));const r=p.readProgress().value;assert.equal(r.lava.explorer,false);assert.equal(r.injected,undefined)});
+          test('Storage errors explicitly unsaved',()=>{global.localStorage.setItem=()=>{throw Error('denied')};assert.equal(p.recordCompletion('lava',run).stored,false)});
+          fs.writeFileSync('evidence/unit-results.json',JSON.stringify({passed:rows.length,failed:0,tests:rows},null,2));console.log('UNIT',rows.length)})().catch(e=>{console.error(e);process.exitCode=1});
+          JS
+          node evidence/unit.cjs
+      - name: Prepare isolated browsers
+        run: |
+          npm install --prefix "$RUNNER_TEMP/rc6" --no-save --package-lock=false playwright@1.56.1
+          "$RUNNER_TEMP/rc6/node_modules/.bin/playwright" install --with-deps chromium webkit
+      - name: Goals, awards, local character, privacy and touchscreen layout
+        id: runtime
+        continue-on-error: true
+        env:
+          NODE_PATH: ${{ runner.temp }}/rc6/node_modules
+        run: node evidence/runtime-test.cjs app evidence/runtime
+      - name: Four full routes with real movement and read-only observation
+        id: routes
+        continue-on-error: true
+        env:
+          CODEX_PRIMARY_RUNTIME_NODE_MODULES: ${{ runner.temp }}/rc6/node_modules
+        run: |
+          set +e
+          node evidence/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --out "$GITHUB_WORKSPACE/evidence/routes-practice" --mode practice --timeout-ms 90000
+          a=$?
+          node evidence/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --out "$GITHUB_WORKSPACE/evidence/routes-challenge" --mode challenge --timeout-ms 90000
+          b=$?
+          test "$a" = 0 && test "$b" = 0
+      - name: Preservation and acceptance gate
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          base=json.loads(Path('evidence/baseline.json').read_text())
+          changed=[p for p,h in base.items() if not Path('app',p).exists() or hashlib.sha256(Path('app',p).read_bytes()).hexdigest()!=h]
+          r=json.loads(Path('evidence/runtime/results.json').read_text())
+          routes=[json.loads(Path('evidence/routes-'+m+'/results.json').read_text()) for m in ['practice','challenge']]
+          passed=sum(x['summary']['passed'] for x in routes);failed=sum(x['summary']['failed'] for x in routes)
+          result={'baselineFiles':len(base),'changed':changed,'runtime':r['summary'],'routes':{'passed':passed,'failed':failed},'privateModelTested':False,'physicalDeviceTested':False}
+          Path('evidence/summary.json').write_text(json.dumps(result,indent=2));print(result)
+          assert not changed and r['summary']['passed']==8 and r['summary']['failed']==0 and passed==4 and failed==0
+          assert not list(Path('app/review/v29-rc6').rglob('*.glb'))
+          PY
+      - name: Save passing application only on review branch
+        run: |
+          cd app
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add review/v29-rc6
+          git commit -m 'Add RC6 local goals and achievement islands; preserve all previous releases'
+          git push origin HEAD:refs/heads/review/sky-rush-rc6-tested-20261104
+          git rev-parse HEAD > ../evidence/payload-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc6-goals-evidence
+          path: |
+            evidence/
+            app/review/v29-rc6/
+            tooling/tools/rc6/
+          retention-days: 30
