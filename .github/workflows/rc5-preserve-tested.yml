@@ -1,0 +1,61 @@
+name: Preserve tested RC5 payload
+on:
+  push:
+    branches: [review/sky-rush-rc5-local-session-20261104]
+    paths: [.github/workflows/rc5-preserve-tested.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: thafarmaaitah/Bouncing-
+          run-id: 41814426777
+          name: sky-rc5-session-evidence
+          path: recovered
+      - name: Validate and save exact tested bytes through Git data API
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import os,json,hashlib,urllib.request,urllib.error
+          from pathlib import Path
+          root=Path('recovered'); report=json.loads((root/'evidence/runtime/results.json').read_text())
+          assert report['summary']=={'passed':8,'failed':0,'total':8} and report['sourceUnchanged']
+          preserved=json.loads((root/'evidence/preservation.json').read_text())
+          assert preserved=={'baselineFiles':81,'changed':[]}
+          hashes=json.loads((root/'evidence/rc5-payload-hashes.json').read_text())
+          assert len(hashes)==10
+          elements=[]
+          for file,h in hashes.items():
+              p=root/'app'/file; b=p.read_bytes()
+              assert hashlib.sha256(b).hexdigest()==h
+              assert file.startswith('review/v29-rc5/') and p.suffix in ['.html','.js','.css']
+              elements.append({'path':file,'mode':'100644','type':'blob','content':b.decode('utf-8')})
+          api='https://api.github.com/repos/thafarmaaitah/Bouncing-'
+          def call(route,data=None):
+              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'sky-rc5-preservation'}
+              if data is not None: headers['Content-Type']='application/json'
+              req=urllib.request.Request(api+route,data=None if data is None else json.dumps(data).encode(),headers=headers)
+              with urllib.request.urlopen(req,timeout=45) as r:return json.load(r)
+          base='0c43dbee3dcab7fa89d82906288f9bbf21210eb4'
+          tree=call('/git/trees',{'base_tree':'2f9d608b88cc6ecf650da64f931ae3c11f795957','tree':elements})
+          commit=call('/git/commits',{'message':'Add RC5 local-only character session and resource guards; preserve all older files','tree':tree['sha'],'parents':[base]})
+          result={'sourceRun':41814426777,'recoveryOnly':True,'testsRepeated':False,'tree':tree['sha'],'commit':commit['sha'],'hashes':hashes,'preservation':preserved}
+          Path('recovery.json').write_text(json.dumps(result,indent=2))
+          print('PAYLOAD_COMMIT '+commit['sha'])
+          ref=call('/git/refs',{'ref':'refs/heads/review/sky-rush-rc5-tested-20261104','sha':commit['sha']})
+          assert ref['object']['sha']==commit['sha']
+          print('REVIEW_BRANCH_SAVED '+ref['ref'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc5-preservation-recovery
+          path: recovery.json
+          retention-days: 30
