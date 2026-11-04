@@ -1,0 +1,32 @@
+/* RC3: larger tablet touch controls only. Shared V28 CSS is unchanged. */
+@media (pointer: coarse) and (min-width: 700px) and (min-height: 500px) {
+  #controls { align-items: flex-end; padding-left: 18px; padding-right: 18px; }
+  #pad {
+    grid-template-columns: repeat(3, 88px);
+    grid-template-rows: repeat(2, 88px);
+    gap: 10px;
+    width: 284px;
+    height: 186px;
+    flex: 0 0 284px;
+  }
+  #pad button {
+    width: 88px; height: 88px;
+    min-width: 88px; min-height: 88px;
+    padding: 0; font-size: 32px; line-height: 1;
+    border-radius: 20px;
+  }
+  #actionButtons { flex: 0 0 140px; width: 140px; gap: 10px; align-items: flex-end; }
+  #jump {
+    width: 140px; height: 96px;
+    min-width: 140px; min-height: 96px !important;
+    padding: 0 12px; font-size: 28px; line-height: 1.1;
+    border-radius: 20px;
+  }
+}
+@media (pointer: coarse) and (min-width: 700px) and (min-height: 500px) and (orientation: landscape) {
+  #progressRail { left: 318px; right: 174px; }
+  #checkpointLabel, #message {
+    left: calc(50% + 72px);
+    max-width: calc(100% - 510px);
+  }
+}
