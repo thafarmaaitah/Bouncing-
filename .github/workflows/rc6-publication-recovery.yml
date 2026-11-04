@@ -1,0 +1,27 @@
+name: RC6 guarded publication recovery
+on:
+  push:
+    branches: [review/sky-rush-rc6-goals-20261104]
+    paths: [.github/workflows/rc6-publication-recovery.yml]
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Verify expected baseline and fast-forward exact tested payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          repo=thafarmaaitah/Bouncing-
+          base=a3e317944895d4149e76b56310e0fea04b7813af
+          tested=018d6067382307af98751db47ae3a99f649304b4
+          current=$(gh api repos/$repo/git/ref/heads/main --jq .object.sha)
+          if [ "$current" = "$tested" ]; then echo 'Already saved; no update needed'; exit 0; fi
+          test "$current" = "$base"
+          test "$(gh api repos/$repo/git/commits/$tested --jq '.parents[0].sha')" = "$base"
+          gh api repos/$repo/compare/$base...$tested --jq '.files | all(.status=="added" and (.filename | startswith("review/v29-rc6/")))' | grep -x true
+          gh api --method PATCH repos/$repo/git/refs/heads/main -f sha=$tested -F force=false --jq .object.sha
+          test "$(gh api repos/$repo/git/ref/heads/main --jq .object.sha)" = "$tested"
