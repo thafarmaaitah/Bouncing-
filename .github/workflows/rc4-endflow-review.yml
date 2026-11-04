@@ -1,0 +1,139 @@
+name: RC4 outcome flow review
+on:
+  push:
+    branches: [review/sky-rush-v29-rc4-endflow-20261104]
+    paths: ['.github/workflows/rc4-endflow-review.yml']
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 818825185df212520ec863b50ab43f25aedc5229
+          path: app
+      - uses: actions/checkout@v4
+        with:
+          ref: 969bf77e75aadc943e9b02d8800e78ad41fda65f
+          path: harness
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build additive review copy
+        run: |
+          mkdir -p evidence
+          python tools/rc4/build.py app > evidence/generated-sha256.json
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib,json
+          root=Path('app')
+          for f in (root/'review/v29-rc4').glob('*-v29-candidate.html'):
+              s=f.read_text()
+              old="const resultOverlay=document.getElementById('resultOverlay');"
+              assert s.count(old)==1
+              s=s.replace(old,old+"\n// Keep full-screen dialogs above the isolated canvas and touch controls.\ndocument.body.append(resultOverlay);document.body.append(document.getElementById('bootError'));")
+              s=s.replace("if(resultOverlay.hidden||resultNavigating||contextLost)return;\n resultNavigating=true;","if(resultOverlay.hidden||resultNavigating)return;\n resultNavigating=true;")
+              f.write_text(s)
+          hub=root/'review/v29-rc4/index.html'
+          hub.write_text(hub.read_text().replace('Pre-publication review report and evidence','Earlier RC2 archive (not RC4 test results)'))
+          tracked=subprocess.check_output(['git','-C','app','ls-files'],text=True).splitlines()
+          hashes={p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in tracked}
+          Path('evidence/baseline-hashes.json').write_text(json.dumps(hashes,indent=2))
+          assert not any(p.endswith(('.glb','.gltf','.blend')) for p in tracked)
+          assert subprocess.run(['git','-C','app','diff','--exit-code']).returncode==0
+          final={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (root/'review/v29-rc4').iterdir()}
+          Path('evidence/payload-sha256.json').write_text(json.dumps(final,indent=2))
+          PY
+      - name: Isolated test dependencies
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc4-tools"
+          cd "$RUNNER_TEMP/rc4-tools"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium webkit
+      - name: Test result-screen flow in Chromium and WebKit
+        id: flow
+        continue-on-error: true
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/rc4-tools/node_modules"
+          node tools/rc4/flow-test.cjs app evidence/flow
+      - name: Full routes with ordinary inputs in both modes
+        id: routes
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('harness/tools/test-sky-rush-review-routes.mjs').read_text()
+          s=s.replace("if (!state.running) {", "if(state.won)break;\n        if (!state.running) {")
+          marker="      await page.locator('#startRun').click();\n      const start ="
+          assert s.count(marker)==1
+          s=s.replace(marker,"      if(args.mode==='challenge')await page.locator('#mode').selectOption('challenge');\n"+marker)
+          s=s.replace("Practice mode, marker avatar.","Selected mode, marker avatar.")
+          # After an ordinary-input victory, test real result actions, not just the won flag.
+          marker="      route.screenshot = join(out, `${engine}-${stage.stage}-route.png`);"
+          assert s.count(marker)==1
+          s=s.replace(marker,"""      if(route.completed){
+                  await page.locator('#resultOverlay:not([hidden])').waitFor();
+                  if(await page.locator('#resultTitle').textContent() !== (stage.stage==='lava'?'Lava Rush':'Storm Circuit')+' complete!')throw Error('Missing completion title');
+                  if(stage.stage==='lava'){
+                    await page.locator('#resultNext').click();
+                    await page.waitForURL(/storm-v29-candidate/);
+                    await page.locator('#startRun:not([disabled])').waitFor();
+                    if(await page.locator('#mode').inputValue() !== (args.mode==='challenge'?'challenge':'practice'))throw Error('Mode lost during transition');
+                    await page.locator('#startRun').click();
+                    await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0);
+                    route.afterFinish='Next opened existing Storm and Start advanced the timer';
+                  }else{
+                    await page.locator('#resultReplay').click();
+                    await page.waitForFunction(()=>document.getElementById('resultOverlay').hidden&&Number(document.getElementById('timer').textContent)>0);
+                    if(await page.locator('#score').textContent()!=='0')throw Error('Replay did not reset score');
+                    route.afterFinish='One-click Play again started a fresh Storm attempt';
+                  }
+                }
+          """+marker)
+          Path('evidence/executed-route-test.mjs').write_text(s)
+          PY
+          export CODEX_PRIMARY_RUNTIME_NODE_MODULES="$RUNNER_TEMP/rc4-tools/node_modules"
+          export NODE_PATH="$RUNNER_TEMP/rc4-tools/node_modules"
+          node evidence/executed-route-test.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --lava-file review/v29-rc4/lava-v29-candidate.html --storm-file review/v29-rc4/storm-v29-candidate.html --mode practice --out "$GITHUB_WORKSPACE/evidence/routes-practice"
+          node evidence/executed-route-test.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --lava-file review/v29-rc4/lava-v29-candidate.html --storm-file review/v29-rc4/storm-v29-candidate.html --mode challenge --out "$GITHUB_WORKSPACE/evidence/routes-challenge"
+      - name: Verify frozen originals and decide gate
+        if: always()
+        env:
+          FLOW: ${{ steps.flow.outcome }}
+          ROUTES: ${{ steps.routes.outcome }}
+        run: |
+          python - <<'PY'
+          import json,hashlib,os
+          from pathlib import Path
+          before=json.loads(Path('evidence/baseline-hashes.json').read_text())
+          changed=[p for p,h in before.items() if not (Path('app')/p).is_file() or hashlib.sha256((Path('app')/p).read_bytes()).hexdigest()!=h]
+          result={'preservedFiles':len(before),'changed':changed,'flow':os.environ['FLOW'],'routes':os.environ['ROUTES'],'privateModelNotIncluded':not list(Path('app').rglob('*.glb'))}
+          Path('evidence/preservation.json').write_text(json.dumps(result,indent=2))
+          assert not changed
+          assert result['flow']=='success' and result['routes']=='success',result
+          PY
+      - name: Save passing payload only; never deploy from test branch
+        run: |
+          cd app
+          git diff --exit-code
+          git switch -c review/sky-rush-v29-rc4-tested-20261104
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add review/v29-rc4
+          git commit -m 'Add isolated V29 RC4 finish, next-stage and one-tap replay repair; preserve all existing files'
+          git push origin HEAD:refs/heads/review/sky-rush-v29-rc4-tested-20261104
+          git rev-parse HEAD > ../evidence/payload-commit.txt
+      - name: Keep evidence, failed attempts and review payload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sky-rc4-endflow-evidence
+          path: |
+            evidence/
+            app/review/v29-rc4/
+            tools/rc4/
+          retention-days: 30
