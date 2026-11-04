@@ -1,0 +1,72 @@
+name: RC7 existing-browser verification
+on:
+  push:
+    branches: [review/sky-rush-rc7-path-guide-20261105]
+    paths: [.github/workflows/rc7-system-browser.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with: {path: tooling, persist-credentials: false}
+      - uses: actions/checkout@v4
+        with: {ref: d02b751178bc29a041f198cfe205c4902bf18ced, path: app, persist-credentials: false}
+      - uses: actions/download-artifact@v4
+        with:
+          name: sky-rc6-goals-evidence
+          run-id: 41817539343
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: previous
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Prepare exact-payload tests and existing Chrome
+        run: |
+          mkdir -p evidence
+          CHROME=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)
+          test -n "$CHROME"
+          "$CHROME" --version
+          echo "SYSTEM_CHROME=$CHROME" >> "$GITHUB_ENV"
+          timeout 45 npm install --prefix "$RUNNER_TEMP/rc7-system" --no-save --package-lock=false --fetch-timeout=20000 --fetch-retries=0 playwright@1.56.1
+          python tooling/tools/rc7/prepare.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('evidence/runtime-test.cjs');s=p.read_text().replace("[['chromium',chromium],['webkit',webkit]]","[['chromium',chromium]]")
+          s=s.replace("type.launch({headless:true,","type.launch({executablePath:process.env.SYSTEM_CHROME,headless:true,")
+          Path('evidence/executed-runtime.cjs').write_text(s)
+          PY
+          node evidence/unit.mjs app/review/v29-rc7 evidence/unit-results.json
+      - name: Four actual Chrome session and guide scenarios
+        continue-on-error: true
+        env: {NODE_PATH: '${{ runner.temp }}/rc7-system/node_modules'}
+        run: node evidence/executed-runtime.cjs app evidence/runtime
+      - name: Four ordinary-input routes
+        continue-on-error: true
+        env: {CODEX_PRIMARY_RUNTIME_NODE_MODULES: '${{ runner.temp }}/rc7-system/node_modules'}
+        run: |
+          node evidence/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --executable "$SYSTEM_CHROME" --mode practice --out "$GITHUB_WORKSPACE/evidence/routes-practice" --timeout-ms 90000
+          node evidence/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser chromium --executable "$SYSTEM_CHROME" --mode challenge --out "$GITHUB_WORKSPACE/evidence/routes-guided-challenge" --timeout-ms 90000
+      - name: Record exact outcomes and integrity
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          e=Path('evidence');paths=['unit-results.json','runtime/results.json','routes-practice/results.json','routes-guided-challenge/results.json']
+          data={p:json.loads((e/p).read_text()) if (e/p).exists() else None for p in paths}
+          status=subprocess.check_output(['git','status','--porcelain'],cwd='app').decode()
+          summary={'sourceCommit':'d02b751178bc29a041f198cfe205c4902bf18ced','sourceUnchanged':not status,'browserScope':'Hosted existing Chrome only; WebKit not executed in this fallback','results':{k:v.get('summary',{'passed':v.get('passed'),'failed':v.get('failed')}) if v else None for k,v in data.items()}}
+          (e/'summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary))
+          assert not status
+          assert data['unit-results.json']['failed']==0
+          assert data['runtime/results.json']['summary']=={'passed':4,'failed':0,'total':4}
+          for p in paths[2:]:assert data[p]['summary']['passed']==2 and data[p]['summary']['failed']==0
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc7-system-browser-evidence
+          path: evidence/
+          retention-days: 30
