@@ -48,13 +48,14 @@ jobs:
           text=replace_once(text,"await t.advance(100);","await t.advance(350);")
           text=replace_once(text,"const traceAtPause = await events(page);", "assert(afterSecondary.onGround && Math.abs(afterSecondary.position.y)<1e-8 && Math.abs(afterSecondary.position.z-3)<1 && Math.abs(afterSecondary.position.x)<1, 'INVALID TEST PRECONDITION: player not safely on starting platform at Pause');\n  const traceAtPause = await events(page);")
           text=replace_once(text,"noAutomaticPlanarMovement(resumed, afterResume);", "noAutomaticPlanarMovement(resumed, afterResume);\n    assert(afterResume.onGround && afterResume.lives===resumed.lives, 'Unexpected fall or life loss after grounded Resume');\n    assert(afterResume.runTime>resumed.runTime, 'Timer must advance after Resume');")
-          # Real-time secondary-Pause case only: no clock replacement is executed.
           (scratch/'tools'/name).write_text(text)
           (out/'executed'/name).write_text(text)
           (out/'executed'/(name+'.diff')).write_text(''.join(difflib.unified_diff(original.splitlines(True),text.splitlines(True))))
           name='test-sky-rush-review-routes.mjs'
           original=(ws/'previous-harness/tools'/name).read_text()
-          text=replace_once(original,"await page.locator('#startRun').click();", "if(args.mode==='challenge') await page.locator('#mode').selectOption('challenge');\n      route.mode=args.mode==='challenge'?'challenge':'practice';\n      await page.locator('#startRun').click();")
+          old="await page.locator('#startRun').click();\n      const start = Date.now(), deadline = start + timeout;"
+          new="if(args.mode==='challenge') await page.locator('#mode').selectOption('challenge');\n      route.mode=args.mode==='challenge'?'challenge':'practice';\n      await page.locator('#startRun').click();\n      const start = Date.now(), deadline = start + timeout;"
+          text=replace_once(original,old,new)
           (scratch/'tools'/name).write_text(text)
           (out/'executed'/name).write_text(text)
           (out/'executed'/(name+'.diff')).write_text(''.join(difflib.unified_diff(original.splitlines(True),text.splitlines(True))))
