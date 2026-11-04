@@ -1,0 +1,74 @@
+name: RC5 local session and safety review
+on:
+  push:
+    branches: [review/sky-rush-rc5-local-session-20261104]
+    paths: [.github/workflows/rc5-session-review.yml]
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 0c43dbee3dcab7fa89d82906288f9bbf21210eb4
+          path: app
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build additive RC5 files and freeze original hashes
+        run: |
+          mkdir -p evidence
+          cd app
+          python - <<'PY'
+          import json,hashlib,subprocess
+          from pathlib import Path
+          files=subprocess.check_output(['git','ls-files','-z']).decode().split('\0')
+          h={f:hashlib.sha256(Path(f).read_bytes()).hexdigest() for f in files if f}
+          Path('../evidence/baseline-hashes.json').write_text(json.dumps(h,indent=2))
+          PY
+          python ../tooling/tools/rc5/build.py
+          for f in review/v29-rc5/*.js; do node --check "$f"; done
+          cp rc5-payload-hashes.json ../evidence/
+      - name: Prepare isolated browsers
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc5"
+          npm install --prefix "$RUNNER_TEMP/rc5" --no-save --package-lock=false playwright@1.56.1
+          "$RUNNER_TEMP/rc5/node_modules/.bin/playwright" install --with-deps chromium webkit
+      - name: Exercise local session, transitions, privacy and controls
+        env:
+          NODE_PATH: ${{ runner.temp }}/rc5/node_modules
+        run: node tooling/tools/rc5/test.cjs app evidence/runtime
+      - name: Verify all old files and save reviewed payload only
+        run: |
+          cd app
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          baseline=json.loads(Path('../evidence/baseline-hashes.json').read_text())
+          changed=[f for f,h in baseline.items() if not Path(f).exists() or hashlib.sha256(Path(f).read_bytes()).hexdigest()!=h]
+          Path('../evidence/preservation.json').write_text(json.dumps({'baselineFiles':len(baseline),'changed':changed},indent=2))
+          assert not changed
+          assert not list(Path('review/v29-rc5').rglob('*.glb'))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add review/v29-rc5
+          git commit -m 'Add RC5 local-only character session and resource guards; preserve RC4 and all earlier files'
+          git push origin HEAD:refs/heads/review/sky-rush-rc5-tested-20261104
+          git rev-parse HEAD > ../evidence/payload-commit.txt
+      - name: Retain executed source, evidence and failed cases
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sky-rc5-session-evidence
+          path: |
+            evidence/
+            app/review/v29-rc5/
+            tooling/tools/rc5/
+          retention-days: 30
