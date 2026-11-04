@@ -1,0 +1,89 @@
+name: RC4 one-case WebKit recheck
+on:
+  push:
+    branches: [review/sky-rush-v29-rc4-endflow-20261104]
+    paths: ['.github/workflows/rc4-targeted-recheck.yml']
+permissions:
+  actions: read
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 818825185df212520ec863b50ab43f25aedc5229
+          path: app
+      - uses: actions/download-artifact@v4
+        with:
+          name: sky-rc4-endflow-evidence
+          run-id: 41798103790
+          github-token: ${{ github.token }}
+          path: prior
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore exact tested payload and adapt only the failed observation
+        run: |
+          mkdir -p evidence
+          python - <<'PY'
+          from pathlib import Path
+          import shutil,json,hashlib
+          shutil.copytree('prior/app/review/v29-rc4','app/review/v29-rc4')
+          hashes=json.loads(Path('prior/evidence/payload-sha256.json').read_text())
+          for p,h in hashes.items():assert hashlib.sha256((Path('app')/p).read_bytes()).hexdigest()==h
+          first=json.loads(Path('prior/evidence/flow/flow-results.json').read_text())
+          assert first['summary']=={'pass':7,'fail':1}
+          bad=[t for t in first['tests'] if not t['pass']]
+          assert len(bad)==1 and bad[0]['engine']=='webkit' and bad[0]['viewport']=={'width':844,'height':390}
+          for mode in ['practice','challenge']:
+              r=json.loads(Path(f'prior/evidence/routes-{mode}/results.json').read_text())
+              assert r['summary']['passed']==2 and r['summary']['failed']==0
+          s=Path('prior/tools/rc4/flow-test.cjs').read_text()
+          s=s.replace("[['chromium',chromium],['webkit',webkit]]","[['webkit',webkit]]")
+          s=s.replace("[{width:390,height:844},{width:844,height:390},{width:1024,height:650},{width:768,height:1024}]","[{width:844,height:390}]")
+          old='const a=await state();await page.waitForTimeout(60);'
+          assert s.count(old)==1
+          s=s.replace(old,"const a=await state();await page.waitForFunction(before=>{const p=__flowQA.state().position;return p.x<before.x||p.z<before.z},a.position,{timeout:3000});")
+          Path('evidence/executed-recheck.cjs').write_text(s)
+          Path('evidence/method.json').write_text(json.dumps({'previousRun':41798103790,'scope':'Only WebKit 844x390; wait for the same movement condition up to 3s instead of taking one sample after 60ms. No application modification; no fake time. Prior seven passing flows and four ordinary-input routes are not repeated.','payloadSha256':hashes},indent=2))
+          PY
+      - name: Install isolated WebKit runner
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc4-tools"
+          cd "$RUNNER_TEMP/rc4-tools"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps webkit
+      - name: Run the one previously failed flow
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/rc4-tools/node_modules"
+          node evidence/executed-recheck.cjs app evidence/flow
+      - name: Verify original bytes and save passing review payload
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          old=json.loads(Path('prior/evidence/baseline-hashes.json').read_text())
+          changed=[p for p,h in old.items() if hashlib.sha256((Path('app')/p).read_bytes()).hexdigest()!=h]
+          new=json.loads(Path('prior/evidence/payload-sha256.json').read_text())
+          assert not changed
+          for p,h in new.items(): assert hashlib.sha256((Path('app')/p).read_bytes()).hexdigest()==h
+          r=json.loads(Path('evidence/flow/flow-results.json').read_text());assert r['summary']=={'pass':1,'fail':0}
+          Path('evidence/preservation.json').write_text(json.dumps({'originalFiles':len(old),'changed':changed,'payloadIdenticalToFirstRun':True,'previousValidFlows':7,'targetedRetestPass':1,'ordinaryInputRoutesRetained':4},indent=2))
+          PY
+          cd app
+          git diff --exit-code
+          git switch -c review/sky-rush-v29-rc4-tested-20261104
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add review/v29-rc4
+          git commit -m 'Add V29 RC4 end-of-stage flow repair as separate review; preserve RC3 and earlier files'
+          git push origin HEAD:refs/heads/review/sky-rush-v29-rc4-tested-20261104
+          git rev-parse HEAD > ../evidence/payload-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc4-targeted-recheck
+          path: evidence/
+          retention-days: 30
