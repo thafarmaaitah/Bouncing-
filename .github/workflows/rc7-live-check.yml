@@ -1,0 +1,41 @@
+name: RC7 public HTTPS verification
+on:
+  push:
+    branches: [review/sky-rush-rc7-path-guide-20261105]
+    paths: [.github/workflows/rc7-live-check.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with: {path: tooling, persist-credentials: false}
+      - uses: actions/checkout@v4
+        with: {ref: 8000be541227e1c0d568526588ef1d14ed774cff, path: app, persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Use installed Chrome
+        run: |
+          CHROME=$(command -v google-chrome || command -v google-chrome-stable || command -v chromium)
+          test -n "$CHROME"
+          echo "SYSTEM_CHROME=$CHROME" >> "$GITHUB_ENV"
+          timeout 45 npm install --prefix "$RUNNER_TEMP/rc7-live" --no-save --package-lock=false --fetch-timeout=20000 --fetch-retries=0 playwright@1.56.1
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('tooling/tools/rc7/live.cjs').read_text().replace('chromium.launch({headless:true,','chromium.launch({executablePath:process.env.SYSTEM_CHROME,headless:true,')
+          s=s.replace("const preserved=['index.html'", "const preserved=['review/v29-rc6/ipad-acceptance.html','index.html'")
+          Path('live-executed.cjs').write_text(s)
+          PY
+      - name: Actual public site checks
+        env: {NODE_PATH: '${{ runner.temp }}/rc7-live/node_modules'}
+        run: node live-executed.cjs app live-evidence 8000be541227e1c0d568526588ef1d14ed774cff
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc7-live-evidence
+          path: |
+            live-evidence/
+            live-executed.cjs
+          retention-days: 30
