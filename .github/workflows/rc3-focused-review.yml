@@ -1,0 +1,124 @@
+name: RC3 focused tablet and route review
+on:
+  push:
+    branches: [review/sky-rush-rc3-focused-20261104]
+    paths: [.github/workflows/rc3-focused-review.yml]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 818825185df212520ec863b50ab43f25aedc5229
+          path: frozen-app
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 969bf77e75aadc943e9b02d8800e78ad41fda65f
+          path: previous-harness
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare isolated tests from existing harnesses
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, shutil, hashlib, json, difflib
+          ws=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          source=ws/'frozen-app'
+          scratch=pathlib.Path(os.environ['RUNNER_TEMP'])/'sky-rc3-focused'
+          shutil.copytree(source,scratch,ignore=shutil.ignore_patterns('.git'))
+          out=ws/'qa-focused'
+          out.mkdir()
+          (out/'executed').mkdir()
+          frozen={str(p.relative_to(source)):hashlib.sha256(p.read_bytes()).hexdigest() for p in source.rglob('*') if p.is_file() and '.git' not in p.relative_to(source).parts}
+          (out/'baseline-hashes.json').write_text(json.dumps(frozen,indent=2))
+          (scratch/'tools').mkdir(exist_ok=True)
+          def replace_once(text,a,b):
+            assert text.count(a)==1, (a,text.count(a))
+            return text.replace(a,b,1)
+          name='test-sky-rush-review-touch.cjs'
+          original=(ws/'previous-harness/tools'/name).read_text()
+          text=original.replace("candidate: 'review/v29/lava-v29-candidate.html'", "candidate: 'review/v29-rc3/lava-v29-candidate.html'").replace("candidate: 'review/v29/storm-v29-candidate.html'", "candidate: 'review/v29-rc3/storm-v29-candidate.html'")
+          text=replace_once(text,'viewport: { width: 390, height: 844 }','viewport: { width: Number(args.width || 1024), height: Number(args.height || 768) }')
+          text=replace_once(text,"await t.advance(120);","await t.advance(350);")
+          text=replace_once(text,"await t.advance(100);","await t.advance(350);")
+          text=replace_once(text,"const traceAtPause = await events(page);", "assert(afterSecondary.onGround && Math.abs(afterSecondary.position.y)<1e-8 && Math.abs(afterSecondary.position.z-3)<1 && Math.abs(afterSecondary.position.x)<1, 'INVALID TEST PRECONDITION: player not safely on starting platform at Pause');\n  const traceAtPause = await events(page);")
+          text=replace_once(text,"noAutomaticPlanarMovement(resumed, afterResume);", "noAutomaticPlanarMovement(resumed, afterResume);\n    assert(afterResume.onGround && afterResume.lives===resumed.lives, 'Unexpected fall or life loss after grounded Resume');\n    assert(afterResume.runTime>resumed.runTime, 'Timer must advance after Resume');")
+          # Real-time secondary-Pause case only: no clock replacement is executed.
+          (scratch/'tools'/name).write_text(text)
+          (out/'executed'/name).write_text(text)
+          (out/'executed'/(name+'.diff')).write_text(''.join(difflib.unified_diff(original.splitlines(True),text.splitlines(True))))
+          name='test-sky-rush-review-routes.mjs'
+          original=(ws/'previous-harness/tools'/name).read_text()
+          text=replace_once(original,"await page.locator('#startRun').click();", "if(args.mode==='challenge') await page.locator('#mode').selectOption('challenge');\n      route.mode=args.mode==='challenge'?'challenge':'practice';\n      await page.locator('#startRun').click();")
+          (scratch/'tools'/name).write_text(text)
+          (out/'executed'/name).write_text(text)
+          (out/'executed'/(name+'.diff')).write_text(''.join(difflib.unified_diff(original.splitlines(True),text.splitlines(True))))
+          (out/'method.json').write_text(json.dumps({'build':'818825185df212520ec863b50ab43f25aedc5229','harnessSource':'969bf77e75aadc943e9b02d8800e78ad41fda65f','method':'Existing actual-engine browser harnesses; native Chromium multi-touch; real time only; read-only position/input observations inserted only in local test HTTP responses. Routes use native keys without state mutation.','limits':['No physical iPad/phone','No private V4.1 file loaded or uploaded','No WebKit multi-touch','No child playtest','No final acceptance or new release'],'baselineFiles':len(frozen)},indent=2))
+          print('FROZEN_FILES',len(frozen))
+          PY
+          cd "$RUNNER_TEMP/sky-rc3-focused"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Focused real-time tablet pause and resume
+        run: |
+          cd "$RUNNER_TEMP/sky-rc3-focused"
+          export CODEX_PRIMARY_RUNTIME_NODE_MODULES="$PWD/node_modules"
+          set +e
+          for size in '1024 768' '768 1024' '1024 650'; do
+            set -- $size
+            for repetition in 1 2; do
+              node tools/test-sky-rush-review-touch.cjs --browser chromium --target candidate --case real-time-secondary-pause --width "$1" --height "$2" --output "$GITHUB_WORKSPACE/qa-focused/touch-$1-$2-$repetition"
+            done
+          done
+          exit 0
+      - name: Complete both existing stages in both modes using normal inputs
+        if: always()
+        run: |
+          cd "$RUNNER_TEMP/sky-rc3-focused"
+          export CODEX_PRIMARY_RUNTIME_NODE_MODULES="$PWD/node_modules"
+          set +e
+          for mode in practice challenge; do
+            node tools/test-sky-rush-review-routes.mjs --browser chromium --mode "$mode" --lava-file review/v29-rc3/lava-v29-candidate.html --storm-file review/v29-rc3/storm-v29-candidate.html --timeout-ms 45000 --out "$GITHUB_WORKSPACE/qa-focused/routes-$mode"
+          done
+          exit 0
+      - name: Summarize honestly and verify all source bytes remained unchanged
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os,pathlib,json,hashlib
+          ws=pathlib.Path(os.environ['GITHUB_WORKSPACE']);out=ws/'qa-focused'
+          scratch=pathlib.Path(os.environ['RUNNER_TEMP'])/'sky-rc3-focused'
+          baseline=json.loads((out/'baseline-hashes.json').read_text())
+          source_changed=[]
+          for f,h in baseline.items():
+            if f.startswith('tools/') and f in ['tools/test-sky-rush-review-touch.cjs','tools/test-sky-rush-review-routes.mjs']: continue
+            p=scratch/f
+            if not p.exists() or hashlib.sha256(p.read_bytes()).hexdigest()!=h:source_changed.append(f)
+          touch=[];routes=[]
+          for p in sorted(out.glob('touch-*/touch-results.json')):
+            data=json.loads(p.read_text())
+            for t in data.get('tests',[]):
+              d=t.get('detail',{});e=t.get('eventSummary',{})
+              touch.append({'suite':p.parent.name,'stage':t.get('stage'),'status':t.get('status'),'error':t.get('error'),'nativeSecondaryPauseDowns':e.get('secondaryPauseDowns'),'paused':d.get('afterSecondary'),'resumed':d.get('resumed'),'afterResume':d.get('afterResume'),'jsErrors':t.get('pageErrors',[])})
+          for p in sorted(out.glob('routes-*/results.json')):
+            data=json.loads(p.read_text())
+            for r in data.get('routes',[]):
+              f=r.get('final',{})
+              routes.append({'suite':p.parent.name,'stage':r.get('stage'),'mode':r.get('mode'),'status':r.get('status'),'completed':r.get('completed'),'stars':f.get('score'),'lives':f.get('lives'),'time':f.get('runTime'),'respawns':len(r.get('respawns',[])),'pauses':len(r.get('pauses',[])),'errors':r.get('errors',[]),'stopReason':r.get('stopReason'),'failure':r.get('error')})
+          result={'sourceCommit':'818825185df212520ec863b50ab43f25aedc5229','mainModified':False,'sourceChanged':source_changed,'touch':{'expected':12,'passed':sum(t['status']=='PASS' for t in touch),'failed':sum(t['status']=='FAIL' for t in touch),'notRun':max(0,12-len(touch)),'cases':touch},'routes':{'expected':4,'passed':sum(t['status']=='passed' for t in routes),'failed':sum(t['status']!='passed' for t in routes),'notRun':max(0,4-len(routes)),'cases':routes},'limits':['Software-rendered Chromium 141; not real iPad Safari','Private V4.1 and child enjoyment not tested','WebKit multi-touch not executed','No application files patched or deployed']}
+          result['pass']=not source_changed and result['touch']['passed']==12 and result['routes']['passed']==4
+          (out/'SUMMARY.json').write_text(json.dumps(result,indent=2))
+          print(json.dumps(result,indent=2))
+          if not result['pass']: raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc3-focused-review
+          path: qa-focused/
+          retention-days: 30
