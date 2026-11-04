@@ -1,0 +1,41 @@
+name: RC7 local-browser package
+on:
+  push:
+    branches: [review/sky-rush-rc7-path-guide-20261105]
+    paths: [.github/workflows/rc7-container-package.yml]
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 98856342a2f2c13227145865e079d780f2a37db7
+          path: app
+      - name: Build identical candidate and save review copy
+        run: |
+          cd app
+          python ../tooling/tools/rc7/build.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add review/v29-rc7
+          git commit -m 'Preserve RC7 built candidate for browser verification; not final acceptance'
+          git push origin HEAD:refs/heads/review/sky-rush-rc7-built-20261105
+          git rev-parse HEAD > ../payload-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc7-container-package
+          path: |
+            app/review/v29-rc7/
+            app/assets/
+            app/rc7-payload-hashes.json
+            tooling/tools/rc7/
+            payload-commit.txt
+          retention-days: 30
