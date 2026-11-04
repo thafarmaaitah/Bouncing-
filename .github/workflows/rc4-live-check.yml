@@ -1,0 +1,69 @@
+name: RC4 public review verification
+on:
+  push:
+    branches: [review/sky-rush-v29-rc4-endflow-20261104]
+    paths: ['.github/workflows/rc4-live-check.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0c43dbee3dcab7fa89d82906288f9bbf21210eb4
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compare deployed bytes including unchanged versions
+        run: |
+          mkdir -p live-evidence
+          python - <<'PY'
+          from pathlib import Path
+          import urllib.request,time,json,hashlib
+          base='https://thafarmaaitah.github.io/Bouncing-/'
+          commit='0c43dbee3dcab7fa89d82906288f9bbf21210eb4'
+          new=[str(p) for p in Path('review/v29-rc4').iterdir() if p.is_file()]
+          files=new+['assets/sky-rush-v28.css','assets/sky-rush-boot-v28.js','assets/vendor/three-0.160.1/three.module.min.js','assets/vendor/three-0.160.1/GLTFLoader.js','assets/vendor/three-0.160.1/BufferGeometryUtils.js','index.html','sky-rush-adventure.html','sky-rush-adventure-v28.html','sky-rush-lava-obby-v28-stable.html','sky-rush-storm-circuit-v5-stable.html','review/v29/index.html','review/v29/lava-v29-candidate.html','review/v29/storm-v29-candidate.html','review/v29-rc3/index.html','review/v29-rc3/lava-v29-candidate.html','review/v29-rc3/storm-v29-candidate.html','review/v29-rc3/controls-ipad-rc3.css']
+          def get(p):
+              with urllib.request.urlopen(base+p+'?build='+commit,timeout=20) as r:return r.status,r.read()
+          ready=False
+          for i in range(20):
+              try:
+                  status,b=get('review/v29-rc4/index.html')
+                  if status==200 and b==Path('review/v29-rc4/index.html').read_bytes():ready=True;break
+              except Exception:pass
+              time.sleep(4)
+          assert ready,'RC4 not yet published'
+          results=[]
+          for p in files:
+              status,b=get(p);same=b==Path(p).read_bytes()
+              results.append({'file':p,'status':status,'sameBytes':same,'sha256':hashlib.sha256(b).hexdigest()})
+              Path('live-evidence/http.json').write_text(json.dumps(results,indent=2))
+              assert status==200 and same,p
+          print('LIVE_BYTES',len(results),'passed')
+          PY
+      - name: Prepare isolated Chromium
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc4-live"
+          cd "$RUNNER_TEMP/rc4-live"
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install chromium
+      - name: Unmodified public page runtime smoke
+        run: |
+          cat > "$RUNNER_TEMP/rc4-live/check.cjs" <<'JS'
+          const {chromium}=require('playwright');const fs=require('fs'),path=require('path'),assert=require('assert/strict');
+          (async()=>{const out=path.join(process.env.GITHUB_WORKSPACE,'live-evidence');const report=[];const browser=await chromium.launch({headless:true,args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+          for(const stage of ['lava','storm']){const context=await browser.newContext({viewport:{width:1024,height:650},hasTouch:true,isMobile:true,ignoreHTTPSErrors:false});const page=await context.newPage();const row={stage,version:browser.version(),errors:[],failedRequests:[],instrumented:false};page.on('pageerror',e=>row.errors.push(e.message));page.on('requestfailed',r=>row.failedRequests.push(r.url()));
+          try{const r=await page.goto('https://thafarmaaitah.github.io/Bouncing-/review/v29-rc4/'+stage+'-v29-candidate.html',{waitUntil:'networkidle'});assert.equal(r.status(),200);await page.locator('#startRun:not([disabled])').waitFor();assert.match(await page.title(),/V29 RC4/);assert.equal(await page.locator('#game canvas').count(),1);assert.equal(await page.locator('#resultOverlay').isVisible(),false);await page.locator('#startRun').tap();await page.waitForFunction(()=>Number(document.getElementById('timer').textContent)>0);await page.locator('#jump').tap();await page.waitForFunction(()=>document.getElementById('message').textContent==='Jump!');await page.locator('#pause').tap();assert.equal(await page.locator('#startRun').textContent(),'Resume');assert.deepEqual(row.errors,[]);assert.deepEqual(row.failedRequests,[]);await page.screenshot({path:path.join(out,stage+'-live.png'),fullPage:true});row.pass=true;}catch(e){row.pass=false;row.failure=e.stack}finally{report.push(row);await context.close()}}
+          await browser.close();fs.writeFileSync(path.join(out,'runtime.json'),JSON.stringify({scope:'Uninstrumented public HTTPS startup, Start, JUMP handler and Pause; not a full live route or physical-device test',results:report},null,2));console.log(JSON.stringify(report));if(report.some(r=>!r.pass))process.exitCode=1;})().catch(e=>{console.error(e);process.exitCode=1});
+          JS
+          node "$RUNNER_TEMP/rc4-live/check.cjs"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sky-rc4-live-evidence
+          path: live-evidence/
+          retention-days: 30
