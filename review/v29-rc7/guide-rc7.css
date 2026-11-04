@@ -1,0 +1,6 @@
+/* Version-local guide; no animation, no change to movement controls. */
+.guideChoice{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:6px 12px;border:1px solid #b7eaff;border-radius:12px;cursor:pointer;font-size:15px;max-width:100%;box-sizing:border-box}
+.guideChoice input{width:24px;height:24px;min-width:24px;margin:0;accent-color:#7be9ff}
+#guideStatus,#guideSuggestion{max-width:34em;font-size:12px;line-height:1.3}
+#guideSuggestion{color:#fff4a1;font-weight:700}
+@media(max-height:500px) and (orientation:landscape){#readyOverlay{padding:8px 12px;align-items:stretch;justify-content:flex-start}#readyOverlay section{margin:auto;min-height:min-content;gap:5px}#readyOverlay .avatarNote{display:none}#guideStatus{font-size:11px}}
