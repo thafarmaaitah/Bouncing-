@@ -1,0 +1,112 @@
+name: RC7 WebKit targeted tablet and live verification
+on:
+  push:
+    branches: [review/rc7-webkit-20261110]
+    paths: [.github/workflows/rc7-webkit-targeted-20261110.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 8000be541227e1c0d568526588ef1d14ed774cff
+          path: app
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 42776997194
+          name: rc7-webkit-evidence-20261110
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: first
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 41907395042
+          name: sky-rc7-system-browser-evidence
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: previous
+      - name: Retain passing phone evidence and prepare only failed tablet cases
+        shell: bash
+        run: |
+          mkdir -p evidence
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          old=Path('first/webkit-runtime.cjs').read_text();s=old
+          before="[[390,844,'practice'],[844,390,'challenge'],[1024,650,'practice'],[768,1024,'challenge']]"
+          assert s.count(before)==1;s=s.replace(before,"[[1024,650,'practice'],[768,1024,'challenge']]")
+          s=s.replace('report.summary.total!==4','report.summary.total!==2')
+          before="assert(nativeDash.dashReadyAt>0);assert.equal(await frame.locator('#dash').isDisabled(),true);"
+          after="assert(nativeDash.dashReadyAt>0);details.push({name:'Native Dash accepted before DOM frame update',snapshot:nativeDash});await frame.waitForFunction(()=>document.getElementById('dash').disabled,undefined,{timeout:1500});assert.equal(await frame.locator('#dash').isDisabled(),true);details.push({name:'Native Dash cooldown DOM observed',snapshot:await frame.evaluate(()=>__controlsQA.state())});"
+          assert s.count(before)==1;s=s.replace(before,after)
+          s=s.replace('const details=[];','const details=[];row.controls??=[];row.controls.push({stage,details});')
+          s=s.replace('row.controls??=[];row.controls.push({stage,details});\n    check','check')
+          Path('evidence/webkit-targeted.cjs').write_text(s)
+          Path('evidence/adaptation.json').write_text(json.dumps({'firstRun':42776997194,'firstPassedViewports':[[390,844],[844,390]],'onlyRetestedViewports':[[1024,650],[768,1024]],'reason':'First failure was an immediate DOM assertion after native Dash; dashReadyAt>0 already passed. Wait for normal rendering, same condition and app bytes.','beforeSHA256':hashlib.sha256(old.encode()).hexdigest(),'executedSHA256':hashlib.sha256(s.encode()).hexdigest()},indent=2))
+          PY
+          node --check evidence/webkit-targeted.cjs
+          npm install --prefix "$RUNNER_TEMP/webkit-tools" --ignore-scripts --no-save --package-lock=false playwright@1.56.1
+      - name: Two previously stopped tablet scenarios only
+        continue-on-error: true
+        shell: bash
+        env:
+          NODE_PATH: ${{ runner.temp }}/webkit-tools/node_modules
+          HOME: /root
+        run: node evidence/webkit-targeted.cjs app evidence/runtime
+      - name: First WebKit full ordinary-input routes in both modes
+        continue-on-error: true
+        shell: bash
+        env:
+          CODEX_PRIMARY_RUNTIME_NODE_MODULES: ${{ runner.temp }}/webkit-tools/node_modules
+          HOME: /root
+        run: |
+          set +e
+          node previous/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser webkit --mode practice --out "$GITHUB_WORKSPACE/evidence/routes-practice" --timeout-ms 60000
+          first=$?
+          node previous/routes.mjs --root "$GITHUB_WORKSPACE/app" --browser webkit --mode challenge --out "$GITHUB_WORKSPACE/evidence/routes-guided-challenge" --timeout-ms 60000
+          second=$?
+          exit $((first || second))
+      - name: Uninstrumented public WebKit and live-byte comparison
+        continue-on-error: true
+        shell: bash
+        env:
+          NODE_PATH: ${{ runner.temp }}/webkit-tools/node_modules
+          HOME: /root
+        run: node tooling/tools/rc7-webkit/live.cjs app evidence/live
+      - name: Integrity and honest aggregate
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          e=Path('evidence');base=json.loads(Path('first/baseline.json').read_text())
+          changed=[f for f,h in base.items() if not (Path('app')/f).exists() or hashlib.sha256((Path('app')/f).read_bytes()).hexdigest()!=h]
+          def load(p):
+           p=e/p;return json.loads(p.read_text()) if p.exists() else {}
+          r=load('runtime/results.json');a=load('routes-practice/results.json');b=load('routes-guided-challenge/results.json');live=load('live/results.json')
+          report={'applicationCommit':'8000be541227e1c0d568526588ef1d14ed774cff','baselineFiles':len(base),'changed':changed,'firstPhonePassesRetained':2,'targetedTablets':r.get('summary'),'practiceRoutes':a.get('summary'),'guidedChallengeRoutes':b.get('summary'),'livePass':live.get('pass'),'liveHTTPCount':len(live.get('http',[])),'liveCases':[{k:c.get(k) for k in ['width','height','stage','pass','failure']} for c in live.get('cases',[])],'deviceAcceptance':False,'privateV41Tested':False}
+          (e/'summary.json').write_text(json.dumps(report,indent=2));print(json.dumps(report))
+          assert not changed
+          assert r.get('summary')=={'passed':2,'failed':0,'total':2} and not r.get('fatal')
+          assert a.get('summary',{}).get('passed')==2 and a.get('summary',{}).get('failed')==0
+          assert b.get('summary',{}).get('passed')==2 and b.get('summary',{}).get('failed')==0
+          assert live.get('pass') is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc7-webkit-targeted-live-20261110
+          path: |
+            evidence/
+            previous/routes.mjs
+            tooling/tools/rc7-webkit/live.cjs
+          retention-days: 30
