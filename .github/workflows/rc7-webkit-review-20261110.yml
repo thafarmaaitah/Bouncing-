@@ -1,0 +1,83 @@
+name: RC7 WebKit phone and tablet verification
+on:
+  push:
+    branches: [review/rc7-webkit-20261110]
+    paths: [.github/workflows/rc7-webkit-review-20261110.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: tooling
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 8000be541227e1c0d568526588ef1d14ed774cff
+          path: app
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 41907395042
+          name: sky-rc7-system-browser-evidence
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: previous
+      - name: Prepare unchanged application and transparent WebKit driver
+        shell: bash
+        run: |
+          mkdir -p evidence
+          python3 - <<'PY'
+          import subprocess,hashlib,json
+          from pathlib import Path
+          files=subprocess.check_output(['git','ls-files','-z'],cwd='app').decode().split('\0')
+          h={f:hashlib.sha256((Path('app')/f).read_bytes()).hexdigest() for f in files if f}
+          Path('evidence/baseline.json').write_text(json.dumps(h,indent=2))
+          PY
+          python3 tooling/tools/rc7-webkit/prepare.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          p=Path('evidence/webkit-runtime.cjs');s=p.read_text()
+          old="if(el.disabled||document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)!==el)"
+          new="if(type==='pointerdown'&&(el.disabled||document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)!==el))"
+          assert s.count(old)==1
+          s=s.replace(old,new)
+          p.write_text(s)
+          meta=Path('evidence/harness-source.json');d=json.loads(meta.read_text());d['releaseEventGuard']='Only pointerdown requires an enabled hit target; pointerup may release an action that disabled itself';d['executedSHA256']=hashlib.sha256(p.read_bytes()).hexdigest();meta.write_text(json.dumps(d,indent=2))
+          PY
+          node --check evidence/webkit-runtime.cjs
+          npm install --prefix "$RUNNER_TEMP/webkit-tools" --ignore-scripts --no-save --package-lock=false playwright@1.56.1
+      - name: Actual WebKit runtime cases
+        id: runtime
+        continue-on-error: true
+        shell: bash
+        env:
+          NODE_PATH: ${{ runner.temp }}/webkit-tools/node_modules
+          HOME: /root
+        run: node evidence/webkit-runtime.cjs app evidence/runtime
+      - name: Preserve source identity and record results
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          e=Path('evidence');base=json.loads((e/'baseline.json').read_text())
+          changes=[f for f,h in base.items() if not (Path('app')/f).exists() or hashlib.sha256((Path('app')/f).read_bytes()).hexdigest()!=h]
+          p=e/'runtime/results.json';r=json.loads(p.read_text()) if p.exists() else {}
+          summary={'applicationCommit':'8000be541227e1c0d568526588ef1d14ed774cff','baselineFiles':len(base),'changes':changes,'runtime':r.get('summary'),'fatal':r.get('fatal'),'physicalDeviceTested':False,'privateV41Tested':False,'multiPointerMethod':'Synthetic DOM PointerEvent; real browser taps tested separately'}
+          (e/'summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary))
+          assert not changes
+          assert r.get('summary')=={'passed':4,'failed':0,'total':4} and not r.get('fatal')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc7-webkit-evidence-20261110
+          path: evidence/
+          retention-days: 30
